@@ -294,8 +294,8 @@ function eventsOnLoad() {
   ////////////////////////////////////////////////////////////
   // https://registrar.stanford.edu/resources-and-help/stanford-academic-calendar
 
-  addEvent('Oct 11 2019', 'Drop date');  // UPDATE
-  addEvent('Nov 26 2018', 'Exam'.fontcolor('brown').bold());  // UPDATE
+  addEvent('Oct 11 2019', 'Drop date');  // TODO UPDATE
+  addEvent('Nov 26 2018', 'Exam'.fontcolor('brown').bold());  // TODO UPDATE
 
   section('Introduction (Percy)', 'What is this class about?');
 
@@ -306,17 +306,17 @@ function eventsOnLoad() {
   nextClass(2);
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
   enableItem('Linear classification<br>Loss minimization<br>Stochastic gradient descent', 'learning1', [liveProgrammingLink('learning1')]);
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
 
   closedHomework('sentiment', 'Sentiment classification');
   enableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
   nextClass(2);
   enableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: Backpropagation and SciKit Learn', null, [sectionLink('section2.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
 
   section('Search (Dorsa)', 'Problem solving as finding paths in graphs...');
   enableItem('Tree search<br>Dynamic programming, uniform cost search', 'search1', [liveProgrammingLink('search1')]);
@@ -324,9 +324,9 @@ function eventsOnLoad() {
 
   nextClass(2);
   enableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
 
   section('Markov decision processes (Dorsa)', 'When nature intervenes randomly...');
   enableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
@@ -334,27 +334,27 @@ function eventsOnLoad() {
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
   enableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
   closedHomework('pacman', 'Pac-Man');
   enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
   nextClass(2);
   enableItem('TD learning<br>Game theory', 'games2');
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
 
   section('Constraint satisfaction problems (Dorsa)', 'Problem solving as assigning variables (with constraints)...');
   closedHomework('scheduling', 'Course scheduling');
   enableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
   enableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
 
   section('Bayesian networks (Percy)', 'Representing uncertainty with probabilities...');
   enableItem('Bayesian inference<br>Marginal independence<br>Hidden Markov models', 'bayes1');
@@ -362,9 +362,9 @@ function eventsOnLoad() {
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
   enableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
-  nextClass(3);
+  nextClass(4);
   enableItem('Learning Bayesian networks<br>Laplace smoothing<br>Expectation Maximization', 'bayes3', [suppmaterialLink('bayes3_supplem.pdf')]);
   nextClass(2);
 
