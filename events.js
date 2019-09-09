@@ -347,7 +347,7 @@ function eventsOnLoad() {
   enableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
   nextClass(4);
 
-  section('Constraint satisfaction problems (Dorsa)', 'Problem solving as assigning variables (with constraints)...');
+  section('Constraint satisfaction problems (Dorsa, Percy)', 'Problem solving as assigning variables (with constraints)...');
   closedHomework('scheduling', 'Course scheduling');
   enableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
@@ -356,7 +356,7 @@ function eventsOnLoad() {
   enableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
 
-  section('Bayesian networks (Percy)', 'Representing uncertainty with probabilities...');
+  section('Bayesian networks (Percy, Dorsa)', 'Representing uncertainty with probabilities...');
   enableItem('Bayesian inference<br>Marginal independence<br>Hidden Markov models', 'bayes1');
   closedHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
