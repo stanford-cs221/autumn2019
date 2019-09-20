@@ -292,10 +292,10 @@ function eventsOnLoad() {
   }
 
   ////////////////////////////////////////////////////////////
-  // https://registrar.stanford.edu/resources-and-help/stanford-academic-calendar
+  // https://registrar.stanford.edu/academic-calendar
 
-  addEvent('Oct 11 2019', 'Drop date');  // TODO UPDATE
-  addEvent('Nov 26 2018', 'Exam'.fontcolor('brown').bold());  // TODO UPDATE
+  addEvent('Oct 11 2019', 'Drop date'); 
+  addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // TODO UPDATE
 
   section('Introduction (Percy)', 'What is this class about?');
 
@@ -370,26 +370,29 @@ function eventsOnLoad() {
 
   section('Logic (Percy)', 'More expressive models...');
   enableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
-  nextClass(2);
-  nextClass(3);
+  nextClass(1);
+  disableItem('Section: exam review (practice problems), 4:30pm-6:00pm, Gates B01', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
+  nextClass(4);
 
-  disableItem('(Thanksgiving &mdash; no class)');
+  enableItem('First-order logic<br>Resolution', 'logic2');
   closedHomework('logic', 'Language and logic', 18);
   nextClass(2);
-  disableItem('(Thanksgiving &mdash; no class)');
-  nextClass(5);
-
-  project('p-poster', 'Project poster session', 7);
-  enableItem('First-order logic<br>Resolution', 'logic2');
-  disableItem('Section: exam review (practice problems), 4:30pm-6:00pm, Gates B01', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
-  nextClass(2);
-
   section('Conclusion (Dorsa, Percy)', 'Reflections and prospects...');
   enableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
-  nextClass(2);
+  nextClass(1);
   enableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
-  disableItem('Higher-order logics<br>Markov logic<br>Semantic parsing', 'logic3');
+
+
+
+  nextClass(4);
+  disableItem('(Thanksgiving &mdash; no class)');
+  project('p-poster', 'Project poster session', 7);
+  nextClass(2);
+  disableItem('(Thanksgiving &mdash; no class)');
   nextClass(3);
+
+  nextClass(2);
+
 
   project('p-peer', 'Project poster session (peer review)', 3);
   project('p-final', 'Project final report', 11);
