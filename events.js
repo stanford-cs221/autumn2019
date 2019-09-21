@@ -294,93 +294,93 @@ function eventsOnLoad() {
   ////////////////////////////////////////////////////////////
   // https://registrar.stanford.edu/academic-calendar
 
-  addEvent('Oct 11 2019', 'Drop date'); 
+  addEvent('Oct 11 2019', 'Drop date');
   addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // TODO UPDATE
 
   section('Introduction (Percy)', 'What is this class about?');
 
   nextClass(0);
-  enableItem('Overview of course<br>Optimization', 'overview');
-  closedHomework('foundations', 'Foundations', 9);
+  disableItem('Overview of course<br>Optimization', 'overview');
+  disableHomework('foundations', 'Foundations', 9);
 
   nextClass(2);
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
-  enableItem('Linear classification<br>Loss minimization<br>Stochastic gradient descent', 'learning1', [liveProgrammingLink('learning1')]);
+  disableItem('Linear classification<br>Loss minimization<br>Stochastic gradient descent', 'learning1', [liveProgrammingLink('learning1')]);
   nextClass(1);
-  enableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
+  disableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
   nextClass(4);
 
-  closedHomework('sentiment', 'Sentiment classification');
-  enableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
+  disableHomework('sentiment', 'Sentiment classification');
+  disableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
   nextClass(2);
-  enableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
+  disableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
   nextClass(1);
-  enableItem('Section: Backpropagation and SciKit Learn', null, [sectionLink('section2.pdf', 'slides')], true);
+  disableItem('Section: Backpropagation and SciKit Learn', null, [sectionLink('section2.pdf', 'slides')], true);
   nextClass(4);
 
   section('Search (Dorsa)', 'Problem solving as finding paths in graphs...');
-  enableItem('Tree search<br>Dynamic programming, uniform cost search', 'search1', [liveProgrammingLink('search1')]);
-  closedHomework('reconstruct', 'Text reconstruction');
+  disableItem('Tree search<br>Dynamic programming, uniform cost search', 'search1', [liveProgrammingLink('search1')]);
+  disableHomework('reconstruct', 'Text reconstruction');
 
   nextClass(2);
-  enableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
+  disableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
   nextClass(1);
-  enableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
+  disableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
   nextClass(4);
 
   section('Markov decision processes (Dorsa)', 'When nature intervenes randomly...');
-  enableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
-  closedHomework('blackjack', 'Blackjack');
+  disableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
+  disableHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
-  enableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
+  disableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
   nextClass(1);
-  enableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
+  disableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
   nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
-  closedHomework('pacman', 'Pac-Man');
-  enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
+  disableHomework('pacman', 'Pac-Man');
+  disableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
   nextClass(2);
-  enableItem('TD learning<br>Game theory', 'games2');
+  disableItem('TD learning<br>Game theory', 'games2');
   nextClass(1);
-  enableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
+  disableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
   nextClass(4);
 
   section('Constraint satisfaction problems (Dorsa, Percy)', 'Problem solving as assigning variables (with constraints)...');
-  closedHomework('scheduling', 'Course scheduling');
-  enableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
+  disableHomework('scheduling', 'Course scheduling');
+  disableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
-  enableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
+  disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
-  enableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
+  disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
 
   section('Bayesian networks (Percy, Dorsa)', 'Representing uncertainty with probabilities...');
-  enableItem('Bayesian inference<br>Marginal independence<br>Hidden Markov models', 'bayes1');
-  closedHomework('car', 'Car tracking');
+  disableItem('Bayesian inference<br>Marginal independence<br>Hidden Markov models', 'bayes1');
+  disableHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
-  enableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
+  disableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
   nextClass(1);
-  enableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
+  disableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
   nextClass(4);
-  enableItem('Learning Bayesian networks<br>Laplace smoothing<br>Expectation Maximization', 'bayes3', [suppmaterialLink('bayes3_supplem.pdf')]);
+  disableItem('Learning Bayesian networks<br>Laplace smoothing<br>Expectation Maximization', 'bayes3', [suppmaterialLink('bayes3_supplem.pdf')]);
   nextClass(2);
 
   section('Logic (Percy)', 'More expressive models...');
-  enableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
+  disableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
   nextClass(1);
   disableItem('Section: exam review (practice problems), 4:30pm-6:00pm, Gates B01', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
   nextClass(4);
 
-  enableItem('First-order logic<br>Resolution', 'logic2');
-  closedHomework('logic', 'Language and logic', 18);
+  disableItem('First-order logic<br>Resolution', 'logic2');
+  disableHomework('logic', 'Language and logic', 18);
   nextClass(2);
   section('Conclusion (Dorsa, Percy)', 'Reflections and prospects...');
-  enableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
+  disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
   nextClass(1);
-  enableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
+  disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
 
 
 
@@ -393,12 +393,11 @@ function eventsOnLoad() {
 
   nextClass(2);
 
-
   project('p-peer', 'Project poster session (peer review)', 3);
   project('p-final', 'Project final report', 11);
   disableItem('Poster session', 'no-lecture');
   nextClass(2);
-  enableItem('Summary, future of AI', 'conclusion');
+  disableItem('Summary, future of AI', 'conclusion');
 
   // Write specification to submit.json
   if (serverSide) {
