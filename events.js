@@ -371,7 +371,7 @@ function eventsOnLoad() {
   section('Logic (Percy)', 'More expressive models...');
   disableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
   nextClass(1);
-  disableItem('Section: exam review (practice problems), 4:30pm-6:00pm, Gates B01', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
+  disableItem('Section: exam review (practice problems)', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
   nextClass(4);
 
   disableItem('First-order logic<br>Resolution', 'logic2');
