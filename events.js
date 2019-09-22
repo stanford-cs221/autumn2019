@@ -301,7 +301,7 @@ function eventsOnLoad() {
 
   nextClass(0);
   disableItem('Overview of course<br>Optimization', 'overview');
-  disableHomework('foundations', 'Foundations', 9);
+  disableHomework('foundations', 'Foundations', 8);
 
   nextClass(2);
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
@@ -375,7 +375,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   disableItem('First-order logic<br>Resolution', 'logic2');
-  disableHomework('logic', 'Language and logic', 18);
+  disableHomework('logic', 'Language and logic');
   nextClass(2);
   section('Conclusion (Dorsa, Percy)', 'Reflections and prospects...');
   disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
