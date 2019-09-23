@@ -1,0 +1,4 @@
+*.slides
+*.pdf
+*.tags.json
+cached-videos
