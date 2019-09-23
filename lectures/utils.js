@@ -45,7 +45,7 @@ G.add = function(block, tags) {
       list.push([sfig_.urlParams.include, id]);
     });
   }
-  block.leftFooter(nowrapText(footer));
+  block.leftFooter(nowrapText(footer).scale(0.8));
   if (!sfig.serverSide) {
     //if (sfig_.getDisplayMode() != sfig_.DISPLAYMODE_FULLSCREEN)
       //block.rightHeader(createFeedback(id));

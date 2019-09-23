@@ -1,79 +1,23 @@
 G = sfig.serverSide ? global : this;
 G.prez = presentation();
 
-if (sfig_.urlParams.auth) {
-  prez.addSlide(slide(null,
-    nil(),
-    'Fill out a poll here:',
-    parentCenter(text(greenbold('cs221.stanford.edu/q')).scale(2.7)),
-    ytable(
-      'Loop:',
-      indent('If the seat next to you towards the center is free:'),
-      indent(indent('Move there.')),
-    _),
-  _).showIndex(false));
-}
-
 add(titleSlide('Lecture 1: Overview',
   nil(),
   parentCenter(image('images/galaxies.jpg').width(300)),
 _));
 
-/*
-./tab firstName,lastName var/cas.jsonl
-*/
-var items = [
-  'Kelvin Guu (guest instructor)',
-  'Daniel Selsam (head CA)',
-  'Gregory Soh',
-  'Aaron Effron',
-  'Ajay Sohmshetty',
-  'Anand Dhoot',
-  'Anvita Gupta',
-  'Benoit Zhou',
-  'Chinmayee Shah',
-  'Chuma Kabaghe',
-  'David Golub',
-  'Andrew Han',
-  'Jacob Hoffman',
-  'Jaebum Lee',
-  'Megha Srivastava',
-  'Richard Diehl Martinez',
-  'Sudarshan Seshadri',
-  'Stephanie Dong',
-  'Vivekkumar Patel',
-  'Hao Wang',
-  'William Bakst',
-  'Yilong Li',
-  'Zhangyuan Wang',
-  'Steven Diamond',
-  'Kaiyi (Alexander) Fu',
-  'Amita Kamath',
-  'Yongshang Wu',
-  'Yianni Laloudakis',
-  'Benjamin Petit',
-  'Vivian Hsu',
-];
-
-var rows = [];
-var m = 3;
-for (var i = 0; i < items.length; i += m) {
-  var row = [];
-  for (var j = 0; j < m; j++)
-    row.push(items[i + j] || nil());
-  rows.push(row);
-}
-
-add(slide('Teaching staff',
+add(slide(null,
   parentCenter(ytable(
-    'Percy Liang'.bold(),
-    new Table(rows).margin(50, 5).scale(0.8),
-  _).margin(20).center()).scale(0.9),
+    image('images/percy-dorsa.png').width(220),
+    pause(),
+    image('images/cas-autumn2019.png').width(650),
+  _).center().margin(20)),
 _).id('staff'));
 
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
-    ['why', 'What is AI?'],
+    ['history', 'A brief history'],
+    ['goals', 'Two views'],
     ['what', 'Course overview'],
     ['how', 'Course logistics'],
     ['optimization', 'Optimization'],
@@ -82,8 +26,6 @@ function roadmap(i) {
 
 ////////////////////////////////////////////////////////////
 
-roadmap(0);
-
 add(slide(null,
   parentCenter(overlay(
     pause(),
@@ -91,7 +33,11 @@ add(slide(null,
     pause(),
     parentCenter(image('images/alpha-go.jpg')).shiftBy(350, 20),
     pause(),
-    image('images/google-car.jpeg').width(300).shiftBy(0, 200),
+    // https://openai.com/five/
+    image('images/openai-dota2.jpg').width(300).shiftBy(0, 200),
+    pause(),
+    // https://medium.com/syncedreview/an-absolute-monster-bluffer-facebook-cmu-ai-bot-beats-poker-pros-714e7b989954
+    image('images/cmu-facebook-poker.png').width(300).shiftBy(400, 200),
     pause(),
     // https://blogs.microsoft.com/ai/microsoft-creates-ai-can-read-document-answer-questions-well-person/
     image('images/news-microsoft-squad.png').width(500).shiftBy(200, 100),
@@ -109,9 +55,15 @@ _));
 
 prose(
   'It is hard these days to escape hearing about AI &mdash; in the news, on social media, in cafe conversations.',
-  'We see both reports triumphs of superhuman performance in games such as Jeopardy! (IBM Watson, 2011) and Go (DeepMind\'s AlphaGo, 2016),',
-  'as well as on benchmark tasks such as reading comprehension, speech recognition, face recognition, and medical imaging',
-  '(though it is important to realize that these are about performance on one benchmark, which is a far cry from the general problem).',
+  'A lot of the triumphs of superhuman performance as been in <b>games</b>,',
+  'such as Jeopardy! (IBM Watson, 2011), Go (DeepMind\'s AlphaGo, 2016), Dota 2 (OpenAI, 2019), Poker (CMU and Facebook, 2019).',
+  _,
+  'On non-game tasks, we have also have systems that achieve or surpass human-level performance on',
+  'reading comprehension, speech recognition, face recognition, and medical imaging <b>benchmarks</b>.',
+  _,
+  'Unlike games, however, where the game is the full problem,',
+  'good performance on a benchmark does not necessarily translate to good performance on the actual task in the wild.',
+  'Just because you ace an exam doesn\'t necessarily mean you have perfect understanding or know how to apply that knowledge to real problems.',
 _);
 
 add(slide(null,
@@ -132,82 +84,298 @@ prose(
   'We also see speculation about the future: that it will bring about sweeping societal change due to automation,',
   'resulting in massive job loss, not unlike the industrial revolution,',
   'or that AI could even surpass human-level intelligence and seek to take control.',
+  _,
+  'While AI is likely to be transformational,',
+  'what kind of transformation the future will hold, no one knows.',
 _);
 
-add(slide('Companies',
-  table(
-    [image('images/google.jpg').width(100), text('"An important shift from a mobile first world to an AI first world" [CEO Sundar Pichai @ Google I/O 2017]').width(650)], 
-    [image('images/microsoft.png').width(100), text('Created AI and Research group as 4th engineering division, now 8K people [2016]').width(650)],
-    [image('images/facebook.png').width(100), text('Created Facebook AI Research, Mark Zuckerberg very optimistic and invested').width(650)],
-  _).margin(10, 50).yjustify('c'),
-  stmt('Others: IBM, Amazon, Apple, Uber, Salesforce, Baidu, Tencent, etc.'),
-_));
+add(dividerSlide(parentCenter('1956'.italics())));
 
-add(slide('Governments',
-  table(
-    [image('images/flag-usa.png').width(100), text('"AI holds the potential to be a major driver of economic growth and social progress" [White House report, 2016]').width(650)], 
-    [image('images/flag-china.png').width(100), text('Released domestic strategic plan to become world leader in AI by 2030 [2017]').width(650)],
-    [image('images/flag-russia.png').width(100), text('"Whoever becomes the leader in this sphere [AI] will become the ruler of the world" [Putin, 2017]').width(650)],
-  _).margin(10, 70).yjustify('c'),
+add(slide('Birth of AI',
+  stmt('1956', 'Workshop at Dartmouth College; attendees: John McCarthy, Marvin Minsky, Claude Shannon, etc.'),
+  parentCenter(image('images/dartmouth.jpg').width(150)),
+  'Aim for '+redbold('general principles')+':',
+  parentCenter(text('<i>Every aspect of learning or any other feature of intelligence can be so precisely described that a machine can be made to simulate it.</i>').scale(0.9)),
 _));
 
 prose(
-  'While media hype is real, it is true that both companies and governments are heavily investing in AI.',
-  'Both see AI as an integral part of their competitive strategy.',
+  'How did we get here?',
+  'The name <b>artifical intelligence</b> goes back to a summer in 1956.',
+  'John McCarthy, who was then at MIT but later founded the Stanford AI lab,',
+  'organized a workshop at Dartmouth College with the leading thinkers of the time,',
+  'and set out a very bold proposal...to build a system that could do it <b>all</b>.',
 _);
 
-add(slide('AI index: number of published AI papers',
-  nil(),
-  parentCenter(image('images/ai-index-papers.png').width(700)),
-_));
-
-add(slide('AI index: number of AI startups',
-  nil(),
-  parentCenter(image('images/ai-index-startups.png').width(700)),
-_));
-
-add(slide('AI index: AI conference attendance',
-  nil(),
-  parentCenter(overlay(
-    image('images/ai-index-conferences.png').width(700),
-    pause(),
-    overlay(
-      image('images/nips2018-sold-out-tweet.png').width(400),
-      image('images/nips2018-sold-out-tweet2.png').width(400).shiftBy(300, 80),
-    _),
-  _).center()),
-_));
-
-prose(
-  'The AI Index is an effort to track the progress of AI over time.',
-  'In 2017, the AI Index published a report,',
-  'showing essentially that all curves go up and to the right.',
-  'Here are a few representative samples.',
-_);
-
-add(slide('CS221 enrollments',
-  parentCenter(barGraph([
-    [2012, 182], [2013, 217], [2014, 370], [2015, 549],
-    [2016, 660], [2017, 775], [2018, 730],
-  ]).xrange(2011, 2018).yrange(0, 800).xlength(500)),
+add(slide('Birth of AI, early successes',
+  side(
+    stmt('Checkers (1952)', 'Samuel\'s program learned weights and played at strong amateur level'),
+    'images/checkers.jpg',
+  _),
   pause(),
-  xtable('Slowing down?', pause(), 'Probably due to the CS221 spring offering...').margin(5),
+  side( // Paper rejected, didn't realize third author was a computer program
+    stmt('Problem solving (1955)', 'Newell &amp; Simon\'s Logic Theorist: prove theorems in Principia Mathematica using search + heuristics; later, General Problem Solver (GPS)'), // Mimic problem solving
+    'images/isosceles.jpg',
+  _),
 _));
 
 prose(
-  'The reality is that there is a lot of uncertainty over what will happen,',
-  'and there is a lot of nuance that\'s missing from these stories about what AI is truly capable of.',
-  'The goal of this class is to help you understand these nuances, so that you can form your own opinion.',
-_)
+  'While they did not solve it all, there were a lot of <b>interesting programs</b> that were created:',
+  'programs that could play checkers at a strong amateur level, programs that could prove theorems.',
+  _,
+  'For one theorem Newell and Simon\'s Logical Theorist actually found a proof that was more elegant than what a human came up with.',
+  'They actually tried to publish a paper on it but it got rejected because it was not a new theorem;',
+  'perhaps they failed to realize that the third author was a computer program.',
+  _,
+  'From the beginning, people like John McCarthy sought <b>generality</b>, thinking of how commonsense reasoning could be encoded in logic.',
+  'Newell and Simon\'s General Problem Solver promised to could solve any problem (which could be suitably encoded in logic).',
+_);
 
-add(dividerSlide(parentCenter('Ok, really, what is AI?'.italics())));
+function quote(quote, who) {
+  return italics(quote) + ' &mdash;'+who;
+}
+add(slide('Overwhelming optimism...',
+  quote('Machines will be capable, within twenty years, of doing any work a man can do.', 'Herbert Simon'),
+  quote('Within 10 years the problems of artificial intelligence will be substantially solved.', 'Marvin Minsky'),
+  quote('I visualize a time when we will be to robots what dogs are to humans, and I\'m rooting for the machines.', 'Claude Shannon'),
+_));
+
+prose(
+  'It was a time of high optimism, with all the leaders of the field, all impressive thinkers,',
+  'predicting that AI would be "solved" in a matter of years.',
+_);
+
+add(slide('...underwhelming results',
+  stmt('Example: machine translation'),
+  parentCenter(yseq(
+    'The spirit is willing but the flesh is weak.'.italics().fontcolor('green'),
+    downArrow(30).strokeWidth(2),
+    '(Russian)', pause(),
+    downArrow(30).strokeWidth(2),
+    'The vodka is good but the meat is rotten.'.italics().fontcolor('red'),
+  _).center()),
+  pause(),
+  '1966: ALPAC report cut off government funding for MT, first AI winter',
+_));
+
+prose(
+  'Despite some successes, certain tasks such as machine translation were complete failures, which lead to the cutting of funding and the first AI winter.',
+_);
+
+add(slide('Implications of early era',
+  headerList('Problems',
+    cat(redbold('Limited computation'), ': search space grew exponentially, outpacing hardware ($100! \\approx 10^{157} > 10^{80}$)'),
+    cat(redbold('Limited information'), ': complexity of AI problems (number of words, objects, concepts in the world)'),
+  _),
+  pause(),
+  headerList('Contributions',
+    'Lisp, garbage collection, time-sharing (John McCarthy)',  // Revolutionary
+    stmt('Key paradigm', 'separate '+greenbold('modeling')+' and '+greenbold('inference')),
+  _),
+_));
+
+prose(
+  'What went wrong?',
+  'It turns out that the real world is very complex and most AI problems require a lot of <b>compute</b> and <b>data</b>.',
+  _,
+  'The hardware at the time was simply too limited both compared to both the human brain and computers available now.',
+  'Also, casting problems as general logical reasoning meant that the approaches fell prey to the exponential search space,',
+  'which no possible amount of compute could really fix.',
+  _,
+  'Even if you had infinite compute, AI would not be solved.',
+  'There are simply too many words, objects, and concepts in the world,',
+  'that this information has to be somehow encoded in the AI system.',
+  _,
+  'Though AI was not solved, a few generally useful technologies came out of the effort,',
+  'such as Lisp (still the world\'s most advanced programming language in a sense).',
+  _,
+  'One particularly powerful paradigm is the separation between what you want to compute (modeling) and how to compute it (inference).',
+_);
+
+add(slide('Knowledge-based systems (70-80s)',
+  parentCenter(image('images/knowledge-key.jpg')),
+  stmt('Expert systems', 'elicit specific domain knowledge from experts in form of rules:'),
+  parentCenter('<tt>if [premises] then [conclusion]</tt>'),
+_));
+
+prose(
+  'In the seventies and eighties,',
+  'AI researchers looked to knowledge as a way to combat both the limited computation and information problems.',
+  'If we could only figure out a way to encode prior knowledge in these systems,',
+  'then they will have the necessary information and also have to do less compute.',
+_);
+
+add(slide('Knowledge-based systems (70-80s)',
+  side(
+    'DENDRAL: infer molecular structure from mass spectrometry',
+    'images/molecule.jpg',
+  _),
+  side(
+    'MYCIN: diagnose blood infections, recommend antibiotics',
+    'images/mycin.jpg',
+  _),
+  side(
+    'XCON: convert customer orders into parts specification; save DEC $\\$40$ million a year by 1986',
+    'images/xcon.jpg',
+  _),
+_));
+
+prose(
+  'Instead of the solve-it-all optimism from the 1950s,',
+  'researchers focused on building narrow practical systems in targeted domains.',
+  'These became known as <b>expert systems</b>.',
+_);
+
+add(slide('Knowledge-based systems',
+  headerList('Contributions',
+    'First '+greenbold('real application')+' that impacted industry',
+    'Knowledge helped curb the exponential growth',
+  _),
+  pause(),
+  headerList('Problems',
+    'Knowledge is not deterministic rules, need to model <font color="red"><b>uncertainty</b></font>',
+    'Requires considerable '+redbold('manual effort')+' to create rules, hard to maintain',
+  _),
+  '1987: Collapse of Lisp machines and second AI winter',
+_));
+
+prose(
+  'This was the first time AI had a measurable impact on industry.',
+  'However, the technology ran into limitations and failed to scale up to more complex problems.',
+  'Due to plenty of overpromising and underdelivering, the field collapsed again.',
+  _,
+  'We know that this is not the end of the AI story,',
+  'but actually it is not the beginning.',
+  'There is another thread for which we need to go back to 1943.',
+_);
+
+add(dividerSlide(parentCenter('1943'.italics())));
+
+add(slide('Artificial neural networks',
+  side(
+    '1943: introduced artificial neural networks, connect neural circuitry and logic (McCulloch/Pitts)',
+    'images/mcculloch-pitts-circuit.png',
+  _),
+  side(
+    '1969: Perceptrons book showed that linear models could not solve XOR, killed neural nets research (Minsky/Papert)',
+    'images/perceptrons-book.jpeg',
+  _),
+_));
+
+prose(
+  'Much of AI\'s history was dominated by the logical tradition,',
+  'but there was another smaller camp,',
+  'grounded in neural networks inspired by the brain.',
+  _,
+  '(Artificial) neural networks were introduced by a famous paper by McCulloch and Pitts,',
+  'who devised a simple mathematical model and showed how it could be be used to compute arbitrary logical functions.',
+  _,
+  'Much of the early work was on understanding the mathematical properties of these networks,',
+  'since computers were too weak to do anything interesting.',
+  _,
+  'In 1969, a book was published that explored many mathematical properties of Perceptrons (linear models)',
+  'and showed that they could not solve some simple problems such as XOR.',
+  'Even though this result says nothing about the capabilities of deeper networks,',
+  'the book is largely credited with the demise of neural networks research,',
+  'and the continued rise of logical AI.',
+);
+
+add(slide('Training networks',
+  side(
+    '1986: popularization of backpropagation for training multi-layer networks (Rumelhardt, Hinton, Williams)',
+    'images/rumelhardt-hinton-williams-network.png',
+  _),
+  side(
+    '1989: applied convolutional neural networks to recognizing handwritten digits for USPS (LeCun)',
+    'images/mnist-6x6.png',
+  _),
+_));
+
+prose(
+  'In the 1980s, there was a renewed interest in neural networks.',
+  'Backpropagation was rediscovered and popularized as a way to actually train deep neural networks,',
+  'and Yann LeCun built a system based on convolutional neural networks to recognize handwritten digits,',
+  'one of first successful use of neural networks that became used by the USPS to recognize zip codes.',
+_);
+
+add(slide('Deep learning',
+  side(
+    'AlexNet (2012): huge gains in object recognition; transformed computer vision community overnight',
+    'images/ilsvrc.png',
+  _),
+  side(
+    'AlphaGo (2016): deep reinforcement learning, defeat world champion Lee Sedol',
+    'images/alpha-go.jpg',
+  _),
+_));
+
+prose(
+  'The real break for neural networks came in the 2010s.',
+  'With the rise of compute (notably GPUs) and large datasets such as ImageNet (2009),',
+  'the time was ripe for the world to take note of neural networks.',
+  _,
+  'AlexNet was a pivotal system that showed the promise of deep convolutional networks on ImageNet,',
+  'the benchmark created by the computer vision community who was at the time still skeptical of deep learning.',
+  'Many other success stories in speech recognition and machine translation followed.',
+_);
+
+add(slide('Two intellectual traditions',
+  parentCenter(xtable(
+    image('images/aristotle.jpg').width(150),
+    image('images/learning.png').width(250),
+  _).center().margin(100)),
+  bulletedText('AI has always swung back and forth between the two'),
+  bulletedText('Deep philosphical differences, but deeper connections (McCulloch/Pitts, AlphaGo)?'),
+_));
+
+prose(
+  'Reflecting back on the past of AI, there have been two intellectual traditions that have dominated the scene:',
+  'one rooted in logic and one rooted in neuroscience (at least initially).',
+  'This debate is paralleled in cognitive science with connectionism and computationalism.',
+  _,
+  'While there are deep philosophical differences,',
+  'perhaps there are deeper connections.',
+  _,
+  'For example, McCulloch and Pitts work from 1943 can be viewed as the root of deep learning,',
+  'but that paper is mostly about how to implement logical operations.',
+  _,
+  'The game of Go (and indeed, many games) can perfectly characterized by a set of simple logic rules.',
+  'At the same time, the most successful systems (AlphaGo) do not tackle the problem directly using logic,',
+  'but appeal to the fuzzier world of artificial neural networks.',
+_);
+
+add(slide('A melting pot',
+  bulletedText('Bayes rule (Bayes, 1763) from ' + greenbold('probability')),
+  bulletedText('Least squares regression (Gauss, 1795) from ' + greenbold('astronomy')),
+  bulletedText('First-order logic (Frege, 1893) from ' + greenbold('logic')),
+  bulletedText('Maximum likelihood (Fisher, 1922) from ' + greenbold('statistics')),
+  bulletedText('Artificial neural networks (McCulloch/Pitts, 1943) from ' + greenbold('neuroscience')),
+  bulletedText('Minimax games (von Neumann, 1944) from ' + greenbold('economics')),
+  bulletedText('Stochastic gradient descent (Robbins/Monro, 1951) from ' + greenbold('optimization')),
+  bulletedText('Uniform cost search (Dijkstra, 1956) from ' + greenbold('algorithms')),
+  bulletedText('Value iteration (Bellman, 1957) from ' + greenbold('control theory')),
+_));
+
+prose(
+  'Of course, any story is incomplete.',
+  _,
+  'In fact, for much of the 1990s and 2000s, neural networks were not popular in the machine learning community,',
+  'and the field was dominated more by techniques such as Support Vector Machines (SVMs) inspired by statistical theory.',
+  _,
+  'The fuller picture that the modern world of AI is more like a New York City&mdash;it is a melting pot that',
+  'has drawn from many different fields ranging from statistics, algorithms, economics, etc.',
+  _,
+  'And often it is the new connections between these fields that are made and their application to important real-world problems that makes working on AI so rewarding.',
+_);
+
+////////////////////////////////////////////////////////////
+roadmap(1);
 
 function agentView() { return image('images/robot-wave.jpg').width(100); }
 function toolView() { return image('images/computer.png'); }
 
 add(slide('Two views of AI',
   parentCenter(table(
-    [agentView(), stmt('AI agents: how can we re-create intelligence?')],
+    [agentView(), stmt('AI agents: how can we create intelligence?')],
     [toolView(), stmt('AI tools: how can we benefit society?')],
   _).justify('cl', 'c').margin(50, 100)),
 _));
@@ -220,11 +388,12 @@ prose(
   'the ability to perceive a very complex world and make enough sense of it to be able to manipulate it.',
   _,
   'The second views AI as a set of tools.',
-  'We are simply trying to solve problems in the world, and AI techniques happen to be quite useful for that.',
+  'We are simply trying to solve problems in the world, and techniques developed by the AI community happen to be useful for that,',
+  'but these problems are not ones that humans necessarily do well on natively.',
   _,
   'However, both views boil down to many of the same day-to-day activities (e.g., collecting data and optimizing a training objective),',
   'the philosophical differences do change the way AI researchers approach and talk about their work.',
-  'And moreover, the conflation of these two can generate a lot of confusion.',
+  'Moreover, the conflation of these two views can generate a lot of confusion.',
 _);
 
 add(dividerSlide(parentCenter(xtable(agentView(), italics('AI agents...')).center().margin(10))));
@@ -242,186 +411,45 @@ prose(
   'The starting point for the agent-based view is ourselves.',
   _,
   'As humans, we have to be able to perceive the world (computer vision),',
-  'perform actions in it (robotics), and communicate with other agents.',
+  'perform actions in it (robotics), and communicate with other agents (language).',
   _,
-  'We also have knowledge about the world (from how to ride a bike to knowing the capital of France),',
-  'and using this knowledge we can draw inferences and make decisions.',
+  'We also have knowledge about the world (from procedural knowledge like how to ride a bike to declarative knowledge like remembering the capital of France),',
+  'and using this knowledge we can draw inferences and make decisions (reasoning).',
   _,
   'Finally, we learn and adapt over time.',
+  'We are born with none of the skills that we possess as adults, but rather the capacity to acquire them.',
   'Indeed machine learning has become the primary driver of many of the AI applications we see today.',
 _);
 
-add(slide('Pre-AI developments',
-  side(
-    stmt('Philosophy', redbold('intelligence')+' can be achieved via mechanical computation (e.g., Aristotle)'),
-    'images/aristotle.jpg',
-  _),
-  pause(),
-  side(
-    stmt('Church-Turing thesis (1930s)', 'any computable function is '+redbold('computable')+' by a Turing machine'),
-    'images/turingmachine.png',
-  _),
-  pause(),
-  side(
-    stmt('Real computers (1940s)', 'actual '+redbold('hardware')+' to do it: Heath Robinson, Z-3, ABC/ENIAC'),
-    'images/robinson.jpg',
-  _),
-_));
-
-prose(
-  'Why might one even think that it is even possible to capture this rich behavior?',
-  _,
-  'While AI is a relatively young field, one can trace back some of its roots back to Aristotle,',
-  'who formulated a system of syllogisms that capture the reasoning process: how one can mechanically apply syllogisms to derive new conclusions.',
-  _,
-  'Alan Turing, who laid the conceptual foundations of computer science, developed the Turing machine,',
-  'an abstract model of computation, which, based on the Church-Turing thesis, can implement any computable function.',
-  _,
-  'In the 1940s, devices that could actually carry out these computations started emerging.',
-  _,
-  'So perhaps one might be able to capture intelligent behavior via a computer.',
-  'But how do we define success?',
-_);
-
-add(slide('The Turing Test (1950)',
-  parentRight('[Turing, 1950. Computing Machinery and Intelligence]').scale(0.8),
-  nil(),
+add(slide('Are we there yet?',
   parentCenter(xtable(
-    ytable(
-      '"Can machines think?"',
-      image('images/alan-turing.jpg').width(100),
-    _).center(),
-    pause(),
-    image('images/turing-test.jpg'),
-  _).margin(100).center()),
+    image('images/datacenter.jpg'), pause(),
+    image('images/kids-blocks.jpeg').width(150),
+  _).center().margin(100)),
+  pause(-1),
+  stmt('Machines: narrow tasks, millions of examples'),
   pause(),
-  parentCenter(ytable(
-    nowrapText('Q: Please write me a sonnet on the subject of the Forth Bridge.'),
-    nowrapText('A: Count me out on this one. I never could write poetry.'),
-    nowrapText('Q: Add 34957 to 70764.'),
-    nowrapText('A: (Pause about 30 seconds and then give as answer) 105621.'),
-  _)).scale(0.8),
-  pause(),
-  parentCenter(redbold('Tests behavior &mdash; simple and objective')),
+  stmt('Humans: diverse tasks, very few examples'),
 _));
-
-prose(
-  'Can machines think?  This is a question that has occupied philosophers since Descartes.',
-  'But even the definitions of "thinking" and "machine" are not clear.',
-  'Alan Turing, the renowned mathematician and code breaker who laid the foundations of computing,',
-  'posed a simple test to sidestep these philosophical concerns.',
-  _,
-  'In the test, an interrogator converses with a man and a machine via a text-based channel.',
-  'If the interrogator fails to guess which one is the machine, then the machine is said to have passed the Turing test.',
-  '(This is a simplification but it suffices for our present purposes.)',
-  _,
-  'Although the Turing test is not without flaws (e.g., failure to capture visual and physical abilities, emphasis on deception),',
-  'the beauty of the Turing test is its simplicity and objectivity.',
-  'It is only a test of behavior, not of the internals of the machine.',
-  'It doesn\'t care whether the machine is using logical methods or neural networks.',
-  'This decoupling of what to solve from how to solve is an important theme in this class.',
-_);
-
-add(slide('Birth of AI (1956)',
-  'Workshop at Dartmouth College; attendees: John McCarthy, Marvin Minsky, Claude Shannon, etc.',
-  parentCenter(image('images/dartmouth.jpg').width(150)), pause(),
-  'Aim for '+redbold('general principles')+':',
-  parentCenter(text(italics('Every aspect of learning or any other feature of intelligence can be so precisely described that a machine can be made to simulate it.')).scale(0.9)),
-_));
-
-add(slide('A very brief history',
-  //nil(),
-  //parentCenter(youtube('aygSMgK3BEM', {cache: false, time: 109})),
-  //pause(),
-  bulletedText(green('1956: Dartmouth workshop, John McCarthy coined "AI"')),
-  bulletedText(green('1960: checkers playing program, Logical Theorist')),
-  pause(),
-  bulletedText(red('1966: ALPAC report cuts off funding for translation')),
-  bulletedText(red('1974: Lighthill report cuts off funding in UK')),
-  pause(),
-  bulletedText(green('1970-80s: expert systems (XCON, MYCIN) in industry')),
-  bulletedText(green('1980s: Fifth-Generation Computer System (Japan); Strategic Computing Initative (DARPA)')),
-  pause(),
-  bulletedText(red('1987: collapse of Lisp market, government funding cut')),
-  pause(),
-  bulletedText(green('1990-: rise of machine learning')),
-  bulletedText(green('2010s: heavy industry investment in deep learning')),
-_).id('history'));
-
-prose(
-  'AI started out with a bang.  People were ambitious and tried to develop things like General Problem Solver that could solve anything.',
-  'Despite some successes, certain tasks such as machine translation were complete failures, which lead to the cutting of funding and the first AI winter.',
-  'It happened again in the 1980s, this time with expert systems, though the aims were scoped more towards industrial impact.',
-  'But again, expectations exceeded reality, leading to another AI winter.',
-  'During these AI winters, people eschewed the phrase "artificial intelligence"',
-  'so as not to be labeled as a hype-driven lunatic.',
-  _,
-  'In the latest rebirth, we have new machine learning techniques,',
-  'tons of data, and tons of computation.',
-  'So each cycle, we are actually making progress.',
-  'Will this time be different?',
-  _,
-  'We should be optimistic and inspired about the potential impact that advances in AI can bring.',
-  'But at the same time, we need to be grounded and not be blown away by hype.',
-  'This class is about providing that grounding,',
-  'showing how AI problems can be treated rigorously and mathematically.',
-  'After all, this class is called "Artificial Intelligence: Principles and Techniques".',
-_);
-
-/*
-for x in *.gif; do echo $x; convert "$x[0]" $x.png; done
-*/
-function gif(x) {
-  return sfig.serverSide ? x + '.png' : 'extra-' + x;
-}
-
-add(slide('2015 DARPA Robotics Challenge',
-  parentCenter(image(gif('images/drc-fail2.gif'))).scale(0.8),
-  /*parentCenter(table(
-    [image(gif('images/drc-fail1.gif')), image(gif('images/drc-fail2.gif'))],
-    [image(gif('images/drc-fail3.gif')), image(gif('images/drc-fail4.gif'))],
-  _).margin(10).scale(0.4)),*/
-_));
-
-prose(
-  'In the 2015 DARPA Robotics Challenge (DRC),',
-  'robots were asked to perform a series of eight tasks motivated by a disaster relief scenario',
-  '(e.g., getting out of a car and opening a door).',
-  _,
-  'While some teams did manage to successfully completely these tasks,',
-  'many also failed spectacularly.',
-  'One can certainly find videos of robots moving with considerably more grace,',
-  'which is possible in controlled situations,',
-  'but in unstructured environments, it is much harder.',
-_);
-
-add(slide('Open-domain dialogue',
-  parentCenter(ytable(
-    'A: How old are you?',
-    'B: I’m 16. Why are you asking?',
-    'A: I thought you were 12.',
-    'B: What made you think so?',
-    'A: I don’t know what you are talking about.',
-    'B: You don’t know what you are saying.',
-  _)),
-_).rightHeader('[Li et al., 2016]'));
-
-prose(
-  'We still don\'t have computers that we can have a natural conversation with.',
-  'While training deep neural networks on huge amounts of data has worked beautifully for speech recognition and machine translation,',
-  'recent attempts in open-domain dialogue have not produced such sensible results.',
-  'Models get confused by the sheer complexity of dialogue and often fall back to generic responses as shown here.',
-_);
-
-add(dividerSlide(parentCenter(xtable(toolView(), italics('AI tools...')).center().margin(10))));
 
 prose(
   'The AI agents view is an inspiring quest to undercover the mysteries of intelligence and tackle the tasks that humans are good at.',
   'While there has been a lot of progress, we still have a long way to go along some dimensions:',
   'for example, the ability to learn quickly from few examples or the ability to perform commonsense reasoning.',
   _,
-  'At the same time, the current level of technology is already being deployed widely in practice.',
-  'These settings are often not particularly human-like',
+  'There is still a huge gap between the regimes that humans and machines operate in.',
+  'For example, AlphaGo learned from 19.6 million games, but can only do one thing: play Go.',
+  'Humans on the other hand, learn from a much wider set of experiences, and can do many things.',
+_);
+
+add(dividerSlide(parentCenter(xtable(toolView(), italics('AI tools...')).center().margin(10))));
+
+prose(
+  'The other view of AI is less about re-creating the capabilities that humans have,',
+  'and more about how to benefit humans.',
+  _,
+  'Even the current level of technology is already being deployed widely in practice,',
+  'and many of these settings are often not particularly human-like',
   '(targeted advertising, news or product recommendation, web search, supply chain management, etc.)',
 _);
 
@@ -474,8 +502,6 @@ prose(
   'One can generate so-called <b>adversarial examples</b>,',
   'where by putting stickers on a stop sign, one can trick a computer vision system to mis-classify it as a speed limit sign.',
   'You can also purchase special glasses that fool a system to thinking that you\'re a celebrity.',
-  _,
-  'Even more fundamentally, these examples shows that current methods clearly are not learning "the right thing" as defined by the human visual system.',
 _);
 
 add(slide('Bias in machine translation',
@@ -505,23 +531,16 @@ prose(
   'There is no obvious "right thing to do", and it has even been shown mathematically it is impossible for a classifier to satisfy three reasonable fairness criteria (Kleinberg et al., 2016).',
 _);
 
-add(quizSlide('overview-view',
-  'What inspires you more?',
-  'Building agents with human-level intelligence',
-  'Developing tools that can benefit society',
-_));
-
 add(summarySlide('Summary so far',
-  bulletedText('AI dream of achieving human-level intelligence is ongoing'),
-  bulletedText('Still lots of open research questions'),
+  bulletedText(stmt('AI agents: achieving human-level intelligence, still very far (e.g., generalize from few examples)')),
+  parentCenter(agentView()),
   pause(),
-  bulletedText('AI is having huge societal impact'),
-  bulletedText('Need to think carefully about real-world consequences'),
+  bulletedText(stmt('AI tools: need to think carefully about real-world consequences (e.g., security, biases)')),
+  parentCenter(toolView()),
 _));
 
 ////////////////////////////////////////////////////////////
-
-roadmap(1);
+roadmap(2);
 
 add(slide('How do we solve AI tasks?',
   nil(),
@@ -533,7 +552,7 @@ add(slide('How do we solve AI tasks?',
 _));
 
 prose(
-  'How should we actually solve these AI tasks?',
+  'How should we actually solve AI tasks?',
   'The real world is complicated.',
   'At the end of the day, we need to write some code (and possibly build some hardware too).',
   'But there is a huge chasm.',
@@ -567,13 +586,14 @@ _));
 prose(
   'The first pillar is modeling.',
   'Modeling takes messy real world problems and packages them into neat formal mathematical objects called <b>models</b>,',
-  'which can be subject to rigorous analysis but is more amenable to what computers can operate on.',
+  'which can be subject to rigorous analysis and that computers can operate on.',
   'However, modeling is lossy: not all of the richness of the real world can be captured,',
   'and therefore there is an art of modeling: what does one keep versus what does one ignore?',
   '(An exception to this is games such as Chess or Go or Sodoku, where the real world is identical to the model.)',
   _,
   'As an example, suppose we\'re trying to have an AI that can navigate through a busy city.',
-  'We might formulate this as a graph where nodes represent points in the city, edges represent the roads and cost of an edge represents traffic on that road.',
+  'We might formulate this as a graph where nodes represent points in the city,',
+  'and edges represent the roads and cost of an edge represents traffic on that road.',
 _);
 
 add(slide('Paradigm: inference',
@@ -595,6 +615,7 @@ prose(
   'Given a model, the task of <b>inference</b> is to answer questions with respect to the model.',
   'For example, given the model of the city, one could ask questions such as: what is the shortest path? what is the cheapest path?',
   _,
+  'The focus of inference is usually on efficient algorithms that can answer these questions.',
   'For some models, computational complexity can be a concern (games such as Go),',
   'and usually approximations are needed.',
 _);
@@ -625,6 +646,10 @@ prose(
   'one constructs a skeleton of a model (more precisely, a model family), which is a model without parameters.',
   'And then if we have the right type of data,',
   'we can run a machine learning algorithm to tune the parameters of the model.',
+  _,
+  'Note that learning here is not tied to a particular approach (e.g., neural networks),',
+  'but more of a philosophy.',
+  'This general paradigm will allow us to bridge the gap between logic-based AI and statistical AI.',
 _);
 
 add(slide('Course plan',
@@ -649,7 +674,7 @@ _));
 prose(
   'Supporting all of these models is <b>machine learning</b>,',
   'which has been arguably the most crucial ingredient powering recent successes in AI.',
-  'Conceptually, machine learning allows us to shift the information complexity of the model from code to data,',
+  'From an systems engineering perspective, machine learning allows us to shift the information complexity of the model from code to data,',
   'which is much easier to obtain (either naturally occurring or via crowdsourcing).',
   _,
   'The main conceptually magical part of learning is that if done properly,',
@@ -749,13 +774,6 @@ add(slide('Pac-Man',
   parentCenter('[demo]'),
 _));
 
-add(quizSlide('overview-pacman',
-  'What kind of model is appropriate for playing Pac-Man against ghosts that move into each valid adjacent square with equal probability?',
-  'search problem',
-  'Markov decision process',
-  'adversarial game',
-_));
-
 evolutionOfModels(3);
 
 add(slide('Sudoku',
@@ -789,32 +807,10 @@ prose(
   '<b>Bayesian networks</b> are variable-based models where variables are random variables which are dependent on each other.',
   'For example, the true location of an airplane $H_t$ and its radar reading $E_t$ are related, as are the location $H_t$ and the location at the last time step $H_{t-1}$.',
   'The exact dependency structure is given by the graph structure and it formally defines a joint probability distribution over all the variables.',
-  'This topic is studied thoroughly in  probabilistic graphical models (CS228).',
+  'This topic is studied thoroughly in probabilistic graphical models (CS228).',
 _);
 
 evolutionOfModels(4);
-
-add(slide('Logic',
-  bulletedText('Dominated AI from 1960s-1980s, still useful in programming systems'),
-  bulletedText('Powerful representation of knowledge and reasoning'),
-  bulletedText('Brittle if done naively'),
-  bulletedText('Open question: how to combine with machine learning?'),
-_));
-
-prose(
-  'Our last stop on the tour is <b>logic</b>.',
-  'Even more so than variable-based models, logic provides a compact language for modeling, which gives us more expressivity.',
-  _,
-  'It is interesting that historically, logic was one of the first things that AI researchers started with in the 1950s.',
-  'While logical approaches were in a way quite sophisticated, they did not work well on complex real-world tasks with noise and uncertainty.',
-  'On the other hand, methods based on probability and machine learning naturally handle noise and uncertainty,',
-  'which is why they presently dominate the AI landscape.',
-  'However, they are yet to be applied successfully to tasks that require really sophisticated reasoning.',
-  _,
-  'In this course, we will appreciate the two as not contradictory, but simply tackling different aspects of AI &mdash;',
-  'in fact, in our schema, logic is a class of models which can be supported by machine learning.',
-  'An active area of research is to combine the richness of logic with the robustness and agility of machine learning.',
-_);
 
 add(slide('Motivation: virtual assistant',
   parentCenter(xtable(
@@ -842,6 +838,21 @@ add(slide('Motivation: virtual assistant',
 _));
 
 prose(
+  'Our last stop on the tour is <b>logic</b>.',
+  'Even more so than variable-based models, logic provides a compact language for modeling, which gives us more expressivity.',
+  _,
+  'It is interesting that historically, logic was one of the first things that AI researchers started with in the 1950s.',
+  'While logical approaches were in a way quite sophisticated, they did not work well on complex real-world tasks with noise and uncertainty.',
+  'On the other hand, methods based on probability and machine learning naturally handle noise and uncertainty,',
+  'which is why they presently dominate the AI landscape.',
+  'However, they are yet to be applied successfully to tasks that require really sophisticated reasoning.',
+  _,
+  'In this course, we will appreciate the two as not contradictory, but simply tackling different aspects of AI &mdash;',
+  'in fact, in our course plan, logic is a class of models which can be supported by machine learning.',
+  'An active area of research is to combine the richness of logic with the robustness and agility of machine learning.',
+_);
+
+prose(
   'One motivation for logic is a virtual assistant.',
   'At an abstract level, one fundamental thing a good personal assistant',
   'should be able to do is to take in information from people',
@@ -861,8 +872,7 @@ _);
 evolutionOfModels(5);
 
 ////////////////////////////////////////////////////////////
-
-roadmap(2);
+roadmap(3);
 
 add(slide('Course objectives',
   importantBox('Before you take the class, you should know...',
@@ -895,7 +905,7 @@ add(slide('Homeworks',
     ['Bayesian networks'.bold(), 'car tracking'],
     ['Logic'.bold(), 'language and logic'],
   _).margin(80, 10).scale(0.6)),
-  bulletedText('Some have competitions for extra credit'),
+  bulletedText('Pac-Man competition for extra credit'),
   bulletedText('When you submit, programming parts will be run on all test cases, but only get feedback on a subset'),
 _));
 
@@ -904,7 +914,7 @@ add(slide('Exam',
   bulletedText('All written problems (look at past exam problems for style)'),
   bulletedText('Closed book except one page of notes'),
   bulletedText('Covers all material up to and including preceding week'),
-  bulletedText('Tue Nov. 27 from 6pm to 9pm (3 hours)'),
+  //bulletedText('Tue Nov. 27 from 6pm to 9pm (3 hours)'),
 _));
 
 add(slide('Project',
@@ -917,7 +927,6 @@ _));
 
 add(slide('Policies',
   stmt('Late days: 8 total late days, max two per assignment'),
-  stmt('Regrades: come in person to the owner CA of the homework'),
   stmt('Piazza: ask questions on Piazza, don\'t email us directly'),
   stmt('Piazza: extra credit for students who help answer questions'),
   parentCenter(bold('All details are on the course website')),
@@ -933,15 +942,14 @@ add(slide(null,
 _));
 
 ////////////////////////////////////////////////////////////
-
-roadmap(3);
+roadmap(4);
 
 add(slide('Optimization',
-  stmt('Discrete optimization: a discrete object'),
-  parentCenter('$\\min\\limits_{p \\in \\text{Paths}} \\text{Distance}(p)$'),
+  stmt('Discrete optimization: find the best discrete object'),
+  parentCenter('$\\min\\limits_{p \\in \\text{Paths}} \\text{Cost}(p)$'),
   indent(redbold('Algorithmic')+' tool: dynamic programming'),
   pause(),
-  stmt('Continuous optimization: a vector of real numbers'),
+  stmt('Continuous optimization: find the best vector of real numbers'),
   parentCenter('$\\min\\limits_{\\mathbf w \\in \\R^d} \\text{TrainingError}(\\mathbf w)$'),
   indent(redbold('Algorithmic')+' tool: gradient descent'),
 _));
@@ -1063,16 +1071,11 @@ _);
 
 ////////////////////////////////////////////////////////////
 
-add(quizSlide('introduction-most-surprising',
-  'What was the most surprising thing you learned today?',
-_));
-
 add(summarySlide('Summary',
-  bulletedText('AI has high societal impact, our responsibility to steer it positively'),
   bulletedText('Modeling [reflex, states, variables, logic] + inference + learning'),
-  bulletedText('Section this Friday: review of foundations'),
+  bulletedText('Section this Thursday: review of foundations'),
   bulletedText('Homework [foundations]: due next Tuesday 11pm'),
-  bulletedText('Course will be fast-paced and exciting!'),
+  bulletedText('AI has high societal impact, how to steer it positively?'),
 _));
 
 initializeLecture();
