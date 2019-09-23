@@ -300,7 +300,7 @@ function eventsOnLoad() {
   section('Introduction (Percy)', 'What is this class about?');
 
   nextClass(0);
-  disableItem('Overview of course<br>Optimization', 'overview');
+  enableItem('Overview of course<br>Optimization', 'overview');
   disableHomework('foundations', 'Foundations', 8);
 
   nextClass(2);
