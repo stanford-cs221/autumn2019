@@ -14,6 +14,12 @@ add(slide(null,
   _).center().margin(20)),
 _).id('staff'));
 
+add(summarySlide('Announcements',
+  bulletedText('Section: this Thursday, overview of foundations'),
+  bulletedText('Homework foundations is out, due next Tuesday 11pm'),
+  bulletedText('Gradescope code will be posted on Piazza'),
+_));
+
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
     ['history', 'A brief history'],
@@ -926,7 +932,8 @@ add(slide('Project',
 _));
 
 add(slide('Policies',
-  stmt('Late days: 8 total late days, max two per assignment'),
+  stmt('Gradescope: submit all assignments there'),
+  stmt('Late days: 7 total late days, max two per assignment'),
   stmt('Piazza: ask questions on Piazza, don\'t email us directly'),
   stmt('Piazza: extra credit for students who help answer questions'),
   parentCenter(bold('All details are on the course website')),
@@ -1072,9 +1079,8 @@ _);
 ////////////////////////////////////////////////////////////
 
 add(summarySlide('Summary',
-  bulletedText('Modeling [reflex, states, variables, logic] + inference + learning'),
-  bulletedText('Section this Thursday: review of foundations'),
-  bulletedText('Homework [foundations]: due next Tuesday 11pm'),
+  bulletedText('History: roots from logic, neuroscience, statistics&mdash;melting pot!'),
+  bulletedText('Modeling [reflex, states, variables, logic] + inference + learning paradigm'),
   bulletedText('AI has high societal impact, how to steer it positively?'),
 _));
 
