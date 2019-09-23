@@ -301,7 +301,7 @@ function eventsOnLoad() {
 
   nextClass(0);
   enableItem('Overview of course<br>Optimization', 'overview');
-  disableHomework('foundations', 'Foundations', 8);
+  openHomework('foundations', 'Foundations', 8);
 
   nextClass(2);
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
