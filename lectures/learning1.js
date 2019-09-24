@@ -6,15 +6,6 @@ add(titleSlide('Lecture 2: Machine learning I',
   parentCenter(image('images/learning.png').width(300)),
 _));
 
-// answer: trillions - same SGD algorithm
-add(quizSlide('learning1-start',
-  'How many parameters (real numbers) can be learned by machine learning algorithms using today\'s computers?',
-  'thousands',
-  'millions',
-  'billions',
-  'trillions',
-_));
-
 evolutionOfModels(9, 'Machine learning');
 evolutionOfModels(9, 'Reflex');
 
@@ -56,7 +47,7 @@ add(slide('Application: spam classification',
     pause(),
     frameBox(ytable(
       '<tt><b>From</b>: a9k62n@hotmail.com</tt>',
-      '<tt><b>Date</b>: September 26, 2018</tt>',
+      '<tt><b>Date</b>: September 25, 2019</tt>',
       '<tt><b>Subject</b>: URGENT</tt>',
       '&nbsp;',
       '<tt>Dear Sir or maDam:</tt>',
@@ -116,10 +107,6 @@ add(slide('Types of prediction tasks',
   pause(),
   stmt('Structured prediction', '$y$ is an object which is built from parts'),
   io(greenitalics('la casa blu'), greenitalics('the blue house')),
-_));
-
-add(quizSlide('learning1-tasks',
-  'Give an example of a prediction task (e.g., image $\\Rightarrow$ face/not face).',
 _));
 
 add(slide('Data',
@@ -837,14 +824,6 @@ prose(
   _,
   'There are some connections between logistic regression and probabilistic models, which we will get to later.',
 _);
-
-/*add(quizSlide('learning1-logistic-sv',
-  'After running stochastic gradient descent on the logistic loss on 1000 training examples, how many support vectors make up the final weight vector?',
-  'always 0',
-  'any number between 0 and 1000',
-  'some number close to 1000',
-  'exactly 1000',
-_));*/
 
 add(summarySlide('Summary so far',
   parentCenter('$\\underbrace{\\w \\cdot \\phi(x)}_\\text{score}$'),

@@ -64,9 +64,10 @@ function eventsOnLoad() {
       lastDate = currentDate;
     }
 
+    var extraDir = '/autumn2019-extra';  // UPDATE
     var jsUrl = 'lectures/index.html#include=' + name + '.js';
-    var pdfUrl = 'lectures/' + name + '.pdf';
-    var smallPdfUrl = 'lectures/' + name + '-6pp.pdf';
+    var pdfUrl = extraDir + '/lectures/' + name + '.pdf';
+    var smallPdfUrl = extraDir + '/lectures/' + name + '-6pp.pdf';
     var oneUrl = 'lectures/index.html#include=' + name + '.js&mode=print1pp';
     var outlineUrl = 'lectures/index.html#include=' + name + '.js&mode=outline';
     var dayColor = 'green';
@@ -119,7 +120,7 @@ function eventsOnLoad() {
   function liveProgrammingLink(name) {
     return '<a href="live/'+name+'" class="pdfLink" target="_blank">[demo]</a>';
   }
-  
+
   function suppmaterialLink(name) {
     return '<a href="lectures/'+name+'" class="pdfLink" target="_blank">[supplementary]</a>';
   }
@@ -295,7 +296,7 @@ function eventsOnLoad() {
   // https://registrar.stanford.edu/academic-calendar
 
   addEvent('Oct 11 2019', 'Drop date');
-  addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // TODO UPDATE
+  addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // UPDATE
 
   section('Introduction (Percy)', 'What is this class about?');
 
