@@ -101,7 +101,7 @@ add(slide('Birth of AI',
   stmt('1956', 'Workshop at Dartmouth College; attendees: John McCarthy, Marvin Minsky, Claude Shannon, etc.'),
   parentCenter(image('images/dartmouth.jpg').width(150)),
   'Aim for '+redbold('general principles')+':',
-  parentCenter(text('<i>Every aspect of learning or any other feature of intelligence can be so precisely described that a machine can be made to simulate it.</i>').scale(0.9)),
+  text('<i>Every aspect of learning or any other feature of intelligence can be so precisely described that a machine can be made to simulate it.</i>').scale(0.9),
 _));
 
 prose(
