@@ -333,7 +333,7 @@ function eventsOnLoad() {
   disableHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
-  disableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
+  disableItem('(Reid) Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
   nextClass(1);
   disableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
   nextClass(4);
@@ -351,7 +351,7 @@ function eventsOnLoad() {
   disableHomework('scheduling', 'Course scheduling');
   disableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
-  disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
+  disableItem('(Reid) Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
   disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
