@@ -118,7 +118,7 @@ function eventsOnLoad() {
   }
 
   function liveProgrammingLink(name) {
-    return '<a href="live/'+name+'" class="pdfLink" target="_blank">[demo]</a>';
+    return '<a href="live/'+name+'" class="pdfLink" target="_blank">[code]</a>';
   }
 
   function suppmaterialLink(name) {
@@ -301,7 +301,7 @@ function eventsOnLoad() {
   section('Introduction (Percy)', 'What is this class about?');
 
   nextClass(0);
-  enableItem('Overview of course<br>Optimization', 'overview');
+  enableItem('Overview of course<br>Optimization', 'overview', [liveProgrammingLink('overview')]);
   openHomework('foundations', 'Foundations', 8);
 
   nextClass(2);
