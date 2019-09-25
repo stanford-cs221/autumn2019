@@ -296,7 +296,7 @@ function eventsOnLoad() {
   // https://registrar.stanford.edu/academic-calendar
 
   addEvent('Oct 11 2019', 'Drop date');
-  addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // UPDATE
+  // addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // Update once date is finalized
 
   section('Introduction (Percy)', 'What is this class about?');
 
