@@ -64,7 +64,7 @@ prose(
   'A lot of the triumphs of superhuman performance as been in <b>games</b>,',
   'such as Jeopardy! (IBM Watson, 2011), Go (DeepMind\'s AlphaGo, 2016), Dota 2 (OpenAI, 2019), Poker (CMU and Facebook, 2019).',
   _,
-  'On non-game tasks, we have also have systems that achieve or surpass human-level performance on',
+  'On non-game tasks, we also have systems that achieve or surpass human-level performance on',
   'reading comprehension, speech recognition, face recognition, and medical imaging <b>benchmarks</b>.',
   _,
   'Unlike games, however, where the game is the full problem,',
@@ -133,7 +133,7 @@ prose(
   'perhaps they failed to realize that the third author was a computer program.',
   _,
   'From the beginning, people like John McCarthy sought <b>generality</b>, thinking of how commonsense reasoning could be encoded in logic.',
-  'Newell and Simon\'s General Problem Solver promised to could solve any problem (which could be suitably encoded in logic).',
+  'Newell and Simon\'s General Problem Solver promised to solve any problem (which could be suitably encoded in logic).',
 _);
 
 function quote(quote, who) {
@@ -183,13 +183,13 @@ prose(
   'What went wrong?',
   'It turns out that the real world is very complex and most AI problems require a lot of <b>compute</b> and <b>data</b>.',
   _,
-  'The hardware at the time was simply too limited both compared to both the human brain and computers available now.',
+  'The hardware at the time was simply too limited both compared to the human brain and computers available now.',
   'Also, casting problems as general logical reasoning meant that the approaches fell prey to the exponential search space,',
   'which no possible amount of compute could really fix.',
   _,
   'Even if you had infinite compute, AI would not be solved.',
   'There are simply too many words, objects, and concepts in the world,',
-  'that this information has to be somehow encoded in the AI system.',
+  'and this information has to be somehow encoded in the AI system.',
   _,
   'Though AI was not solved, a few generally useful technologies came out of the effort,',
   'such as Lisp (still the world\'s most advanced programming language in a sense).',
@@ -207,7 +207,7 @@ prose(
   'In the seventies and eighties,',
   'AI researchers looked to knowledge as a way to combat both the limited computation and information problems.',
   'If we could only figure out a way to encode prior knowledge in these systems,',
-  'then they will have the necessary information and also have to do less compute.',
+  'then they would have the necessary information and also have to do less compute.',
 _);
 
 add(slide('Knowledge-based systems (70-80s)',
@@ -299,8 +299,8 @@ _));
 prose(
   'In the 1980s, there was a renewed interest in neural networks.',
   'Backpropagation was rediscovered and popularized as a way to actually train deep neural networks,',
-  'and Yann LeCun built a system based on convolutional neural networks to recognize handwritten digits,',
-  'one of first successful use of neural networks that became used by the USPS to recognize zip codes.',
+  'and Yann LeCun built a system based on convolutional neural networks to recognize handwritten digits.',
+  'This was one of the first successful uses of neural networks, which was then deployed by the USPS to recognize zip codes.',
 _);
 
 add(slide('Deep learning',
@@ -341,10 +341,10 @@ prose(
   'While there are deep philosophical differences,',
   'perhaps there are deeper connections.',
   _,
-  'For example, McCulloch and Pitts work from 1943 can be viewed as the root of deep learning,',
+  'For example, McCulloch and Pitts\' work from 1943 can be viewed as the root of deep learning,',
   'but that paper is mostly about how to implement logical operations.',
   _,
-  'The game of Go (and indeed, many games) can perfectly characterized by a set of simple logic rules.',
+  'The game of Go (and indeed, many games) can be perfectly characterized by a set of simple logic rules.',
   'At the same time, the most successful systems (AlphaGo) do not tackle the problem directly using logic,',
   'but appeal to the fuzzier world of artificial neural networks.',
 _);
@@ -367,7 +367,7 @@ prose(
   'In fact, for much of the 1990s and 2000s, neural networks were not popular in the machine learning community,',
   'and the field was dominated more by techniques such as Support Vector Machines (SVMs) inspired by statistical theory.',
   _,
-  'The fuller picture that the modern world of AI is more like a New York City&mdash;it is a melting pot that',
+  'The fuller picture is that the modern world of AI is more like New York City&mdash;it is a melting pot that',
   'has drawn from many different fields ranging from statistics, algorithms, economics, etc.',
   _,
   'And often it is the new connections between these fields that are made and their application to important real-world problems that makes working on AI so rewarding.',
@@ -387,9 +387,9 @@ add(slide('Two views of AI',
 _));
 
 prose(
-  'There are two ways to look at AI philosophicaly.',
+  'There are two ways to look at AI philosophically.',
   _,
-  'The first is what one would normally associate with the AI: the science and engineering of building "intelligent" agents.',
+  'The first is what one would normally associate with AI: the science and engineering of building "intelligent" agents.',
   'The inspiration of what constitutes intelligence comes from the types of capabilities that humans possess:',
   'the ability to perceive a very complex world and make enough sense of it to be able to manipulate it.',
   _,
@@ -419,7 +419,7 @@ prose(
   'As humans, we have to be able to perceive the world (computer vision),',
   'perform actions in it (robotics), and communicate with other agents (language).',
   _,
-  'We also have knowledge about the world (from procedural knowledge like how to ride a bike to declarative knowledge like remembering the capital of France),',
+  'We also have knowledge about the world (from procedural knowledge like how to ride a bike, to declarative knowledge like remembering the capital of France),',
   'and using this knowledge we can draw inferences and make decisions (reasoning).',
   _,
   'Finally, we learn and adapt over time.',
@@ -445,7 +445,7 @@ prose(
   _,
   'There is still a huge gap between the regimes that humans and machines operate in.',
   'For example, AlphaGo learned from 19.6 million games, but can only do one thing: play Go.',
-  'Humans on the other hand, learn from a much wider set of experiences, and can do many things.',
+  'Humans on the other hand learn from a much wider set of experiences, and can do many things.',
 _);
 
 add(dividerSlide(parentCenter(xtable(toolView(), italics('AI tools...')).center().margin(10))));
@@ -469,7 +469,7 @@ add(slide('Predicting poverty',
 _).rightHeader('[Jean et al. 2016]'));
 
 prose(
-  'The computer vision techniques, used to recognize objects, can also be used to tackle social problems.',
+  'Computer vision techniques, used to recognize objects, can also be used to tackle social problems.',
   'Poverty is a huge problem, and even identifying the areas of need is difficult due to the difficulty in getting reliable survey data.',
   'Recent work has shown that one can take satellite images (which are readily available) and predict various poverty indicators.',
 _);
@@ -479,11 +479,11 @@ add(slide('Saving energy by cooling datacenters',
 _).rightHeader('[DeepMind]'));
 
 prose(
-  'Machine learning can also be used to optimize the energy efficiency of datacenters,',
-  'which given the hunger for compute these days makes a big difference.',
+  'Machine learning can also be used to optimize the energy efficiency of datacenters',
+  'which, given the hunger for compute these days, makes a big difference.',
   'Some recent work from DeepMind shows how to significantly reduce Google\'s energy footprint',
   'by using machine learning to predict the power usage effectiveness from sensor measurements such as pump speeds,',
-  'and using that to drive recommendations.',
+  'and use that to drive recommendations.',
 _);
 
 add(slide(null,
@@ -506,8 +506,8 @@ prose(
   'These applications present a set of security concerns.',
   _,
   'One can generate so-called <b>adversarial examples</b>,',
-  'where by putting stickers on a stop sign, one can trick a computer vision system to mis-classify it as a speed limit sign.',
-  'You can also purchase special glasses that fool a system to thinking that you\'re a celebrity.',
+  'where by putting stickers on a stop sign, one can trick a computer vision system into mis-classifying it as a speed limit sign.',
+  'You can also purchase special glasses that fool a system into thinking that you\'re a celebrity.',
 _);
 
 add(slide('Bias in machine translation',
@@ -534,7 +534,7 @@ prose(
   'The issue of bias is a real concern when machine learning is used to decide whether an individual should receive a loan or get a job.',
   _,
   'Unfortunately, the problem of fairness and bias is as much of a philosophical one as it is a technical one.',
-  'There is no obvious "right thing to do", and it has even been shown mathematically it is impossible for a classifier to satisfy three reasonable fairness criteria (Kleinberg et al., 2016).',
+  'There is no obvious "right thing to do", and it has even been shown mathematically that it is impossible for a classifier to satisfy three reasonable fairness criteria (Kleinberg et al., 2016).',
 _);
 
 add(summarySlide('Summary so far',
@@ -560,7 +560,7 @@ _));
 prose(
   'How should we actually solve AI tasks?',
   'The real world is complicated.',
-  'At the end of the day, we need to write some code (and possibly build some hardware too).',
+  'At the end of the day, we need to write some code (and possibly build some hardware, too).',
   'But there is a huge chasm.',
 _);
 
@@ -572,7 +572,7 @@ _));
 
 prose(
   'In this class, we will adopt the <b>modeling-inference-learning</b> paradigm to help us navigate the solution space.',
-  'In reality, the lines are blurry, but this paradigm serves as an ideal and a useful guiding principle.',
+  'In reality the lines are blurry, but this paradigm serves as an ideal and a useful guiding principle.',
 _);
 
 add(slide('Paradigm: modeling',
@@ -592,14 +592,14 @@ _));
 prose(
   'The first pillar is modeling.',
   'Modeling takes messy real world problems and packages them into neat formal mathematical objects called <b>models</b>,',
-  'which can be subject to rigorous analysis and that computers can operate on.',
+  'which can be subject to rigorous analysis and can be operated on by computers.',
   'However, modeling is lossy: not all of the richness of the real world can be captured,',
-  'and therefore there is an art of modeling: what does one keep versus what does one ignore?',
-  '(An exception to this is games such as Chess or Go or Sodoku, where the real world is identical to the model.)',
+  'and therefore there is an art of modeling: what does one keep versus ignore?',
+  '(An exception to this are games such as Chess, Go or Sodoku, where the real world is identical to the model.)',
   _,
   'As an example, suppose we\'re trying to have an AI that can navigate through a busy city.',
   'We might formulate this as a graph where nodes represent points in the city,',
-  'and edges represent the roads and cost of an edge represents traffic on that road.',
+  'edges represent the roads, and the cost of an edge represents the traffic on that road.',
 _);
 
 add(slide('Paradigm: inference',
@@ -671,7 +671,7 @@ prose(
 _);
 
 add(slide('Machine learning',
-  parentCenter(xtable(frameBox('Data'), bigRightArrow(), frameBox('Model')).center().margin(20)), 
+  parentCenter(xtable(frameBox('Data'), bigRightArrow(), frameBox('Model')).center().margin(20)),
   bulletedText('The main driver of recent successes in AI'),
   bulletedText('Move from "code" to "data" to manage the information complexity'),
   bulletedText('Requires a leap of faith: <b>generalization</b>'),
@@ -680,7 +680,7 @@ _));
 prose(
   'Supporting all of these models is <b>machine learning</b>,',
   'which has been arguably the most crucial ingredient powering recent successes in AI.',
-  'From an systems engineering perspective, machine learning allows us to shift the information complexity of the model from code to data,',
+  'From a systems engineering perspective, machine learning allows us to shift the information complexity of the model from code to data,',
   'which is much easier to obtain (either naturally occurring or via crowdsourcing).',
   _,
   'The main conceptually magical part of learning is that if done properly,',
@@ -705,7 +705,7 @@ _).leftHeader(image('images/hotstove.jpg').width(150)), 'reflex');
 
 prose(
   'A reflex-based model simply performs a fixed sequence of computations on a given input.',
-  'Examples include most models found in machine learning from simple linear classifiers to deep neural networks.',
+  'Examples include most models found in machine learning, from simple linear classifiers to deep neural networks.',
   'The main characteristic of reflex-based models is that their computations are feed-forward;',
   'one doesn\'t backtrack and consider alternative computations.',
   'Inference is trivial in these models because it is just running the fixed computations, which makes these models appealing.',
@@ -766,7 +766,7 @@ add(slide('State-based models',
 _));
 
 prose(
-  'Search problems are adequate models when you are operating in environment that has no uncertainty.',
+  'Search problems are adequate models when you are operating in an environment that has no uncertainty.',
   'However, in many realistic settings, there are other forces at play.',
   _,
   '<b>Markov decision processes</b> handle tasks with an element of chance (e.g., Blackjack), where the distribution of randomness is known (reinforcement learning can be employed if it is not).',
@@ -812,7 +812,7 @@ prose(
   _,
   '<b>Bayesian networks</b> are variable-based models where variables are random variables which are dependent on each other.',
   'For example, the true location of an airplane $H_t$ and its radar reading $E_t$ are related, as are the location $H_t$ and the location at the last time step $H_{t-1}$.',
-  'The exact dependency structure is given by the graph structure and it formally defines a joint probability distribution over all the variables.',
+  'The exact dependency structure is given by the graph structure and it formally defines a joint probability distribution over all of the variables.',
   'This topic is studied thoroughly in probabilistic graphical models (CS228).',
 _);
 
@@ -821,14 +821,14 @@ evolutionOfModels(4);
 add(slide('Motivation: virtual assistant',
   parentCenter(xtable(
     pause(),
-    ytable( 
+    ytable(
       '<b>Tell</b> information',
       bigRightArrow(200),
     _),
     pause(-1),
     image('images/brain-gears.jpg').height(180),
     pause(2),
-    ytable( 
+    ytable(
       '<b>Ask</b> questions',
       bigLeftArrow(200),
     _),
@@ -845,7 +845,7 @@ _));
 
 prose(
   'Our last stop on the tour is <b>logic</b>.',
-  'Even more so than variable-based models, logic provides a compact language for modeling, which gives us more expressivity.',
+  'Even more so than variable-based models, logic provides a compact language for modeling which gives us more expressivity.',
   _,
   'It is interesting that historically, logic was one of the first things that AI researchers started with in the 1950s.',
   'While logical approaches were in a way quite sophisticated, they did not work well on complex real-world tasks with noise and uncertainty.',
@@ -1001,7 +1001,7 @@ _), 'dynamic programming');
 
 prose(
   'Let\'s consider the formal task of computing the edit distance (or more precisely the Levenshtein distance) between two strings.',
-  'These measures of dissimilarity have applications in spelling correction, computational biology (applied to DNA sequences).',
+  'These measures of dissimilarity have applications in spelling correction and computational biology (applied to DNA sequences).',
   _,
   'As a first step, you should think of breaking down the problem into subproblems.',
   'Observation 1: inserting into $s$ is equivalent to deleting a letter from $t$ (ensures subproblems get smaller).',
