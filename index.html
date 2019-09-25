@@ -349,11 +349,10 @@ border-radius: 100%;
 
   <div class="section"><b>Programming assignments:</b>
     The grader runs on Python 3, which is not guaranteed to work with older versions (Python 2.7).
-    Please use <a href="https://www.python.org/downloads/">Python 3.7</a> to develop your code.
+    Please use <a href="https://www.python.org/downloads/">Python 3</a> to develop your code.
     <p>
     The programming assignments are designed to be run
-    in <b>GNU/Linux</b> environments, such
-    as <strong><a href="https://uit.stanford.edu/service/sharedcomputing/environments">cardinal.stanford.edu</a></strong>.
+    in <b>GNU/Linux</b> environments.
     Most or all of the grading code may incidentally work on other
     systems such as MacOS or Windows, and students may optionally
     choose to do most of their development in one of these alternative
@@ -367,9 +366,9 @@ border-radius: 100%;
     The submitted code will <b>not</b> be graded if it has one of the following issues:
     <ul>
       <li>The original <code>grader.py</code> script (operating on the
-          submitted <code>submission.py</code>) does not <b>exit normally</b>
-          on <code>cardinal.stanford.edu</code>.  Note that calls such as <code>quit()</code>, <code>exit()</code>,
-        <code>sys.exit()</code>, <code>os._exit()</code> may cause the program to exit <b>abnormally</b>, as may excessive resource usage.
+          submitted <code>submission.py</code>) <b>may not exit normally</b>
+          if you use calls such as <code>quit()</code>, <code>exit()</code>,
+        <code>sys.exit()</code>, and <code>os._exit()</code>.
 	Also note that Python packages outside the standard library are not guaranteed to work.</li>
       <li>The code reads external resources other than the files given in the assignment.
       <li>The code is malicious. This is considered a violation of the honor code.
