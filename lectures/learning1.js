@@ -38,11 +38,11 @@ add(slide('Application: spam classification',
   parentCenter(xtable(
     frameBox(ytable(
       '<tt><b>From</b>: pliang@cs.stanford.edu</tt>',
-      '<tt><b>Date</b>: September 26, 2018</tt>',
+      '<tt><b>Date</b>: September 25, 2019</tt>',
       '<tt><b>Subject</b>: CS221 announcement</tt>',
       '&nbsp;',
       '<tt>Hello students,</tt>',
-      '<tt>&nbsp;I\'ve attached the answers to homework 1...</tt>',
+      '<tt>&nbsp;Welcome to CS221!  Here\'s what...</tt>',
     _)).scale(0.5),
     pause(),
     frameBox(ytable(
@@ -51,7 +51,7 @@ add(slide('Application: spam classification',
       '<tt><b>Subject</b>: URGENT</tt>',
       '&nbsp;',
       '<tt>Dear Sir or maDam:</tt>',
-      '<tt>&nbsp;my friend left sum of 10m dollars...</tt>',
+      '<tt>&nbsp;my friend left sum of 10m dolar$...</tt>',
     _)).scale(0.5),
   _).margin(10)),
   pause(),
@@ -115,15 +115,13 @@ add(slide('Data',
   pause(),
   stmt('Training data', 'list of examples'),
   indent(table(
-    //['$\\Train = \\{$', '$(\\nl{...10m dollars...}, +1),$'],
-    //[nil(),             '$(\\nl{...CS221...}, -1),$'],
-    //[nil(),             '$... \\}$'],
     ['$\\Train =$', '$\\,[$', nil(), nil()],
     [nil(), nil(), '("...10m dollars...",', '+1),'],
     [nil(), nil(), '("...CS221...",', '-1),'],
-    //[nil(), nil(), '...', nil()],
     [nil(), '$\\,]$', nil(), nil()],
   _)),
+  pause(),
+  parentCenter(greenbold('partial specification of behavior')),
 _));
 
 prose(
@@ -313,13 +311,17 @@ prose(
 _);
 
 add(slide('Geometric intuition',
-  'A binary classifier $f_{\\w}$ defines a hyperplane with normal vector $\\w$.',
-  '($\\R^2 \\implies$ hyperplane is a line\; $\\R^3 \\implies$ hyperplane is a plane)',
   stmt('Example'),
   indent('$\\w = [2, -1]$'),
   //indent('$\\phi(x) = [2, 0] \\text{ or } [0, 2] \\text{ or } [2, 4]$'),
   indent('$\\phi(x) \\in \\{ [2, 0], [0, 2], [2, 4] \\}$'),
   parentCenter('[whiteboard]'),
+  pause(),
+  'In general: binary classifier $f_{\\w}$ defines a hyperplane <b>decision boundary</b> with normal vector $\\w$.',
+  indent(ytable(
+    '$\\R^2$: hyperplane is a line',
+    '$\\R^3$: hyperplane is a plane',
+  _)),
 _));
 
 prose(
@@ -507,7 +509,7 @@ prose(
   '(in general, we won\'t be able to set $\\w$ to a single value that makes every example have low loss).',
 _);
 
-add(slide('Which regression loss to use?',
+add(slide('Which regression loss to use? (skip)',
   stmt('Example: $\\Train = \\{ (1, 0), (1, 2), (1, 1000) \\}$, $\\phi(x) = x$'),
   pause(),
   stmt('For least squares ($L_2$) regression'),
@@ -731,7 +733,7 @@ prose(
   'because the gradient is zero (almost) everywhere.',
 _);
 
-add(slide('Support vector machines*',
+add(slide('Hinge loss (SVMs)',
   parentCenter('$\\HingeLoss(x, y, \\w) = \\max\\{1 - (\\w \\cdot \\phi(x)) y, 0 \\}$'),
   parentCenter(lossGraph({legend: true, zeroOneLoss: true, perceptronLoss: true, hingeLoss: true}).scale(0.8)),
   pause(),

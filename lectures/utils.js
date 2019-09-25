@@ -337,7 +337,8 @@ G.quizSlide = function(id, question) {
   else
     quiz = createMultipleChoiceQuiz(id, question, answers);
   var s = slide('Question', quiz);
-  s.leftHeader(xtable(image('images/question.jpg').width(70), text(redbold('cs221.stanford.edu/q')).scale(1.5)).margin(5).center());
+  //s.leftHeader(xtable(image('images/question.jpg').width(70), text(redbold('cs221.stanford.edu/q')).scale(1.5)).margin(5).center());
+  s.leftHeader(xtable(image('images/question.jpg').width(60)).margin(5).center());
   s.id('q-' + id);
   return s;
 }
@@ -1049,7 +1050,7 @@ G.lossGraph = function(opts) {
   if (opts.regression)
     graph.axisLabel('residual $(\\w \\cdot \\phi(x)) - y$', '$\\Loss(x, y, \\w)$');
   else if (opts.weights)
-    graph.axisLabel('weight $w_1$', '$\\TrainLoss(\\w)$');
+    graph.axisLabel('weight $\\w$', '$\\TrainLoss(\\w)$');
   else
     graph.axisLabel('margin $(\\w \\cdot \\phi(x)) y$', '$\\Loss(x, y, \\w)$');
   graph.trajectoryColors(colors);
