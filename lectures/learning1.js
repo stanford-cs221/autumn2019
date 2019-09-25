@@ -831,7 +831,7 @@ add(summarySlide('Summary so far',
   parentCenter('$\\underbrace{\\w \\cdot \\phi(x)}_\\text{score}$'),
   pause(),
   frameBox(table(
-    [nil(), darkblue('Classification'), darkblue('Linear regression')],
+    [nil(), darkblue('Classification'), darkblue('Regression')],
     ['Predictor $f_\\w$', '$\\sign(\\text{score})$', '$\\text{score}$'], pause(),
     ['Relate to correct $y$', 'margin ($\\text{score} \\, y$)', 'residual ($\\text{score} - y$)'], pause(),
     ['Loss functions', ytable('zero-one', 'hinge', 'logistic'), ytable('squared', 'absolute deviation')], pause(),
@@ -875,14 +875,14 @@ prose(
   //'The loss can be interpreted as the amount by which any competitor label $y\'$\'s score exceeds the true label $y$\'s score by more than 1.',
 _);*/
 
-learnFramework(2);
+//learnFramework(2);
 
 add(slide('Next lecture',
-  stmt('Linear predictors'),
+  stmt('Features'),
   parentCenter('$f_\\w(x)$ based on score $\\w \\cdot \\phi(x)$'),
   indent('Which feature vector $\\phi(x)$ to use?'),
   pause(),
-  stmt('Loss minimization'),
+  stmt('Beyond optimization'),
   parentCenter('$\\displaystyle \\min_\\w \\TrainLoss(\\w)$'),
   indent('How do we <b>generalize</b> beyond the training set?'),
 _));
