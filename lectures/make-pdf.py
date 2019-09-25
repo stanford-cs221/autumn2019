@@ -1,10 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Usage: ./make-pdf.py overview.js learning1.js ...
 import os, sys
 
 def run(cmd):
-    print cmd
+    print(cmd)
     if os.system(cmd) != 0:
         sys.exit(1)
 
@@ -16,3 +16,4 @@ for prefix in sys.argv[1:]:
 
     run("node index.js " + jsPath)
     run('pdfjam --paper letter --nup 2x3 %s --outfile %s' % (pdfPath, smallPdfPath))
+    run('cp %s %s ../../extra/lectures' % (pdfPath, smallPdfPath))
