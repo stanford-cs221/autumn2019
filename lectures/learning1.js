@@ -82,7 +82,7 @@ prose(
   '(e.g., "yes" or "no"), whereas the latter has <b>continuous</b> outputs.',
   _,
   'Note that the dichotomy of prediction tasks are not meant to be formal definitions,',
-  'but rather to provide intuitions.',
+  'but rather to provide intuition.',
   _,
   'For instance, binary classification could technically be seen as a regression problem if the labels are $-1$ and $+1$.',
   'And structured prediction generally refers to tasks where the possible set of outputs $y$ is huge (generally, exponential in the size of the input),',
@@ -378,11 +378,11 @@ prose(
   'we introduce another important concept, the notion of a <b>margin</b>.',
   'Suppose the correct label is $y \\in \\{-1,+1\\}$.',
   'The margin of an input $x$ is $\\w \\cdot \\phi(x) y$, which measures how correct the prediction that $\\w$ makes is.',
-  'The larger the margin, the better, and non-positive margins correspond to classification errors.',
+  'The larger the margin the better, and non-positive margins correspond to classification errors.',
   _,
   'Note that if we look at the actual prediction $f_\\w(x)$,',
   'we can only ascertain whether the prediction was right or not.',
-  'By looking at the score and the margin, we can get a more nuanced view onto the behavior of the classifier.',
+  'By looking at the score and the margin, we can get a more nuanced view into the behavior of the classifier.',
   _,
   'Geometrically, if $\\|\\w\\| = 1$, then the margin of an input $x$ is exactly the distance from its feature vector $\\phi(x)$ to the <b>decision boundary</b>.',
 _);
@@ -409,7 +409,7 @@ add(slide('Binary classification',
 _), 'binary classification');
 
 prose(
-  'Now let us define our first loss, function, the <b>zero-one loss</b>.',
+  'Now let us define our first loss function, the <b>zero-one loss</b>.',
   'This corresponds exactly to our familiar notion of whether our predictor made a mistake or not.',
   'We can also write the loss in terms of the margin.',
 _);
@@ -661,7 +661,7 @@ prose(
   'There are other variants of SGD.',
   'You can randomize the order in which you loop over the training data in each iteration,',
   'which is useful.',
-  'Think about what would happen if you have all the positive examples first and the negative examples after that.',
+  'Think about what would happen if you had all the positive examples first and the negative examples after that.',
 _);
 
 add(slide('Step size',
@@ -688,7 +688,7 @@ _));
 prose(
   'One remaining issue is choosing the step size, which in practice (and as we have seen) is actually quite important.',
   'Generally, larger step sizes are like driving fast.  You can get faster convergence, but you might also get very unstable results and crash and burn.',
-  'On the other hand, with smaller step sizes, you get more stability, but you might get to your destination more slowly.',
+  'On the other hand, with smaller step sizes you get more stability, but you might get to your destination more slowly.',
   _,
   'A suggested form for the step size is to set the initial step size to $1$',
   'and let the step size decrease as the inverse of the square root of the number of updates we\'ve taken so far.',
@@ -709,8 +709,9 @@ add(summarySlide('Summary so far',
 _));
 
 prose(
-  'In summary, we have seen linear predictors, the functions we\'re considering',
-  'the criterion for choosing one, and an algorithm that goes after that criterion.',
+  'In summary we have seen (i) the functions we\'re considering (linear predictors),',
+  '(ii) the criterion for choosing one (loss minimization),',
+  'and (iii) an algorithm that goes after that criterion (SGD).',
   _,
   'We already worked out a linear regression example.',
   'What are good loss functions for binary classification?',
