@@ -308,7 +308,7 @@ function eventsOnLoad() {
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
   enableItem('Linear classification<br>Loss minimization<br>Stochastic gradient descent', 'learning1', [liveProgrammingLink('learning1')]);
   nextClass(1);
-  disableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
+  enableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
   nextClass(4);
 
   disableHomework('sentiment', 'Sentiment classification');
