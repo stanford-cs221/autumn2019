@@ -38,11 +38,11 @@ add(slide('Application: spam classification',
   parentCenter(xtable(
     frameBox(ytable(
       '<tt><b>From</b>: pliang@cs.stanford.edu</tt>',
-      '<tt><b>Date</b>: September 26, 2018</tt>',
+      '<tt><b>Date</b>: September 25, 2019</tt>',
       '<tt><b>Subject</b>: CS221 announcement</tt>',
       '&nbsp;',
       '<tt>Hello students,</tt>',
-      '<tt>&nbsp;I\'ve attached the answers to homework 1...</tt>',
+      '<tt>&nbsp;Welcome to CS221!  Here\'s what...</tt>',
     _)).scale(0.5),
     pause(),
     frameBox(ytable(
@@ -82,7 +82,7 @@ prose(
   '(e.g., "yes" or "no"), whereas the latter has <b>continuous</b> outputs.',
   _,
   'Note that the dichotomy of prediction tasks are not meant to be formal definitions,',
-  'but rather to provide intuitions.',
+  'but rather to provide intuition.',
   _,
   'For instance, binary classification could technically be seen as a regression problem if the labels are $-1$ and $+1$.',
   'And structured prediction generally refers to tasks where the possible set of outputs $y$ is huge (generally, exponential in the size of the input),',
@@ -115,15 +115,13 @@ add(slide('Data',
   pause(),
   stmt('Training data', 'list of examples'),
   indent(table(
-    //['$\\Train = \\{$', '$(\\nl{...10m dollars...}, +1),$'],
-    //[nil(),             '$(\\nl{...CS221...}, -1),$'],
-    //[nil(),             '$... \\}$'],
     ['$\\Train =$', '$\\,[$', nil(), nil()],
     [nil(), nil(), '("...10m dollars...",', '+1),'],
     [nil(), nil(), '("...CS221...",', '-1),'],
-    //[nil(), nil(), '...', nil()],
     [nil(), '$\\,]$', nil(), nil()],
   _)),
+  pause(),
+  parentCenter(greenbold('partial specification of behavior')),
 _));
 
 prose(
@@ -313,13 +311,17 @@ prose(
 _);
 
 add(slide('Geometric intuition',
-  'A binary classifier $f_{\\w}$ defines a hyperplane with normal vector $\\w$.',
-  '($\\R^2 \\implies$ hyperplane is a line\; $\\R^3 \\implies$ hyperplane is a plane)',
   stmt('Example'),
   indent('$\\w = [2, -1]$'),
   //indent('$\\phi(x) = [2, 0] \\text{ or } [0, 2] \\text{ or } [2, 4]$'),
   indent('$\\phi(x) \\in \\{ [2, 0], [0, 2], [2, 4] \\}$'),
   parentCenter('[whiteboard]'),
+  pause(),
+  'In general: binary classifier $f_{\\w}$ defines a hyperplane <b>decision boundary</b> with normal vector $\\w$.',
+  indent(ytable(
+    '$\\R^2$: hyperplane is a line',
+    '$\\R^3$: hyperplane is a plane',
+  _)),
 _));
 
 prose(
@@ -376,11 +378,11 @@ prose(
   'we introduce another important concept, the notion of a <b>margin</b>.',
   'Suppose the correct label is $y \\in \\{-1,+1\\}$.',
   'The margin of an input $x$ is $\\w \\cdot \\phi(x) y$, which measures how correct the prediction that $\\w$ makes is.',
-  'The larger the margin, the better, and non-positive margins correspond to classification errors.',
+  'The larger the margin the better, and non-positive margins correspond to classification errors.',
   _,
   'Note that if we look at the actual prediction $f_\\w(x)$,',
   'we can only ascertain whether the prediction was right or not.',
-  'By looking at the score and the margin, we can get a more nuanced view onto the behavior of the classifier.',
+  'By looking at the score and the margin, we can get a more nuanced view into the behavior of the classifier.',
   _,
   'Geometrically, if $\\|\\w\\| = 1$, then the margin of an input $x$ is exactly the distance from its feature vector $\\phi(x)$ to the <b>decision boundary</b>.',
 _);
@@ -407,7 +409,7 @@ add(slide('Binary classification',
 _), 'binary classification');
 
 prose(
-  'Now let us define our first loss, function, the <b>zero-one loss</b>.',
+  'Now let us define our first loss function, the <b>zero-one loss</b>.',
   'This corresponds exactly to our familiar notion of whether our predictor made a mistake or not.',
   'We can also write the loss in terms of the margin.',
 _);
@@ -507,7 +509,7 @@ prose(
   '(in general, we won\'t be able to set $\\w$ to a single value that makes every example have low loss).',
 _);
 
-add(slide('Which regression loss to use?',
+add(slide('Which regression loss to use? (skip)',
   stmt('Example: $\\Train = \\{ (1, 0), (1, 2), (1, 1000) \\}$, $\\phi(x) = x$'),
   pause(),
   stmt('For least squares ($L_2$) regression'),
@@ -659,7 +661,7 @@ prose(
   'There are other variants of SGD.',
   'You can randomize the order in which you loop over the training data in each iteration,',
   'which is useful.',
-  'Think about what would happen if you have all the positive examples first and the negative examples after that.',
+  'Think about what would happen if you had all the positive examples first and the negative examples after that.',
 _);
 
 add(slide('Step size',
@@ -686,7 +688,7 @@ _));
 prose(
   'One remaining issue is choosing the step size, which in practice (and as we have seen) is actually quite important.',
   'Generally, larger step sizes are like driving fast.  You can get faster convergence, but you might also get very unstable results and crash and burn.',
-  'On the other hand, with smaller step sizes, you get more stability, but you might get to your destination more slowly.',
+  'On the other hand, with smaller step sizes you get more stability, but you might get to your destination more slowly.',
   _,
   'A suggested form for the step size is to set the initial step size to $1$',
   'and let the step size decrease as the inverse of the square root of the number of updates we\'ve taken so far.',
@@ -707,8 +709,9 @@ add(summarySlide('Summary so far',
 _));
 
 prose(
-  'In summary, we have seen linear predictors, the functions we\'re considering',
-  'the criterion for choosing one, and an algorithm that goes after that criterion.',
+  'In summary we have seen (i) the functions we\'re considering (linear predictors),',
+  '(ii) the criterion for choosing one (loss minimization),',
+  'and (iii) an algorithm that goes after that criterion (SGD).',
   _,
   'We already worked out a linear regression example.',
   'What are good loss functions for binary classification?',
@@ -731,7 +734,7 @@ prose(
   'because the gradient is zero (almost) everywhere.',
 _);
 
-add(slide('Support vector machines*',
+add(slide('Hinge loss (SVMs)',
   parentCenter('$\\HingeLoss(x, y, \\w) = \\max\\{1 - (\\w \\cdot \\phi(x)) y, 0 \\}$'),
   parentCenter(lossGraph({legend: true, zeroOneLoss: true, perceptronLoss: true, hingeLoss: true}).scale(0.8)),
   pause(),
@@ -829,7 +832,7 @@ add(summarySlide('Summary so far',
   parentCenter('$\\underbrace{\\w \\cdot \\phi(x)}_\\text{score}$'),
   pause(),
   frameBox(table(
-    [nil(), darkblue('Classification'), darkblue('Linear regression')],
+    [nil(), darkblue('Classification'), darkblue('Regression')],
     ['Predictor $f_\\w$', '$\\sign(\\text{score})$', '$\\text{score}$'], pause(),
     ['Relate to correct $y$', 'margin ($\\text{score} \\, y$)', 'residual ($\\text{score} - y$)'], pause(),
     ['Loss functions', ytable('zero-one', 'hinge', 'logistic'), ytable('squared', 'absolute deviation')], pause(),
@@ -873,14 +876,14 @@ prose(
   //'The loss can be interpreted as the amount by which any competitor label $y\'$\'s score exceeds the true label $y$\'s score by more than 1.',
 _);*/
 
-learnFramework(2);
+//learnFramework(2);
 
 add(slide('Next lecture',
-  stmt('Linear predictors'),
+  stmt('Features'),
   parentCenter('$f_\\w(x)$ based on score $\\w \\cdot \\phi(x)$'),
   indent('Which feature vector $\\phi(x)$ to use?'),
   pause(),
-  stmt('Loss minimization'),
+  stmt('Beyond optimization'),
   parentCenter('$\\displaystyle \\min_\\w \\TrainLoss(\\w)$'),
   indent('How do we <b>generalize</b> beyond the training set?'),
 _));
