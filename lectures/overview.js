@@ -1025,7 +1025,7 @@ prose(
   _,
   'Once you have the recurrence, you can code it up.',
   'The straightforward implementation will take exponential time,',
-  'but you can <b>memoize</b> the results to make it $O(n^2)$ time.',
+  'but you can <b>memoize</b> the results to make it quadratic time (in this case, $O(nm)$).',
   'The end result is the dynamic programming solution: recurrence + memoization.',
 _);
 
