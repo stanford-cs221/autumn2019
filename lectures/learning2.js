@@ -695,11 +695,16 @@ prose(
   'which is used to determine the value of the hidden node $h_j \\in \\R$ (also called the <b>activation</b>)',
   'according to $h_j = \\sigma(\\v_j \\cdot \\phi(x))$, where $\\sigma$ is the activation function.',
   'The activation function can be a number of different things, but its main property is that it is a non-linear function.',
-  'Traditionally the <b>sigmoid</b> function $\\sigma(z) = (1+e^{-z})^{-1}$ was used,',
-  'but recently the <b>rectified linear</b> function $\\sigma(z) = \\max\\{z,0\\}$ has gained popularity.',
   _,
   'Let $\\h = [h_1, \\dots, h_k]$ be the vector of activations.',
   'This activation vector is now combined with another weight vector $\\w \\in \\R^k$ to produce the final score.',
+  _,
+  'The logistic function is an instance of an <b>activation function</b>,',
+  'and is the classic one that was used in the past.',
+  'These days, most people use a <b>rectifier</b> function, commonly known as a rectified linear unit (ReLU),',
+  'which is defined as $\\text{ReLU}(z) = \\max(z, 0)$.',
+  'The ReLU has two advantages: (i) its gradient doesn\'t vanish as $z$ grows, which makes it empirically easier to train;',
+  'and (ii) it only involves a max operation, which is computationally easier to compute than the exponential function.',
 _);
 
 add(slide('Neural networks',
@@ -720,11 +725,13 @@ prose(
   'The difference is that mapping from input $\\phi(x)$ to $\\h$ is learned automatically, not manually constructed (as was the case before).',
   'Therefore, a neural network can be viewed as learning the features of a linear classifier.',
   'Of course, the type of features that can be learned must be of the form $x \\to \\sigma(\\v_j \\cdot \\phi(x))$.',
+  'Even for deep neural networks, no matter now deep the neural network is, the top layer is always a linear function,',
+  'and the layers below can be interpreted as defining a (possibly very complex) feature map.',
   _,
   'Whether this is a suitable form depends on the nature of the application.',
   'Empirically, though, neural networks have been quite successful,',
   'since learning the features from the data with the explicit objective of minimizing the loss can yield better features than ones which are manually crafted.',
-  'Recently, there have been some advances in getting neural networks to work, and they have become the state-of-the-art in many tasks.',
+  'Since 2010, there have been some advances in getting neural networks to work, and they have become the state-of-the-art in many tasks.',
   'For example, all the major companies (Google, Microsoft, IBM) all recently switched over to using neural networks for speech recognition.',
   'In computer vision, (convolutional) neural networks are completely dominant in object recognition.',
 _);
@@ -755,10 +762,10 @@ _);
 add(slide('Approach',
   stmt('Mathematically: just grind through the chain rule'),
   pause(),
-  stmt('Next: visualize the computation using a computation graph'),
+  stmt('Next: visualize the computation using a ' + greenbold('computation graph')),
   headerList('Advantages',
     'Avoid long equations',
-    'Reveal structure of computations (modularity, efficiency, dependencies)',
+    'Reveal structure of computations (modularity, efficiency, dependencies) &mdash; TensorFlow/PyTorch are built on this',
   _),
 _));
 
@@ -770,7 +777,7 @@ prose(
   'and will not only make gradients easy to compute,',
   'but also shed more light onto the predictor and loss function.',
   _,
-  'In fact, these days if you use a package such as TensorFlow or Pytorch,',
+  'In fact, these days if you use a package such as TensorFlow or PyTorch,',
   'you can write down the expressions symbolically and the gradient is computed for you.',
   'This is done essentially using the computational procedure that we will see.',
 _);
@@ -1065,10 +1072,6 @@ prose(
   'As we increase the number of training examples, the number of regions will also increase.',
   'Such methods are called <b>non-parametric</b>.',
 _);
-
-add(quizSlide('learning2-end',
-  'What was the most surprising thing you learned today?',
-_));
 
 add(summarySlide('Summary of learners',
   bulletedText(stmt('Linear predictors: combine raw features')),
