@@ -311,7 +311,7 @@ function eventsOnLoad() {
   enableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
   nextClass(4);
 
-  disableHomework('sentiment', 'Sentiment classification');
+  openHomework('sentiment', 'Sentiment classification');
   enableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
   nextClass(2);
   disableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
