@@ -312,7 +312,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   disableHomework('sentiment', 'Sentiment classification');
-  disableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
+  enableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
   nextClass(2);
   disableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
   nextClass(1);
