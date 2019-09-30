@@ -139,7 +139,7 @@ roadmap(0);
 
 prose(
   'The first half of this lecture is about thinking about the feature extractor $\\phi$.',
-  'Features are a critical part of machine learning which often does not get as much attention as it deserves.',
+  'Features are a critical part of machine learning which often do not get as much attention as they deserve.',
   'Ideally, they would be given to us by a domain expert,',
   'and all we (as machine learning people) have to do is to stick them into our learning algorithm.',
   'While one can get considerable mileage out of doing this,',
@@ -327,7 +327,7 @@ add(slide('Hypothesis class',
 _));
 
 prose(
-  'Having discussed how feature templates can be used to organize groups of feature and allow us to leverage sparsity,',
+  'Having discussed how feature templates can be used to organize groups of features and allow us to leverage sparsity,',
   'let us further study how features impact prediction.',
   _,
   'The key notion is that of a <b>hypothesis class</b>,',
@@ -361,7 +361,7 @@ prose(
   'Second, we perform learning (given training data) to obtain a particular predictor $f_\\w \\in \\sF$.',
   _,
   'Note that if the hypothesis class doesn\'t contain any good predictors, then no amount of learning can help.',
-  'So the question when extracting features is really whether they are powerful enough to <b>express</b> predictors which are good?',
+  'So the question when extracting features is really whether they are powerful enough to <b>express</b> predictors which are good.',
   'It\'s okay and expected that $\\sF$ will contain a bunch of bad ones as well.',
   _,
   'Later, we\'ll see reasons for keeping the hypothesis class small (both for computational and statistical reasons),',
@@ -391,8 +391,8 @@ prose(
   'If we use $\\phi(x) = x$, then we get linear functions that go through the origin.',
   _,
   'However, we want to have functions that "bend" (or are not monotonic).',
-  'For example, if we want to predict someone\'s health given his or her body temperature.',
-  'There is sweet spot temperature (37 C) where the health is optimal;',
+  'For example, if we want to predict someone\'s health given his or her body temperature,',
+  'there is a sweet spot temperature (37 C) where the health is optimal;',
   'both higher and lower values should cause the health to decline.',
   _,
   'If we use $\\phi(x) = [x, x^2]$, then we get quadratic functions that go through the origin,',
@@ -410,7 +410,7 @@ add(slide('Example: even more flexible functions',
 _));
 
 prose(
-  'However, even quadratic functions can be limiting, because they have to rise and fall in a certain (parabolic) way.',
+  'However, even quadratic functions can be limiting because they have to rise and fall in a certain (parabolic) way.',
   'What if we wanted a more flexible, freestyle approach?',
   _,
   'We can create piecewise constant functions by defining features that "fire" (are 1) on particular regions of the input (e.g., $1 < x \\le 2$).',
@@ -841,7 +841,7 @@ _).leftHeader(image('images/bricks.jpg')));
 prose(
   'Here are 5 examples of simple functions and their partial derivatives.',
   'These should be familiar from basic calculus.',
-  'All we\'ve done is to present them in a visually more intuitive way.',
+  'All we\'ve done is present them in a visually more intuitive way.',
   _,
   'But it turns out that these simple functions are all we need to build up many of the more complex',
   'and potentially scarier looking functions that we\'ll encounter in machine learning.',
@@ -868,7 +868,7 @@ prose(
   'The key idea is that the partial derivative <b>decomposes</b> into a product of the two partial derivatives on the two edges.',
   'You should recognize this is no more than the chain rule in graphical form.',
   _,
-  'More generally, if the partial derivative of $y$ with respect to $x$ is simply the product of all the green expressions on the edges of the path connecting $x$ and $y$.',
+  'More generally, the partial derivative of $y$ with respect to $x$ is simply the product of all the green expressions on the edges of the path connecting $x$ and $y$.',
   'This visual intuition will help us better understand more complex functions, which we will turn to next.',
 _);
 
@@ -1087,7 +1087,7 @@ _));
 prose(
   'Let us conclude now.',
   'First, we discussed some general principles for designing good features for linear predictors.',
-  'Just with the machinery of linear prediction, we were able to obtain rich predictors which were quite rich.',
+  'Just with the machinery of linear prediction, we were able to obtain rich predictors.',
   _,
   'Second, we focused on expanding the expressivity of our predictors fixing a particular feature extractor $\\phi$.',
   _,
