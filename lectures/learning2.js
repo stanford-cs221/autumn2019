@@ -6,23 +6,17 @@ add(titleSlide('Lecture 3: Machine learning II',
   parentCenter(image('images/learning.png').width(300)),
 _));
 
-add(quizSlide('learning2-start',
-  'Can we obtain decision boundaries which are circles by using linear classifiers?',
-  'Yes',
-  'No',
+add(slide('Announcements',
+  bulletedText('Homework 1 (foundations) due tomorrow at <b>11pm</b>; please test submit early, since you are responsible for any technical issues you encounter; don\'t email it to us'),
+	bulletedText('Homework 2 (sentiment) is out'),
+	bulletedText('Section this Thursday at 3:30pm'),
 _));
-
-prose(
-  'The answer is yes.',
-  'This might seem paradoxical since we are only working with linear classifiers.',
-  'But as we will see later, <b>linear</b> refers to the relationship between the',
-  'weight vector $\\w$ and the prediction score (not the input $x$, which might not even be a real vector),',
-  'whereas the decision boundary refers to how the prediction varies as a function of $x$.',
-_);
 
 learnFramework(2);
 
 prose(
+  'Recall from last time that learning is the process of taking training data and turning it into a model (predictor).',
+  _,
   'Last time, we started by studying the predictor $f$,',
   'concerning ourselves with linear predictors based on the score $\\w \\cdot \\phi(x)$,',
   'where $\\w$ is the weight vector we wish to learn and $\\phi$',
@@ -51,8 +45,7 @@ add(slide('Review: loss functions',
     [lossGraph({pause: false, regression: true, squaredLoss: true, absLoss: true}).scale(0.8), pause(),
     lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true, logisticLoss: true}).scale(0.8)],
   _).center().margin(80, 20)),
-  pause(),
-  parentCenter(bluebold('Captures properties of the desired predictor')),
+  parentCenter(bluebold('Loss captures properties of the desired predictor')),
 _));
 
 prose(
@@ -66,7 +59,23 @@ prose(
   'Which loss function we choose depends on the desired properties.',
   'For example, the absolute deviation loss for regression is robust against outliers.',
   'The logistic loss for classification never relents in encouraging large margin.',
-  _,
+_);
+
+function f(x) { return text(x).scale(0.8); }
+add(slide('A regression example',
+  stmt('Training data'),
+  parentCenter(table(
+    ['$x$', '$y$', pause(), '$\\Loss(x, y, w) = (\\w \\cdot \\phi(x) - y)^2$'], pause(-1),
+    [f('$[1, 0]$'), f('$2$'), pause(), f('$(w_1 - 2)^2$')], pause(-1),
+    [f('$[1, 0]$'), f('$4$'), pause(), f('$(w_1 - 4)^2$')], pause(-1),
+    [f('$[0, 1]$'), f('$-1$'), pause(), f('$(w_2 - (-1))^2$')],
+  _).margin(40, 5).justify('l', 'c')),
+  pause(),
+  parentCenter('$\\TrainLoss(\\w) = \\frac{1}{3}((w_1 - 2)^2 + (w_1 - 4)^2 + (w_2 - (-1))^2)$').scale(0.8),
+  parentCenter('[whiteboard]'),
+_));
+
+prose(
   'Note that we\'ve been talking about the loss on a single example,',
   'and plotting it in 1D against the residual or the margin.',
   'Recall that what we\'re actually optimizing is the training loss,',
@@ -81,7 +90,6 @@ prose(
   'The first two points contribute a quadratic term sensitive to $w_1$,',
   'and the third point contributes a quadratic term sensitive to $w_2$.',
   'When you combine them, you get a quadratic centered at $[3, -1]$.',
-  '(Draw this on the whiteboard).',
 _);
 
 add(slide('Review: optimization algorithms',
@@ -125,6 +133,27 @@ prose(
   'In both cases, one must be careful to set the step size $\\eta$ properly (not too big, not too small).',
 _);
 
+add(quizSlide('learning2-start',
+  'Can we obtain decision boundaries which are circles by using linear classifiers?',
+  'Yes',
+  'No',
+_));
+
+prose(
+  'The answer is yes.',
+  _,
+  'This might seem paradoxical since we are only working with linear classifiers.',
+  'But as we will see later, <b>linear</b> refers to the relationship between the',
+  'weight vector $\\w$ and the prediction score (not the input $x$, which might not even be a real vector),',
+  'whereas the decision boundary refers to how the prediction varies as a function of $x$.',
+  _,
+  'Advanced: Sometimes people might think that linear classifiers are not expressive,',
+  'and that you need neural networks to get expressive and non-linear classifiers.',
+  'This is false.',
+  'You can build arbitrarily expressive models with the machinery of linear classifiers (see kernel methods).',
+  'The advantages of neural networks are the computational benefits and the inductive bias that comes from the particular neural network architecture.',
+_);
+
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
     ['features', 'Features'],
@@ -156,7 +185,7 @@ add(slide('Two components',
   parentCenter('$\\red{\\w} \\cdot \\blue{\\phi(x)}$'),
   pause(),
   headerList(null,
-    'Previous: '+red('learning')+' sets $\\red{\\w}$ via optimization',
+    'Previous: '+red('learning')+' chooses $\\red{\\w}$ via optimization',
     'Next: '+bluebold('feature extraction')+' specifies $\\blue{\\phi(x)}$ based on domain knowledge',
   _),
 _));
@@ -306,7 +335,7 @@ prose(
   'The features not in the map implicitly have a default value of zero.',
   'This sparse representation is very useful in natural language processing,',
   'and is what allows us to work effectively over trillions of features.',
-  'In Python, one would define a feature vector $\\phi(x)$ as <tt>{"endsWith_"+x[-3:]: 1}</tt>.',
+  'In Python, one would define a feature vector $\\phi(x)$ as the dictionary <tt>{"endsWith_"+x[-3:]: 1}</tt>.',
   'Maps do incur extra overhead compared to arrays, and therefore maps are much slower when the features are not sparse.',
   _,
   'Finally, it is important to be clear when describing features.',
@@ -503,7 +532,6 @@ add(slide('An example task',
   _),
   pause(),
   stmt('Recall', 'feature extractor $\\phi$ should pick out properties of $x$ that might be useful for prediction of $y$'),
-  stmt('Recall', 'feature extractor $\\phi$ returns a set of (feature name, real number) pairs'),
 _));
 
 prose(
@@ -552,7 +580,7 @@ prose(
   'In the last decade, there has been a huge resurgence of interest in neural networks',
   'since they perform so well and training seems to not be such an issue when you have tons of data and compute.',
   _,
-  'In a way, neural networks allow one to automatically learn the features of a linear classifier which are geared towards the desired task,',
+  'In a sense, neural networks allow one to automatically learn the features of a linear classifier which are geared towards the desired task,',
   'rather than specifying them all by hand.',
 _);
 
@@ -609,11 +637,21 @@ _);
 add(slide('Learning strategy',
   stmt('Define: $\\phi(x) = [1, x_1, x_2]$'),
   stmt('Intermediate hidden subproblems'),
-  indent(xtable('$h_1 = \\1[\\red{\\v_1} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_1} = [-1, +1, -1]$').scale(0.7)).margin(150)),
-  indent(xtable('$h_2 = \\1[\\red{\\v_2} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_2} = [-1, -1, +1]$').scale(0.7)).margin(150)),
+  indent(stagger(
+    '$h_1 = \\1[x_1 - x_2 \\ge 1]$',
+    xtable('$h_1 = \\1[\\red{\\v_1} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_1} = [-1, +1, -1]$').scale(0.7)).margin(150),
+  _)),
+  pause(),
+  indent(stagger(
+    '$h_2 = \\1[x_2 - x_1 \\ge 1]$',
+    xtable('$h_2 = \\1[\\red{\\v_2} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_2} = [-1, -1, +1]$').scale(0.7)).margin(150),
+  _)),
   pause(),
   stmt('Final prediction'),
-  indent(xtable('$f_\\red{\\V, \\w}(x) = \\sign(\\red{w_1} h_1 + \\red{w_2} h_2)$', text('$\\red{\\w} = [1, 1]$').scale(0.7)).margin(100)),
+  indent(stagger(
+    '$y = \\sign(h_1 + h_2)$',
+    xtable('$f_\\red{\\V, \\w}(x) = \\sign(\\red{w_1} h_1 + \\red{w_2} h_2)$', text('$\\red{\\w} = [1, 1]$').scale(0.7)).margin(100),
+  _)),
   pause(),
   keyIdea('joint learning',
     'Goal: learn both hidden subproblems $\\red{\\V = (\\v_1, \\v_2)}$ and combination weights $\\red{\\w = [w_1, w_2]}$',
@@ -658,22 +696,22 @@ prose(
   'This is what makes optimizing neural networks hard.',
 _);
 
-add(slide('Linear predictors',
-  stmt('Linear predictor'),
+add(slide('Linear functions',
+  stmt('Linear functions'),
   indent(linearPredictor(), 40),
   stmt('Output'),
   parentCenter('$\\text{score} = \\red{\\w} \\cdot \\phi(x)$'),
 _));
 
 prose(
-  'Let\'s try to visualize the predictors.',
+  'Let\'s try to visualize the functions.',
   _,
-  'Recall that linear classifiers take the input $\\phi(x) \\in \\R^d$ and directly take the dot product with the weight vector $\\w$ to form the score,',
+  'Recall that a linear function takes the input $\\phi(x) \\in \\R^d$ and directly take the dot product with the weight vector $\\w$ to form the score,',
   'the basis for prediction in both binary classification and regression.',
 _);
 
 add(slide('Neural networks',
-  stmt('Neural network'),
+  stmt('Neural network (one hidden layer)'),
   indent(neuralNetwork(0), 40),
   pause(-1),
   stmt('Intermediate hidden units'),
@@ -687,8 +725,8 @@ add(slide('Neural networks',
 _));
 
 prose(
-  'The idea in neural networks is to map an input $\\phi(x) \\in \\R^d$ onto a hidden <b>intermediate representation</b> $\\h \\in \\R^k$,',
-  'which in turn is mapped to the score.',
+  'A (one-layer) neural network first maps an input $\\phi(x) \\in \\R^d$ onto a hidden <b>intermediate representation</b> $\\h \\in \\R^k$,',
+  'which in turn is mapped to the score via a linear function.',
   _,
   'Specifically, let $k$ be the number of hidden units.',
   'For each hidden unit $j = 1, \\dots, k$, we have a weight vector $\\v_j \\in \\R^d$,',
@@ -724,7 +762,7 @@ prose(
   'The noteworthy aspect here is that the activation vector $\\h$ behaves a lot like our feature vector $\\phi(x)$ that we were using for linear prediction.',
   'The difference is that mapping from input $\\phi(x)$ to $\\h$ is learned automatically, not manually constructed (as was the case before).',
   'Therefore, a neural network can be viewed as learning the features of a linear classifier.',
-  'Of course, the type of features that can be learned must be of the form $x \\to \\sigma(\\v_j \\cdot \\phi(x))$.',
+  'Of course, the type of features that can be learned must be of the form $x \\mapsto \\sigma(\\v_j \\cdot \\phi(x))$.',
   'Even for deep neural networks, no matter now deep the neural network is, the top layer is always a linear function,',
   'and the layers below can be interpreted as defining a (possibly very complex) feature map.',
   _,
@@ -808,8 +846,9 @@ add(slide('Functions as boxes',
     _).ymargin(100),
     moveLeftOf('$\\text{out}$', operation.headBox),
   _)),
+  pause(),
   stmt('Partial derivatives (gradients): how much does the output change if an input changes?'),
-  pause(2),
+  pause(),
   stmt('Example'),
   parentCenter(stagger(
     '$2 \\text{in}_1 + \\text{in}_2 \\text{in}_3 = \\text{out}$',
@@ -1011,6 +1050,34 @@ prose(
   'the backward value for the parent of $i$ using the key recurrence $g_i = \\frac{\\partial f_j}{\\partial f_i} g_j$ (just the chain rule).',
   _,
   'In this example, the backward pass gives us the gradient of the output node (the gradient of the loss) with respect to the weights (the red nodes).',
+_);
+
+add(slide('Note on optimization',
+  parentCenter('$\\TrainLoss(\\w)$'),
+  parentCenter(table(
+    ['Linear functions', 'Neural networks'].map(darkblue),
+    [image('images/convex-function.jpeg'), image('images/nonconvex-function.jpeg')],
+    ['(convex loss)', '(non-convex)'],
+  _).center().margin(50, 5)),
+  parentCenter('Optimization of neural networks is generally '+redbold('hard')),
+_));
+
+prose(
+  'While we can go through the motions of running the backpropagation algorithm to compute gradients,',
+  'what is the result of running SGD?',
+  _,
+  'For linear predictors (using the squared loss or hinge loss),',
+  '$\\TrainLoss(\\w)$ is a convex function,',
+  'which means that SGD (with an appropriately set step size)',
+  'is theoretically guaranteed to converge to the global optimum.',
+  _,
+  'However, for neural networks,',
+  '$\\TrainLoss(\\w)$ is typically non-convex',
+  'which means that there are multiple local optima,',
+  'and SGD is not guaranteed to converge to the global optimum.',
+  'There are many settings that SGD fails both theoretically and empirically,',
+  'but in practice, SGD on neural networks can work with proper attention to tuning hyperparameters.',
+  'The gap between theory and practice is not well understood and an active area of research.',
 _);
 
 ////////////////////////////////////////////////////////////
