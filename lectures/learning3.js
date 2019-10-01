@@ -340,39 +340,6 @@ prose(
   'for a deeper reason involving statistical learning theory (explained in CS229T).',
 _);
 
-add(slide('Estimation error analogy',
-  parentCenter(image('images/wallet.jpg').width(150)),
-  pause(),
-  stmt('Scenario 1: ask few people around'),
-  pause(),
-  indent(xtable('Is your name Joe?', pause(), image('images/raise-hand.jpg').width(70)).margin(50).center()),
-  pause(),
-  stmt('Scenario 2: email all of Stanford'),
-  pause(),
-  indent(xtable('Is your name Joe?', pause(), image('images/raise-hands.jpg').width(150)).margin(50).center()),
-  pause(),
-  parentCenter(redbold('people = hypotheses, questions = examples')),
-_));
-
-prose(
-  'Without formalizing it, we can understand the learning theory using the following analogy.',
-  'Suppose you find a wallet on the ground, and you\'re trying to figure out who it belongs to.',
-  '(Assume all people are honest in this example.)',
-  _,
-  'If your hypothesis is that it was just the people around you, you can go to each of them and ask',
-  'a question to try to see if that is the person\'s wallet.',
-  'If there are only a few people, then you could just ask a few basic questions (e.g., first name),',
-  'and with high confidence if you find a match, then it\'s probably the right person.',
-  _,
-  'However, if you decide to email 10,000 people and ask the same basic questions,',
-  'then you\'ll probably have a lot of matches and if you just choose one arbitraily,',
-  'then chances are that you\'ve probably got the wrong person.',
-  _,
-  'In this analogy, the questions (examples) try to help you identify the correct person (hypothesis).',
-  'To stretch this analogy a bit, stochastic gradient descent is like asking a person:',
-  '"which direction do you think I should go to find the correct person?"',
-_);
-
 add(slide('Controlling size of hypothesis class',
   'Linear predictors are specified by weight vector $\\w \\in \\R^d$',
   pause(),
@@ -484,6 +451,8 @@ prose(
   'penalizes the norm (length) of $\\w$.',
   'This is probably the most common way to control the norm.',
   _,
+  'This form or regularization is also known as $L_2$ regularization or weight decay in the deep learning literature.',
+  _,
   'We can use gradient descent on this regularized objective,',
   'and this simply leads to an algorithm which subtracts a scaled down version of $\\w$ in each iteration.',
   'This has the effect of keeping $\\w$ closer to the origin than it otherwise would be.',
@@ -546,8 +515,6 @@ prose(
 _);
 
 add(slide('Hyperparameters',
-  //stmt('Parameters', 'weights $\\w$ set by learning algorithm'),
-  //pause(),
   definition('hyperparameters', 'Properties of the learning algorithm (features, regularization parameter $\\lambda$, number of iterations $T$, step size $\\eta$, etc.).'),
   'How do we choose hyperparameters?',
   pause(),
@@ -616,6 +583,11 @@ prose(
   'With this validation set, now we can simply try out a bunch of different hyperparameters and choose the setting that yields the lowest error on the validation set.',
   'Which hyperparameter values should we try?  Generally, you should start by getting the right order of magnitude',
   '(e.g., $\\lambda = 0.0001, 0.001, 0.01, 0.1, 1, 10$) and then refining if necessary.',
+  _,
+  'In $K$-fold <b>cross-validation</b>, you divide the training set into $K$ parts.',
+  'Repeat $K$ times: train on $K-1$ of the parts and use the other part as a validation set.',
+  'You then get $K$ validation errors, from which you can report both the mean and the variance,',
+  'which gives you more reliable information.',
 _);
 
 add(slide('Development cycle',
@@ -692,14 +664,12 @@ roadmap(1);
 add(slide('Supervision?',
   headerList('Supervised learning',
     'Prediction: $\\Train$ contains input-output pairs $(x,y)$', pause(),
-    //'Bayesian networks: $\\Train$ contains full variable assignments', pause(),
-    'Fully-labeled data is very <b><font color="red">expensive</font></b> to obtain (we can get 10,000 labeled examples)',
+    'Fully-labeled data is very <b><font color="red">expensive</font></b> to obtain (we can maybe get thousands of labeled examples)',
   _),
   pause(),
   headerList('Unsupervised learning',
     'Clustering: $\\Train$ only contains inputs $x$', pause(),
-    //'Bayesian networks: $\\Train$ contains partial variable assignments', pause(),
-    'Unlabeled data is much <b><font color="green">cheaper</font></b> to obtain (we can get 100 million unlabeled examples)',
+    'Unlabeled data is much <b><font color="green">cheaper</font></b> to obtain (we can maybe get billions of unlabeled examples)',
   _),
 _));
 
@@ -713,27 +683,6 @@ prose(
   'The main question is whether we can harness all that unlabeled data to help us make better predictions?',
   'This is the goal of <b>unsupervised learning</b>.',
 _);
-
-/*add(slide('Latent variables',
-  stmt('Clustering news articles', 'have raw collection of news articles, but topic/category of each is <font color="red"><b>latent</b></font>'),
-  //parentCenter(cachedImage('http://www.materials.ox.ac.uk/uploads/images/news/newspaper.gif').dim(400, 300)),
-  parentCenter(cachedImage('http://jonathanshkurko.files.wordpress.com/2011/04/googlenews.jpg').dim(400, 300)),
-_));
-
-add(slide('Latent variables',
-  stmt('Machine translation', 'know what the translation was, but not how it was obtained (detailed correspondence is <font color="red"><b>latent</b></font>)'),
-  parentCenter(yseq(
-    '$x$: the blue house'.italics().fontcolor('blue'),
-    downArrow(50).strokeWidth(3),
-    '$y$: la maison bleue'.italics().fontcolor('green'),
-  _).center()),
-_));
-
-add(slide('Latent variables',
-  stmt('Object recognition', 'know what\'s in the image but not where thing are (location is <font color="red"><b>latent</b></font>)'),
-  parentCenter(cachedImage('http://nextwelve.files.wordpress.com/2012/04/tree.jpg').dim(400, 300)),
-  parentCenter(xtable.apply(null, 'tree grass clouds sunset'.split(' ')).margin(40).strokeColor('blue')),
-_));*/
 
 function formatClusters(clusters) {
   var i = 0;
