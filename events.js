@@ -314,7 +314,7 @@ function eventsOnLoad() {
   openHomework('sentiment', 'Sentiment classification');
   enableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
   nextClass(2);
-  disableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
+  enableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
   nextClass(1);
   disableItem('Section: Backpropagation and SciKit Learn tutorial', null, [sectionLink('section2.pdf', 'slides'), sectionLink('sklearn_tutorial.ipynb', 'tutorial ipython notebook')], true);
   nextClass(4);
