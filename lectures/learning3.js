@@ -614,15 +614,6 @@ prose(
   'did too much tweaking and were <b>overfitting</b> (at a meta-level) the development set.',
 _);
 
-/*add(summarySlide('Summary',
-  bulletedText(stmt('Key to good machine learning: balance bias and variance')),
-  bulletedText('Control tradeoff using size of hypothesis class'),
-  pause(),
-  bulletedText(stmt('Test set: only for final evaluation')),
-  bulletedText('Use validation set to tune hyperparameters'),
-  bulletedText('Look at the data!'),
-_));*/
-
 ////////////////////////////////////////////////////////////
 // Unsupervised learning
 roadmap(1);
@@ -658,15 +649,13 @@ function formatClusters(clusters) {
   })).scale(0.55).margin(2));
 }
 
-add(slide('Word clustering using HMMs',
+add(slide('Word clustering',
   stmt('Input', 'raw text (100 million words of news articles)...'),
   pause(),
   stmt('Output'),
   formatClusters([
     "Friday Monday Thursday Wednesday Tuesday Saturday Sunday weekends Sundays Saturdays",
     "June March July April January December October November September August",
-    //"people guys folks fellows CEOs chaps doubters commies unfortunates blokes",
-    //"down backwards ashore sideways southward northward overboard aloft downwards adrift",
     "water gas coal liquid acid sand carbon steam shale iron",
     "great big vast sudden mere sheer gigantic lifelong scant colossal",
     "man woman boy girl lawyer doctor guy farmer teacher citizen",
@@ -678,36 +667,37 @@ add(slide('Word clustering using HMMs',
     "anyone someone anybody somebody",
     "feet miles pounds degrees inches barrels tons acres meters bytes",
     "director chief professor commissioner commander treasurer founder superintendent dean custodian",
-    //"liberal conservative parliamentary royal progressive Tory provisional separatist federalist PQ",
     "had hadn't hath would've could've should've must've might've",
-    //"asking telling wondering instructing informing kidding reminding bothering thanking deposing",
     "head body hands eyes voice arm seat eye hair mouth",
   ]),
-  pause(),
-  stmt('Impact', 'used in many state-of-the-art NLP systems'),
 _).leftHeader('[Brown et al, 1992]'));
 
 prose(
   'Empirically, unsupervised learning has produced some pretty impressive results.',
   'HMMs (more specifically, Brown clustering) can be used to take a ton of raw text and cluster related words together.',
-  'Word vectors (e.g., word2vec) do something similar.',
+  _,
+  'It is important to note that no one told the algorithm what days of the week were or months or family relations.',
+  'The clustering algorithm discovered this structure automatically by simply examining the statistics of raw text.',
 _);
 
-add(slide('Feature learning using neural networks',
-  stmt('Input', '10 million images (sampled frames from YouTube)'), pause(),
-  stmt('Output'),
-  parentCenter(xtable(
-    image('images/faces.jpeg').dim(230), pause(),
-    //image('images/body.jpeg').dim(230), pause(),
-    image('images/cats.jpeg').dim(230),
-  _).margin(50)),
-  pause(),
-  stmt('Impact', 'state-of-the-art results on object recognition (22,000 categories)'),
-_).leftHeader('[Le et al, 2012]'));
+add(slide('Word vectors',
+  parentCenter(stagger(
+    image('images/word-embedding.png').width(700).linkToUrl('images/word-embedding.png'),
+    image('images/word-embedding-subset.png').width(700).linkToUrl('images/word-embedding-subset.png'),
+  _).center()),
+_));
 
 prose(
-  'An unsupervised variant of neural networks called autoencoders can be used to take a ton of raw images and output clusters of images.',
-  'No one told the learning algorithms explicitly what the clusters should look like &mdash; they just figured it out.',
+  'A related idea are word vectors, which became popular after Tomas Mikolov created word2vec in 2013 (though the idea of vector space representations had been around for a while).',
+  _,
+  'Instead of representing a word by discrete clusters,',
+  'a word is represented by a vector, which gives us a notion of similarity between words.',
+  _,
+  'More recently, <b>contextualized word representations</b> such as ELMo, BERT, XLNet, ALBERT, etc. have been very impactful.',
+  'These methods also are unsupervised in that they only require raw text as input,',
+  'but they produce representations of words in context.',
+  'These representations essentially serve as good features for any NLP task,',
+  'and empirically these methods have resulted in significant gains.',
 _);
 
 add(dividerSlide(
@@ -731,11 +721,7 @@ add(slide('Types of unsupervised learning',
   parentCenter(ytable(
     typeExample('Clustering (e.g., K-means)', image('images/k-means.png').width(200)),
     typeExample('Dimensionality reduction (e.g., PCA)', image('images/pca.png').width(300)),
-    /*[
-    typeExample('Latent-variable models (e.g., HMMs)', hmm({maxTime: 5}).scale(0.5)),
-    pause(),
-    typeExample('Feature learning (e.g., neural networks)', cachedImage('http://www.optimaltrader.net/images/neuralt_naetverk.png').dim(200)),
-  ]*/_).margin(30).xjustify('c')),
+  _).margin(30).xjustify('c')),
 _));
 
 prose(
@@ -1055,7 +1041,7 @@ add(summarySlide('Summary',
 	bulletedText('Feature extraction (think hypothesis classes) [modeling]'),
 	bulletedText('Prediction (linear, neural network, k-means) [modeling]'),
 	bulletedText('Loss functions (compute gradients) [modeling]'),
-	bulletedText('Optimization (stochastic gradient, alternating minimization) [algorithms]'),
+	bulletedText('Optimization (stochastic gradient, alternating minimization) [learning]'),
 	bulletedText('Generalization (think development cycle) [modeling]'),
 _));
 
@@ -1100,9 +1086,9 @@ prose(
   'When computers arrived on the scene, learning was definitely on people\'s radar,',
   'although this was detached from the theoretical, statistical and optimization foundations.',
   _,
-  'In 1969, Minsky and Papert wrote a famous paper <i>Perceptrons</i>, which showed the limitations of linear classifiers',
+  'In 1969, Minsky and Papert wrote a famous book <i>Perceptrons</i>, which showed the limitations of linear classifiers',
   'with the famous XOR example (similar to our car collision example), which killed off this type of research.',
-  'AI largely turned to rule-based and symbolic methods.',
+  'AI largely turned to symbolic methods.',
   _,
   'Since the 1980s, machine learning has increased its role in AI,',
   'been placed on a more solid mathematical foundation with its connection with optimization and statistics.',
