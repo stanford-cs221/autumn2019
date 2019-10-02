@@ -268,7 +268,7 @@ add(slide('Approximation and estimation error',
   pause(-1),
   bulletedText(stmt('Approximation error: how good is the hypothesis class?')),
   pause(),
-  bulletedText(stmt('Estimation error: how good is the learned predictor <b>relative to</b> the hypothesis class?')),
+  bulletedText(stmt('Estimation error: how good is the learned predictor <b>relative to</b> the potential of the hypothesis class?')),
   pause(),
   parentCenter(stagger(
     greenbold('$\\text{Err}(\\hat f) - \\text{Err}(f^*)$'),
@@ -324,11 +324,13 @@ add(slide('Effect of hypothesis class size',
   'As the hypothesis class size increases...',
   stmt('Approximation error decreases because'),
   pause(),
-  parentCenter('taking min over larger set'),
+  indent('taking min over larger set'),
   pause(),
   stmt('Estimation error increases because'),
   pause(),
-  parentCenter('harder to estimate something more complex'),
+  indent('harder to estimate something more complex'),
+  pause(),
+  parentCenter(greenbold('How do we control the hypothesis class size?')),
 _));
 
 prose(
@@ -337,73 +339,28 @@ prose(
   _,
   'The estimation error increases monotonically as the hypothesis class size increases',
   'for a deeper reason involving statistical learning theory (explained in CS229T).',
-_);
-
-add(slide('Controlling size of hypothesis class',
-  'Linear predictors are specified by weight vector $\\w \\in \\R^d$',
-  pause(),
-  stmt('Keeping the dimensionality $d$ small'),
-  parentCenter(xtable(
-    image('images/sphere.jpg').width(100),
-    bigRightArrow(100),
-    circle(40).fillColor('lightgray'),
-  _).center().margin(50)),
-  parentCenter('[whiteboard: linear and quadratic functions]'),
-  pause(),
-  stmt('Keeping the norm (length) $\\|\\w\\|$ small'),
-  parentCenter(xtable(
-    circle(40).fillColor('lightgray'),
-    bigRightArrow(100),
-    circle(10).fillColor('lightgray'),
-  _).center().margin(50)),
-  parentCenter('[whiteboard: $x \\mapsto w_1 x$]'),
-_));
-
-prose(
+  _,
   'For each weight vector $\\w$, we have a predictor $f_\\w$',
   '(for classification, $f_\\w(x) = \\w \\cdot \\phi(x))$.',
   'So the hypothesis class $\\sF = \\{ f_\\w \\}$ is all the predictors as $\\w$ ranges.',
   'By controlling the number of possible values of $\\w$ that the learning algorithm is allowed to choose from,',
   'we control the size of the hypothesis class and thus guard against overfitting.',
-  _,
-  'There are two ways to do this: keeping the dimensionality $d$ small, and keeping the norm $\\|\\w\\|$ (length of $\\w$) small.',
 _);
 
-/*add(slide('Controlling size of hypothesis class',
-  'Linear predictors are specified by weight vector $\\w \\in \\R^d$',
-  parentCenter('$f_{\\red{\\w}}(x) = \\red{w_0} + \\red{w_1} x + \\red{w_2} x^2$'),
-  parentCenter('[whiteboard: reduce dimensionality, norm]'),
+add(slide('Strategy 1: dimensionality',
+  parentCenter('$\\w \\in \\R^d$'),
+  stmt('Reduce the dimensionality $d$'),
+  parentCenter(xtable(
+    image('images/sphere.jpg').width(100),
+    bigRightArrow(100),
+    circle(40).fillColor('lightgray'),
+  _).center().margin(50)),
 _));
 
 prose(
-  'To balance bias and variance, we need to be able to adjust the size of our hypothesis class.',
-  'For concreteness, think about linear predictors, in which the hypothesis class is specified by weight vectors $\\w \\in \\R^d$.',
-  _,
-  'There are two primary ways to do reduce (or increase) the size of these hypothesis classes:',
-  'the first is by controlling the dimensionality $d$, and the second is by controlling the norm $\\|w\\|$.',
-_);*/
-
-/*add(slide('Constraining the norm',
-  stmt('Constrained optimization'),
-  parentCenter('$\\displaystyle \\min_{\\red{\\|\\w\\| \\le B}} \\TrainLoss(\\w)$'),
-  pause(),
-  algorithm('projected gradient descent',
-    'Initialize $\\w = [0, \\dots, 0]$',
-    'For $t = 1, \\dots, T$:',
-    indent(nowrapText('$\\w \\leftarrow \\w - \\eta \\nabla_\\w \\TrainLoss(\\w)$')), pause(),
-    indent(nowrapText('If $\\red{\\|\\w\\| > B}$: $\\red{\\w \\leftarrow \\w \\cdot \\frac{B}{\\|\\w\\|}}$')),
-  _),
-  'Same as gradient descent, except if $\\w$ leaves constraint set, put it back.',
-_));
-
-prose(
-  'The second way to keep hypothesis classes small is to not let the weight vectors get too big.',
-  'We can simply take our original loss minimization framework and add a constraint that the norm (also called length or magnitude) of $\\w$ isn\'t too big ($\\|\\w\\| \\le B$).',
-  'This defines the optimization problem over weight vectors in a ball of radius $B$.',
-  _,
-  'The gradient descent algorithm we had before for unconstrained minimization can be adapted easily to handle the constraint:',
-  'do gradient descent as usual, and if the weights ever leave the radius $B$ ball, then shrink the length so that we\'re back in the constraint set.',
-_);*/
+  'One straightforward strategy is to change the dimensionality, which is the number of features.',
+  'For example, linear functions are lower-dimensional than quadratic functions.',
+_);
 
 add(slide('Controlling the dimensionality',
   headerList('Manual feature (template) selection',
@@ -419,7 +376,6 @@ add(slide('Controlling the dimensionality',
 _));
 
 prose(
-  'The most intuitive way to reduce overfitting is to reduce the number of features (or feature templates).',
   'Mathematically, you can think about removing a feature $\\phi(x)_{37}$',
   'as simply only allowing its corresponding weight to be zero ($w_{37} = 0$).',
   _,
@@ -430,7 +386,18 @@ prose(
   'but these are beyond the scope of this class.',
 _);
 
-add(slide('Controlling the norm: regularization',
+add(slide('Strategy: norm',
+  parentCenter('$\\w \\in \\R^d$'),
+  stmt('Reduce the norm (length) $\\|\\w\\|$'),
+  parentCenter(xtable(
+    circle(40).fillColor('lightgray'),
+    bigRightArrow(100),
+    circle(10).fillColor('lightgray'),
+  _).center().margin(50)),
+  parentCenter('[whiteboard: $x \\mapsto w_1 x$]'),
+_));
+
+add(slide('Controlling the norm',
   stmt('Regularized objective'),
   parentCenter('$\\displaystyle \\min_{\\w} \\TrainLoss(\\w) + \\red{\\frac{\\lambda}{2} \\|\\w\\|^2}$'),
   pause(),
@@ -440,8 +407,6 @@ add(slide('Controlling the norm: regularization',
     indent(nowrapText('$\\w \\leftarrow \\w - \\eta (\\nabla_\\w \\left[\\TrainLoss(\\w)\\right] \\red{+ \\lambda \\w})$')),
   _),
   'Same as gradient descent, except shrink the weights towards zero by $\\lambda$.',
-  pause(),
-  stmt('Note: SVM = hinge loss + regularization'),
 _));
 
 prose(
@@ -455,6 +420,8 @@ prose(
   'We can use gradient descent on this regularized objective,',
   'and this simply leads to an algorithm which subtracts a scaled down version of $\\w$ in each iteration.',
   'This has the effect of keeping $\\w$ closer to the origin than it otherwise would be.',
+  _,
+  'Note: Support Vector Machines are exactly hinge loss + regularization.',
 _);
 
 add(slide('Controlling the norm: early stopping',
@@ -591,7 +558,7 @@ _);
 
 add(slide('Development cycle',
   problem('simplified named-entity recognition',
-    'Input: a string $x$ (e.g., '+greenitalics('President [Barack Obama] in')+')',
+    'Input: a string $x$ (e.g., '+greenitalics('Governor [Gavin Newsom] in')+')',
     'Output: $y$, whether $x$ contains a person or not (e.g., $+1$)',
   _).scale(0.8),
   pause(),
