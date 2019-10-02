@@ -388,7 +388,7 @@ prose(
   'but these are beyond the scope of this class.',
 _);
 
-add(slide('Strategy: norm',
+add(slide('Strategy 2: norm',
   parentCenter('$\\w \\in \\R^d$'),
   stmt('Reduce the norm (length) $\\|\\w\\|$'),
   parentCenter(xtable(
