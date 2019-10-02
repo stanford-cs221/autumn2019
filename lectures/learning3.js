@@ -685,7 +685,7 @@ add(slide('Word vectors',
     image('images/word-embedding.png').width(700).linkToUrl('images/word-embedding.png'),
     image('images/word-embedding-subset.png').width(700).linkToUrl('images/word-embedding-subset.png'),
   _).center()),
-_));
+_).leftHeader('[Mikolov et al., 2013]'));
 
 prose(
   'A related idea are word vectors, which became popular after Tomas Mikolov created word2vec in 2013 (though the idea of vector space representations had been around for a while).',
@@ -698,6 +698,14 @@ prose(
   'but they produce representations of words in context.',
   'These representations essentially serve as good features for any NLP task,',
   'and empirically these methods have resulted in significant gains.',
+_);
+
+add(slide('Clustering with deep embeddings',
+  parentCenter(image('images/deep-embedding-clustering.png').width(700)),
+_).leftHeader('[Xie et al., 2015]'));
+
+prose(
+  'In an example from vision, one can learn a feature representation (embedding) for images along with a clustering of them.',
 _);
 
 add(dividerSlide(
@@ -740,7 +748,6 @@ add(slide('Clustering',
   pause(),
   stmt('Intuition', 'Want similar points to be in same cluster, dissimilar points to be in different clusters'),
   parentCenter('[whiteboard]'),
-  //parentCenter(text('[demo]').linkToUrl('index.html#include=learning-demo.js&example=cluster')),
 _));
 
 prose(
@@ -755,12 +762,6 @@ add(slide('K-means objective',
     stmt('Intuition', 'want each point $\\blue{\\phi(x_i)}$ close to its assigned centroid $\\red{\\mu_{z_i}}$'),
   _),
   pause(),
-  /*headerList('Variables',
-    'Cluster assignments $z = (z_1, \\dots, z_n)$',
-    'Cluster centers $\\mu = (\\mu_1, \\dots, \\mu_K)$',
-  _).ymargin(0),
-  pause(),
-  */
   stmt('Objective function'),
   parentCenter(frameBox(nowrapText('$\\displaystyle \\ReconstructionLoss(z, \\mu) = \\sum_{i=1}^n \\|\\blue{\\phi(x_i)} - \\red{\\mu_{z_i}}\\|^2$'))),
   pause(),
@@ -817,10 +818,6 @@ add(slide('K-means algorithm',
   keyIdea('alternating minimization',
     'Tackle <font color="red">hard</font> problem by solving <font color="green">two</font> easy problems.',
   _),
-  /*headerList(null,
-    'Step 1: if know centroids $\\mu$, can find best assignments $z$',
-    'Step 2: if know assignments $z$, can find best centroids $\\mu$',
-  _),*/
 _));
 
 prose(
@@ -922,94 +919,7 @@ prose(
   _,
   'Or we could try to be smarter in how we initialize K-means.',
   'K-means++ is an initialization scheme which places centroids on training points so that these centroids tend to be distant from one another.',
-  //'which starts by placing the first centroid at a random training point.',
-  //'Then for the second center, we compute for each training point the distance to the closest centroid placed so far, and choose the point ',
 _);
-
-/*add(slide('Using the clusters',
-  stmt('Goal: create better <b>features</b> $\\red{\\Phi(x)}$ for supervised learning'),
-  pause(),
-  stmt('Intuition: $k$-th feature &mdash; similarity between $\\mu_k$ and $\\phi(x)$'),
-  let(s = 30),
-  parentCenter(overlay(
-    p = circle(5).fillColor('black').shiftBy(0, 0),
-    mu1 = center(square(10)).fillColor('red').shiftBy(0, 2*s),
-    mu2 = center(square(10)).fillColor('red').shiftBy(-2*s, 0),
-    mu3 = center(square(10)).fillColor('red').shiftBy(3*s, 0),
-    mu4 = center(square(10)).fillColor('red').shiftBy(0, -1*s),
-    line(p, mu1).dashed(),
-    line(p, mu2).dashed(),
-    line(p, mu3).dashed(),
-    line(p, mu4).dashed(),
-    moveBottomOf('$\\mu_1$', mu1).scale(0.8),
-    moveLeftOf('$\\mu_2$', mu2).scale(0.8),
-    moveRightOf('$\\mu_3$', mu3).scale(0.8),
-    moveTopOf('$\\mu_4$', mu4).scale(0.8),
-    center('$\\phi(x)$').scale(0.8).shiftBy(s, s/2),
-  _)),
-  pause(),
-  'Distance to centroid: $d_k = \\|\\phi(x) - \\mu_k\\|$', pause(),
-  'Average distance: $\\bar d = \\frac1K \\sum_{k=1}^K d_k$', pause(),
-  parentCenter(
-    '$\\red{\\Phi_k(x)} = \\max\\{ \\bar d - d_k, 0 \\}$',
-  _),
-_));
-
-function clustersHelp() {
-  var items = [];
-  var s = 200;
-  var mus = [[0.7*s, 0.2*s], [0.3*s, 0.6*s]];
-  Math.seedrandom(7);
-  var projItems = [];
-  for (var k = 0; k < mus.length; k++) {
-    var mu = mus[k];
-    items.push(center(square(10)).fillColor('red').shift(mu[0], up(mu[1])).showLevel(2));
-    for (var i = 0; i < 30; i++) {
-      var x = mu[0] + sampleGaussian() * s/8;
-      var y = mu[1] + sampleGaussian() * s/8;
-      var d0 = l2Dist(mus[0], [x, y]);
-      var d1 = l2Dist(mus[1], [x, y]);
-      var avgd = (d0 + d1) / 2;
-      var act0 = Math.max(0, avgd - d0);
-      var act1 = Math.max(0, avgd - d1);
-      projItems.push(circle(3).fillColor('blue').shift(act0, up(act1)));
-      var p = circle(3).fillColor('black').shift(x, up(y));
-      if (i > 0) p.showLevel(1);
-      items.push(p);
-    }
-  }
-
-  items.push(arrow([0, 0], [s, 0]).strokeWidth(2));
-  items.push(arrow([0, 0], [0, up(s)]).strokeWidth(2));
-
-  projItems.push(arrow([0, 0], [s, 0]).strokeWidth(2));
-  projItems.push(arrow([0, 0], [0, up(s)]).strokeWidth(2));
-
-  return table(
-    [new Overlay(items), showLevel(3), bigRightArrow(100), new Overlay(projItems)],
-    [showLevel(0), '$\\phi(x)$', nil(), showLevel(3), '$\\Phi(x)$'],
-  _).center().margin(20, 30);
-}
- 
-add(slide('Cluster-based features',
-  parentCenter(clustersHelp()),
-  pause(),
-  stmt('Assumption: points inside same cluster tend to have same output label'),
-_));
-
-prose(
-  'Having performed clustering on our large amount of unlabeled data,',
-  'let\'s see how it can help us perform better classification.',
-  'The key idea will be to use the centroids to define new features.',
-  _,
-  'We will define a new feature vector $\\Phi(x) = (\\Phi_1(x), \\dots, \\Phi_K(x))$',
-  'where the value of feature $k$ represents the proximity of $\\Phi(x)$ to the centroid $\\mu_k$.',
-  'Specifically, $\\Phi_k(x)$ will be the amount to which the distance from $\\phi(x)$ to centroid $k$ is less than the average distance between $\\phi(x)$ and a centroid.',
-  _,
-  'Why is this a reasonable thing to do?',
-  'The underlying assumption is that points inside the same cluster tend to have the same output label,',
-  'so by mapping the points to that output label, we are transforming the data points into $\\Phi(x)$, which is in a way is much cleaner than $\\phi(x)$.',
-_);*/
 
 add(summarySlide('Unsupervised learning summary',
   bulletedText('Leverage tons of unlabeled data'),
@@ -1020,22 +930,11 @@ add(summarySlide('Unsupervised learning summary',
     image('images/chicken-egg.jpg').width(200),
     'parameters $\\mu$',
   _).center().margin(20)),
-  //pause(),
-  //bulletedText('Using as features in supervised learning improves accuracy!'),
 _));
 
 ////////////////////////////////////////////////////////////
 // Conclusion
 roadmap(2);
-
-/*add(slide('Fancier prediction tasks',
-  parentCenter(xtable('$x$', rightArrow(100).strokeWidth(5), frameBox('$f_\\w$'), rightArrow(100).strokeWidth(5), '$y$').margin(10).center()),
-  stmt('So far: $y \\in \\{-1, +1\\}$ (binary classification) or $y \\in \\R$ (regression) &mdash; reflex-based models'),
-  pause(),
-  stmt('Structured prediction: $y$ is a sequence, tree, etc. &mdash; more complex models'),
-  pause(),
-  stmt('Same strategy: write down a loss function, take the derivative, and run stochastic gradient descent!'),
-_));*/
 
 add(summarySlide('Summary',
 	bulletedText('Feature extraction (think hypothesis classes) [modeling]'),
