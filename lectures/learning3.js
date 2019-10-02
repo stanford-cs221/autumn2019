@@ -7,8 +7,8 @@ add(titleSlide('Lecture 4: Machine learning III',
 _));
 
 add(slide('Announcements',
-  bulletedText('Homework 1 (foundations) Thursday 11pm is 2 late day <b>hard deadline</b>'),
-  bulletedText('Section on Thursday 3:30pm: backpropagation example, nearest neighbors, scikit-learn'),
+  bulletedText('Homework 1 (foundations): Thursday 11pm is 2 late day <b>hard deadline</b>'),
+  bulletedText('Section Thursday 3:30pm: backpropagation example, nearest neighbors, scikit-learn'),
 _));
 
 function roadmap(i) {
@@ -66,6 +66,7 @@ add(quizSlide('learning3-objectiveML',
   'What\'s the true objective of machine learning?',
   'minimize error on the training set',
   'minimize training error with regularization',
+  'minimize error on the test set',
   'minimize error on unseen future examples',
   'learn about machines',
 _));
@@ -237,7 +238,7 @@ prose(
   'So there is just a lot more wiggle room for rote learning.',
 _);*/
 
-function biasVariance() {
+function biasVariance(pause) {
   return overlay(
     center(a = ellipse(350, 100).fillColor('brown').fillOpacity(0.2)),
     transform('All predictors').pivot(-1, -1).scale(0.8).shift(a.left(), a.top()),
@@ -264,7 +265,7 @@ function biasVariance() {
 }
 
 add(slide('Approximation and estimation error',
-  parentCenter(biasVariance()),
+  parentCenter(biasVariance(pause)),
   pause(-1),
   bulletedText(stmt('Approximation error: how good is the hypothesis class?')),
   pause(),
@@ -321,6 +322,7 @@ G.trainTestGraph = function(opts) {
 }
 
 add(slide('Effect of hypothesis class size',
+  parentCenter(biasVariance(function (x) { return _; })).scale(0.6),
   'As the hypothesis class size increases...',
   stmt('Approximation error decreases because'),
   pause(),
@@ -531,7 +533,7 @@ add(slide('Validation',
   _)),
   pause(),
   definition('validation set',
-    'A <b>validation (development) set</b> is taken out of the training data which acts as a surrogate for the <b>test set</b>.',
+    'A <b>validation set</b> is taken out of the training data which acts as a surrogate for the <b>test set</b>.',
   _),
 _));
 
