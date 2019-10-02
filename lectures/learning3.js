@@ -19,21 +19,22 @@ function roadmap(i) {
   ]));
 }
 
-add(slide('Review',
-  stmt('Feature extractor $\\phi$'),
+add(slide('Review: feature extractor',
   parentCenter(featureExtractionExample()).scale(0.8),
-  pause(),
-  headerList('Prediction score',
-    'Linear predictor: $\\text{score} = \\w \\cdot \\phi(x)$',
-    'Neural network: $\\text{score} = \\sum_{j=1}^k w_j \\sigma(\\v_j \\cdot \\phi(x))$',
-  _),
 _));
 
 prose(
   'Last lecture, we spoke at length about the importance of features,',
   'how to organize them using feature templates, and how we can get interesting non-linearities by choosing the feature extractor $\\phi$ judiciously.',
   'This is you using all your domain knowledge about the problem.',
-  _,
+_);
+
+add(slide('Review: prediction score',
+  bulletedText('Linear predictor: $\\text{score} = \\w \\cdot \\phi(x)$'),
+  bulletedText('Neural network: $\\text{score} = \\sum_{j=1}^k w_j \\sigma(\\v_j \\cdot \\phi(x))$'),
+_));
+
+prose(
   'Given the feature extractor $\\phi$, we can use that to define a prediction score,',
   'either using a linear predictor or a neural network.',
   'If you use neural networks, you typically have to work less hard at designing features,',
@@ -41,11 +42,13 @@ prose(
   'There is a human-machine tradeoff here.',
 _);
 
-add(slide('Review',
-  stmt('Loss function $\\Loss(x, y, \\w)$'),
-  parentCenter(xtable(lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true}).scale(0.8), '(for binary classification)').center().margin(50)),
+add(slide('Review: loss function',
+  indent(stmt('$\\Loss(x, y, \\w)$')),
+  parentCenter(xtable(lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true}).scale(0.8), '(for binary classification)').center().margin(50)).scale(0.7),
   pause(),
-  stmt('Optimization algorithm: stochastic gradient descent'),
+  indent('$\\displaystyle \\TrainLoss(\\w) = \\frac1{|\\Train|} \\sum_{(x,y) \\in \\Train} \\Loss(x, y, \\w)$'),
+  pause(),
+  stmt('Stochastic gradient descent'),
   parentCenter('$\\w \\leftarrow \\w - \\eta \\nabla_\\w \\Loss(x, y, \\w)$'),
 _));
 
@@ -80,9 +83,7 @@ _);
 roadmap(0);
 
 add(slide('Training error',
-  stmt('Loss minimization'),
-  parentCenter('$\\displaystyle \\min_{\\w} \\TrainLoss(\\w)$'),
-  pause(),
+  nil(),
   parentCenter('$\\displaystyle \\TrainLoss(\\w) = \\frac1{|\\Train|} \\sum_{(x,y) \\in \\Train} \\Loss(x, y, \\w)$'),
   'Is this a good objective?',
 _));
