@@ -6,23 +6,10 @@ add(titleSlide('Lecture 4: Machine learning III',
   parentCenter(image('images/learning.png').width(300)),
 _));
 
-add(quizSlide('learning3-objectiveML',
-  'What\'s the true objective of machine learning?',
-  'minimize error on the training set',
-  'minimize training error with regularization',
-  'minimize error on unseen future examples',
-  'learn about machines',
+add(slide('Announcements',
+  bulletedText('Homework 1 (foundations) Thursday 11pm is 2 late day <b>hard deadline</b>'),
+  bulletedText('Section on Thursday 3:30pm: backpropagation example, nearest neighbors, scikit-learn'),
 _));
-
-prose(
-  'So far in this class, we have tried to cast everything as a well-defined optimization problem.',
-  'We have even written down an objective function, which is the average loss (error) on the training data.',
-  _,
-  'But it turns out that that\'s not really the true goal.',
-  'That\'s only what we tell our optimization friends so that there\'s something concrete and actionable.',
-  'The true goal is to minimize error on unseen future examples; in other words, we need to <b>generalize</b>.',
-  'As we\'ll see, this is perhaps the most important aspect of machine learning and statistics &mdash; albeit a more elusive one.',
-_);
 
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
@@ -43,7 +30,7 @@ add(slide('Review',
 _));
 
 prose(
-  'First a review: last lecture we spoke at length about the importance of features,',
+  'Last lecture, we spoke at length about the importance of features,',
   'how to organize them using feature templates, and how we can get interesting non-linearities by choosing the feature extractor $\\phi$ judiciously.',
   'This is you using all your domain knowledge about the problem.',
   _,
@@ -56,11 +43,6 @@ _);
 
 add(slide('Review',
   stmt('Loss function $\\Loss(x, y, \\w)$'),
-  /*parentCenter(table(
-    [redbold('Regression'), redbold('Binary classification')],
-    [lossGraph({pause: false, regression: true, squaredLoss: true, absLoss: true}).scale(0.8),
-    lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true, logisticLoss: true}).scale(0.8)],
-  _).center().margin(80, 20)),*/
   parentCenter(xtable(lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true}).scale(0.8), '(for binary classification)').center().margin(50)),
   pause(),
   stmt('Optimization algorithm: stochastic gradient descent'),
@@ -75,6 +57,22 @@ prose(
   _,
   'This leads to an optimization problem, that of finding the $\\w$ that yields the lowest training loss.',
   'We saw that a simple algorithm, stochastic gradient descent, works quite well.',
+_);
+
+add(quizSlide('learning3-objectiveML',
+  'What\'s the true objective of machine learning?',
+  'minimize error on the training set',
+  'minimize training error with regularization',
+  'minimize error on unseen future examples',
+  'learn about machines',
+_));
+
+prose(
+  'We have written the average training loss as the objective function,',
+  'but it turns out that that\'s not really the true goal.',
+  'That\'s only what we tell our optimization friends so that there\'s something concrete and actionable.',
+  'The true goal is to minimize error on unseen future examples; in other words, we need to <b>generalize</b>.',
+  'As we\'ll see, this is perhaps the most important aspect of machine learning and statistics &mdash; albeit a more elusive one.',
 _);
 
 ////////////////////////////////////////////////////////////
