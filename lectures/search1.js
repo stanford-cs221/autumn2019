@@ -64,9 +64,9 @@ prose(
 _);
 
 add(slide('Application: robot motion planning',
-  parentCenter(image('images/robot-grasping.jpg').width(150)),
+  parentCenter(image('images/robot-fetch.png').width(300)),
   pause(),
-  stmt('Objective', 'fastest? most energy efficient? safest?'),
+  stmt('Objective', 'fastest? most energy efficient? safest? most expressive?'),
   stmt('Actions', 'translate and rotate joints'),
 _));
 
@@ -491,10 +491,10 @@ add(summarySlide('Tree search algorithms',
   stmt('Legend: $b$ actions/state, solution depth $d$, maximum depth $D$'),
   parentCenter(table(
     [bold('Algorithm'), bold('Action costs'), bold('Space'), bold('Time')],
+    ['Backtracking', 'any', '$\\green{O(D)}$', '$\\red{O(b^D)}$'],
     ['DFS', 'zero', '$\\green{O(D)}$', '$\\red{O(b^D)}$'],
     ['BFS', 'constant $\\geq 0$', '$\\red{O(b^d)}$', '$\\red{O(b^d)}$'],
     ['DFS-ID', 'constant $\\geq 0$', '$\\green{O(d)}$', '$\\red{O(b^d)}$'],
-    ['Backtracking', 'any', '$\\green{O(D)}$', '$\\red{O(b^D)}$'],
   _).margin(40, 10)),
   pause(),
   headerList(null,
