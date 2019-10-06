@@ -706,7 +706,8 @@ G.basename = function(path) {
 }
 
 G.linkToVideo = function(block, path) {
-  var cacheVideos = (window.location.protocol == 'file:');
+  //var cacheVideos = (window.location.protocol == 'file:');
+  var cacheVideos = true;
   var url = cacheVideos ? 'cached-videos/'+basename(path) : path;
   return std(block).linkToUrl(url);
 }
