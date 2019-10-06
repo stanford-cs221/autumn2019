@@ -322,7 +322,8 @@ add(slide('Transportation example',
     'Taking a magic tram from $s$ to $2s$ takes 2 minutes.',
     'How to travel from $1$ to $n$ in the least time?',
   _),
-  parentCenter('[live solution: <tt>TransportationProblem</tt>]'),
+  //parentCenter('[live solution: <tt>TransportationProblem</tt>]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>TransportationProblem</tt>]', 'tram.mp4')),
 _).leftHeader(image('images/tram.jpg').width(150)));
 
 prose(
@@ -387,7 +388,8 @@ add(slide('Backtracking search',
     indent(indent('Call backtrackingSearch($\\Succ(s, a)$, path)')),
     indent('Return minimum cost path'),
   _).scale(0.85),
-  parentCenter('[live solution: <tt>backtrackingSearch</tt>]'),
+  //parentCenter('[live solution: <tt>backtrackingSearch</tt>]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>backtrackingSearch</tt>]', 'backtrackingSearch.mp4')),
 _));
 
 
@@ -648,7 +650,8 @@ add(slide('Dynamic programming',
     indent('If $\\IsEnd(s)$: return solution'),
     indent('For each action $a \\in \\Actions(s)$: ...'),
   _).scale(0.9),
-  parentCenter('[live solution]'),
+  //parentCenter('[live solution]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>Dynamic Programming</tt>]', 'dynamicProgramming.mp4')),
   pause(),
   assumption('acyclicity', 'The state graph defined by $\\Actions(s)$ and $\\Succ(s, a)$ is acyclic.'),
 _));
@@ -865,7 +868,7 @@ add(slide('Uniform cost search (UCS)',
   _),
   pause(),
   stmt('UCS in action'),
-  parentCenter(youtube('z6lUnb9ktkE')),
+  parentCenter(youtube('z6lUnb9ktkE', { cache: false })),
 _));
 
 prose(
@@ -984,7 +987,8 @@ add(slide('Uniform cost search (UCS)',
     indent(indent('If $s\'$ already in explored: continue')),
     indent(indent(nowrapText('Update <b>frontier</b> with $s\'$ and priority $p + \\Cost(s, a)$'))),
   _).scale(0.95),
-  parentCenter('[live solution]'),
+  //parentCenter('[live solution]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>Uniform Cost Search</tt>]', 'uniformCostSearch.mp4')),
 _));
 
 prose(
