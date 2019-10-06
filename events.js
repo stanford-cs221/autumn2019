@@ -64,9 +64,10 @@ function eventsOnLoad() {
       lastDate = currentDate;
     }
 
+    var extraDir = '/autumn2019-extra';  // UPDATE
     var jsUrl = 'lectures/index.html#include=' + name + '.js';
-    var pdfUrl = 'lectures/' + name + '.pdf';
-    var smallPdfUrl = 'lectures/' + name + '-6pp.pdf';
+    var pdfUrl = extraDir + '/lectures/' + name + '.pdf';
+    var smallPdfUrl = extraDir + '/lectures/' + name + '-6pp.pdf';
     var oneUrl = 'lectures/index.html#include=' + name + '.js&mode=print1pp';
     var outlineUrl = 'lectures/index.html#include=' + name + '.js&mode=outline';
     var dayColor = 'green';
@@ -117,9 +118,9 @@ function eventsOnLoad() {
   }
 
   function liveProgrammingLink(name) {
-    return '<a href="live/'+name+'" class="pdfLink" target="_blank">[demo]</a>';
+    return '<a href="live/'+name+'" class="pdfLink" target="_blank">[code]</a>';
   }
-  
+
   function suppmaterialLink(name) {
     return '<a href="lectures/'+name+'" class="pdfLink" target="_blank">[supplementary]</a>';
   }
@@ -295,27 +296,27 @@ function eventsOnLoad() {
   // https://registrar.stanford.edu/academic-calendar
 
   addEvent('Oct 11 2019', 'Drop date');
-  addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // TODO UPDATE
+  // addEvent('Nov 19 2019', 'Exam'.fontcolor('brown').bold());  // Update once date is finalized
 
   section('Introduction (Percy)', 'What is this class about?');
 
   nextClass(0);
-  disableItem('Overview of course<br>Optimization', 'overview');
-  disableHomework('foundations', 'Foundations', 8);
+  enableItem('Overview of course<br>Optimization', 'overview', [liveProgrammingLink('overview')]);
+  openHomework('foundations', 'Foundations', 8);
 
   nextClass(2);
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
-  disableItem('Linear classification<br>Loss minimization<br>Stochastic gradient descent', 'learning1', [liveProgrammingLink('learning1')]);
+  enableItem('Linear classification<br>Loss minimization<br>Stochastic gradient descent', 'learning1', [liveProgrammingLink('learning1')]);
   nextClass(1);
-  disableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
+  enableItem('Section: optimization, probability, Python (review)', null, [sectionLink('section1.pdf', 'slides')], true);
   nextClass(4);
 
-  disableHomework('sentiment', 'Sentiment classification');
-  disableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
+  openHomework('sentiment', 'Sentiment classification');
+  enableItem('Features and non-linearity<br>Neural networks, nearest neighbors', 'learning2');
   nextClass(2);
-  disableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
+  enableItem('Generalization<br>Unsupervised learning, K-means', 'learning3', [liveProgrammingLink('learning3')]);
   nextClass(1);
-  disableItem('Section: Backpropagation and SciKit Learn', null, [sectionLink('section2.pdf', 'slides')], true);
+  enableItem('Section: Backpropagation and SciKit Learn tutorial', null, [sectionLink('section2.pdf', 'slides'), sectionLink('sklearn_tutorial.ipynb', 'tutorial ipython notebook')], true);
   nextClass(4);
 
   section('Search (Dorsa)', 'Problem solving as finding paths in graphs...');
@@ -333,7 +334,7 @@ function eventsOnLoad() {
   disableHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
-  disableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
+  disableItem('(Reid) Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
   nextClass(1);
   disableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
   nextClass(4);
@@ -351,7 +352,7 @@ function eventsOnLoad() {
   disableHomework('scheduling', 'Course scheduling');
   disableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
-  disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
+  disableItem('(Reid) Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
   disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);

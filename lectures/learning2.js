@@ -6,23 +6,17 @@ add(titleSlide('Lecture 3: Machine learning II',
   parentCenter(image('images/learning.png').width(300)),
 _));
 
-add(quizSlide('learning2-start',
-  'Can we obtain decision boundaries which are circles by using linear classifiers?',
-  'Yes',
-  'No',
+add(slide('Announcements',
+  bulletedText('Homework 1 (foundations) due tomorrow at <b>11pm</b>; please test submit early, since you are responsible for any technical issues you encounter; don\'t email it to us'),
+	bulletedText('Homework 2 (sentiment) is out'),
+	bulletedText('Section this Thursday at 3:30pm'),
 _));
-
-prose(
-  'The answer is yes.',
-  'This might seem paradoxical since we are only working with linear classifiers.',
-  'But as we will see later, <b>linear</b> refers to the relationship between the',
-  'weight vector $\\w$ and the prediction score (not the input $x$, which might not even be a real vector),',
-  'whereas the decision boundary refers to how the prediction varies as a function of $x$.',
-_);
 
 learnFramework(2);
 
 prose(
+  'Recall from last time that learning is the process of taking training data and turning it into a model (predictor).',
+  _,
   'Last time, we started by studying the predictor $f$,',
   'concerning ourselves with linear predictors based on the score $\\w \\cdot \\phi(x)$,',
   'where $\\w$ is the weight vector we wish to learn and $\\phi$',
@@ -51,8 +45,7 @@ add(slide('Review: loss functions',
     [lossGraph({pause: false, regression: true, squaredLoss: true, absLoss: true}).scale(0.8), pause(),
     lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true, logisticLoss: true}).scale(0.8)],
   _).center().margin(80, 20)),
-  pause(),
-  parentCenter(bluebold('Captures properties of the desired predictor')),
+  parentCenter(bluebold('Loss captures properties of the desired predictor')),
 _));
 
 prose(
@@ -66,7 +59,23 @@ prose(
   'Which loss function we choose depends on the desired properties.',
   'For example, the absolute deviation loss for regression is robust against outliers.',
   'The logistic loss for classification never relents in encouraging large margin.',
-  _,
+_);
+
+function f(x) { return text(x).scale(0.8); }
+add(slide('A regression example',
+  stmt('Training data'),
+  parentCenter(table(
+    ['$x$', '$y$', pause(), '$\\Loss(x, y, w) = (\\w \\cdot \\phi(x) - y)^2$'], pause(-1),
+    [f('$[1, 0]$'), f('$2$'), pause(), f('$(w_1 - 2)^2$')], pause(-1),
+    [f('$[1, 0]$'), f('$4$'), pause(), f('$(w_1 - 4)^2$')], pause(-1),
+    [f('$[0, 1]$'), f('$-1$'), pause(), f('$(w_2 - (-1))^2$')],
+  _).margin(40, 5).justify('l', 'c')),
+  pause(),
+  parentCenter('$\\TrainLoss(\\w) = \\frac{1}{3}((w_1 - 2)^2 + (w_1 - 4)^2 + (w_2 - (-1))^2)$').scale(0.8),
+  parentCenter('[whiteboard]'),
+_));
+
+prose(
   'Note that we\'ve been talking about the loss on a single example,',
   'and plotting it in 1D against the residual or the margin.',
   'Recall that what we\'re actually optimizing is the training loss,',
@@ -81,7 +90,6 @@ prose(
   'The first two points contribute a quadratic term sensitive to $w_1$,',
   'and the third point contributes a quadratic term sensitive to $w_2$.',
   'When you combine them, you get a quadratic centered at $[3, -1]$.',
-  '(Draw this on the whiteboard).',
 _);
 
 add(slide('Review: optimization algorithms',
@@ -125,6 +133,27 @@ prose(
   'In both cases, one must be careful to set the step size $\\eta$ properly (not too big, not too small).',
 _);
 
+add(quizSlide('learning2-start',
+  'Can we obtain decision boundaries which are circles by using linear classifiers?',
+  'Yes',
+  'No',
+_));
+
+prose(
+  'The answer is yes.',
+  _,
+  'This might seem paradoxical since we are only working with linear classifiers.',
+  'But as we will see later, <b>linear</b> refers to the relationship between the',
+  'weight vector $\\w$ and the prediction score (not the input $x$, which might not even be a real vector),',
+  'whereas the decision boundary refers to how the prediction varies as a function of $x$.',
+  _,
+  'Advanced: Sometimes people might think that linear classifiers are not expressive,',
+  'and that you need neural networks to get expressive and non-linear classifiers.',
+  'This is false.',
+  'You can build arbitrarily expressive models with the machinery of linear classifiers (see kernel methods).',
+  'The advantages of neural networks are the computational benefits and the inductive bias that comes from the particular neural network architecture.',
+_);
+
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
     ['features', 'Features'],
@@ -139,7 +168,7 @@ roadmap(0);
 
 prose(
   'The first half of this lecture is about thinking about the feature extractor $\\phi$.',
-  'Features are a critical part of machine learning which often does not get as much attention as it deserves.',
+  'Features are a critical part of machine learning which often do not get as much attention as they deserve.',
   'Ideally, they would be given to us by a domain expert,',
   'and all we (as machine learning people) have to do is to stick them into our learning algorithm.',
   'While one can get considerable mileage out of doing this,',
@@ -156,7 +185,7 @@ add(slide('Two components',
   parentCenter('$\\red{\\w} \\cdot \\blue{\\phi(x)}$'),
   pause(),
   headerList(null,
-    'Previous: '+red('learning')+' sets $\\red{\\w}$ via optimization',
+    'Previous: '+red('learning')+' chooses $\\red{\\w}$ via optimization',
     'Next: '+bluebold('feature extraction')+' specifies $\\blue{\\phi(x)}$ based on domain knowledge',
   _),
 _));
@@ -306,7 +335,7 @@ prose(
   'The features not in the map implicitly have a default value of zero.',
   'This sparse representation is very useful in natural language processing,',
   'and is what allows us to work effectively over trillions of features.',
-  'In Python, one would define a feature vector $\\phi(x)$ as <tt>{"endsWith_"+x[-3:]: 1}</tt>.',
+  'In Python, one would define a feature vector $\\phi(x)$ as the dictionary <tt>{"endsWith_"+x[-3:]: 1}</tt>.',
   'Maps do incur extra overhead compared to arrays, and therefore maps are much slower when the features are not sparse.',
   _,
   'Finally, it is important to be clear when describing features.',
@@ -327,7 +356,7 @@ add(slide('Hypothesis class',
 _));
 
 prose(
-  'Having discussed how feature templates can be used to organize groups of feature and allow us to leverage sparsity,',
+  'Having discussed how feature templates can be used to organize groups of features and allow us to leverage sparsity,',
   'let us further study how features impact prediction.',
   _,
   'The key notion is that of a <b>hypothesis class</b>,',
@@ -361,7 +390,7 @@ prose(
   'Second, we perform learning (given training data) to obtain a particular predictor $f_\\w \\in \\sF$.',
   _,
   'Note that if the hypothesis class doesn\'t contain any good predictors, then no amount of learning can help.',
-  'So the question when extracting features is really whether they are powerful enough to <b>express</b> predictors which are good?',
+  'So the question when extracting features is really whether they are powerful enough to <b>express</b> predictors which are good.',
   'It\'s okay and expected that $\\sF$ will contain a bunch of bad ones as well.',
   _,
   'Later, we\'ll see reasons for keeping the hypothesis class small (both for computational and statistical reasons),',
@@ -391,8 +420,8 @@ prose(
   'If we use $\\phi(x) = x$, then we get linear functions that go through the origin.',
   _,
   'However, we want to have functions that "bend" (or are not monotonic).',
-  'For example, if we want to predict someone\'s health given his or her body temperature.',
-  'There is sweet spot temperature (37 C) where the health is optimal;',
+  'For example, if we want to predict someone\'s health given his or her body temperature,',
+  'there is a sweet spot temperature (37 C) where the health is optimal;',
   'both higher and lower values should cause the health to decline.',
   _,
   'If we use $\\phi(x) = [x, x^2]$, then we get quadratic functions that go through the origin,',
@@ -410,7 +439,7 @@ add(slide('Example: even more flexible functions',
 _));
 
 prose(
-  'However, even quadratic functions can be limiting, because they have to rise and fall in a certain (parabolic) way.',
+  'However, even quadratic functions can be limiting because they have to rise and fall in a certain (parabolic) way.',
   'What if we wanted a more flexible, freestyle approach?',
   _,
   'We can create piecewise constant functions by defining features that "fire" (are 1) on particular regions of the input (e.g., $1 < x \\le 2$).',
@@ -503,7 +532,6 @@ add(slide('An example task',
   _),
   pause(),
   stmt('Recall', 'feature extractor $\\phi$ should pick out properties of $x$ that might be useful for prediction of $y$'),
-  stmt('Recall', 'feature extractor $\\phi$ returns a set of (feature name, real number) pairs'),
 _));
 
 prose(
@@ -552,7 +580,7 @@ prose(
   'In the last decade, there has been a huge resurgence of interest in neural networks',
   'since they perform so well and training seems to not be such an issue when you have tons of data and compute.',
   _,
-  'In a way, neural networks allow one to automatically learn the features of a linear classifier which are geared towards the desired task,',
+  'In a sense, neural networks allow one to automatically learn the features of a linear classifier which are geared towards the desired task,',
   'rather than specifying them all by hand.',
 _);
 
@@ -609,11 +637,21 @@ _);
 add(slide('Learning strategy',
   stmt('Define: $\\phi(x) = [1, x_1, x_2]$'),
   stmt('Intermediate hidden subproblems'),
-  indent(xtable('$h_1 = \\1[\\red{\\v_1} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_1} = [-1, +1, -1]$').scale(0.7)).margin(150)),
-  indent(xtable('$h_2 = \\1[\\red{\\v_2} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_2} = [-1, -1, +1]$').scale(0.7)).margin(150)),
+  indent(stagger(
+    '$h_1 = \\1[x_1 - x_2 \\ge 1]$',
+    xtable('$h_1 = \\1[\\red{\\v_1} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_1} = [-1, +1, -1]$').scale(0.7)).margin(150),
+  _)),
+  pause(),
+  indent(stagger(
+    '$h_2 = \\1[x_2 - x_1 \\ge 1]$',
+    xtable('$h_2 = \\1[\\red{\\v_2} \\cdot \\phi(x) \\ge 0]$', text('$\\red{\\v_2} = [-1, -1, +1]$').scale(0.7)).margin(150),
+  _)),
   pause(),
   stmt('Final prediction'),
-  indent(xtable('$f_\\red{\\V, \\w}(x) = \\sign(\\red{w_1} h_1 + \\red{w_2} h_2)$', text('$\\red{\\w} = [1, 1]$').scale(0.7)).margin(100)),
+  indent(stagger(
+    '$y = \\sign(h_1 + h_2)$',
+    xtable('$f_\\red{\\V, \\w}(x) = \\sign(\\red{w_1} h_1 + \\red{w_2} h_2)$', text('$\\red{\\w} = [1, 1]$').scale(0.7)).margin(100),
+  _)),
   pause(),
   keyIdea('joint learning',
     'Goal: learn both hidden subproblems $\\red{\\V = (\\v_1, \\v_2)}$ and combination weights $\\red{\\w = [w_1, w_2]}$',
@@ -658,22 +696,22 @@ prose(
   'This is what makes optimizing neural networks hard.',
 _);
 
-add(slide('Linear predictors',
-  stmt('Linear predictor'),
+add(slide('Linear functions',
+  stmt('Linear functions'),
   indent(linearPredictor(), 40),
   stmt('Output'),
   parentCenter('$\\text{score} = \\red{\\w} \\cdot \\phi(x)$'),
 _));
 
 prose(
-  'Let\'s try to visualize the predictors.',
+  'Let\'s try to visualize the functions.',
   _,
-  'Recall that linear classifiers take the input $\\phi(x) \\in \\R^d$ and directly take the dot product with the weight vector $\\w$ to form the score,',
+  'Recall that a linear function takes the input $\\phi(x) \\in \\R^d$ and directly take the dot product with the weight vector $\\w$ to form the score,',
   'the basis for prediction in both binary classification and regression.',
 _);
 
 add(slide('Neural networks',
-  stmt('Neural network'),
+  stmt('Neural network (one hidden layer)'),
   indent(neuralNetwork(0), 40),
   pause(-1),
   stmt('Intermediate hidden units'),
@@ -687,19 +725,24 @@ add(slide('Neural networks',
 _));
 
 prose(
-  'The idea in neural networks is to map an input $\\phi(x) \\in \\R^d$ onto a hidden <b>intermediate representation</b> $\\h \\in \\R^k$,',
-  'which in turn is mapped to the score.',
+  'A (one-layer) neural network first maps an input $\\phi(x) \\in \\R^d$ onto a hidden <b>intermediate representation</b> $\\h \\in \\R^k$,',
+  'which in turn is mapped to the score via a linear function.',
   _,
   'Specifically, let $k$ be the number of hidden units.',
   'For each hidden unit $j = 1, \\dots, k$, we have a weight vector $\\v_j \\in \\R^d$,',
   'which is used to determine the value of the hidden node $h_j \\in \\R$ (also called the <b>activation</b>)',
   'according to $h_j = \\sigma(\\v_j \\cdot \\phi(x))$, where $\\sigma$ is the activation function.',
   'The activation function can be a number of different things, but its main property is that it is a non-linear function.',
-  'Traditionally the <b>sigmoid</b> function $\\sigma(z) = (1+e^{-z})^{-1}$ was used,',
-  'but recently the <b>rectified linear</b> function $\\sigma(z) = \\max\\{z,0\\}$ has gained popularity.',
   _,
   'Let $\\h = [h_1, \\dots, h_k]$ be the vector of activations.',
   'This activation vector is now combined with another weight vector $\\w \\in \\R^k$ to produce the final score.',
+  _,
+  'The logistic function is an instance of an <b>activation function</b>,',
+  'and is the classic one that was used in the past.',
+  'These days, most people use a <b>rectifier</b> function, commonly known as a rectified linear unit (ReLU),',
+  'which is defined as $\\text{ReLU}(z) = \\max(z, 0)$.',
+  'The ReLU has two advantages: (i) its gradient doesn\'t vanish as $z$ grows, which makes it empirically easier to train;',
+  'and (ii) it only involves a max operation, which is computationally easier to compute than the exponential function.',
 _);
 
 add(slide('Neural networks',
@@ -719,12 +762,14 @@ prose(
   'The noteworthy aspect here is that the activation vector $\\h$ behaves a lot like our feature vector $\\phi(x)$ that we were using for linear prediction.',
   'The difference is that mapping from input $\\phi(x)$ to $\\h$ is learned automatically, not manually constructed (as was the case before).',
   'Therefore, a neural network can be viewed as learning the features of a linear classifier.',
-  'Of course, the type of features that can be learned must be of the form $x \\to \\sigma(\\v_j \\cdot \\phi(x))$.',
+  'Of course, the type of features that can be learned must be of the form $x \\mapsto \\sigma(\\v_j \\cdot \\phi(x))$.',
+  'Even for deep neural networks, no matter now deep the neural network is, the top layer is always a linear function,',
+  'and the layers below can be interpreted as defining a (possibly very complex) feature map.',
   _,
   'Whether this is a suitable form depends on the nature of the application.',
   'Empirically, though, neural networks have been quite successful,',
   'since learning the features from the data with the explicit objective of minimizing the loss can yield better features than ones which are manually crafted.',
-  'Recently, there have been some advances in getting neural networks to work, and they have become the state-of-the-art in many tasks.',
+  'Since 2010, there have been some advances in getting neural networks to work, and they have become the state-of-the-art in many tasks.',
   'For example, all the major companies (Google, Microsoft, IBM) all recently switched over to using neural networks for speech recognition.',
   'In computer vision, (convolutional) neural networks are completely dominant in object recognition.',
 _);
@@ -755,10 +800,10 @@ _);
 add(slide('Approach',
   stmt('Mathematically: just grind through the chain rule'),
   pause(),
-  stmt('Next: visualize the computation using a computation graph'),
+  stmt('Next: visualize the computation using a ' + greenbold('computation graph')),
   headerList('Advantages',
     'Avoid long equations',
-    'Reveal structure of computations (modularity, efficiency, dependencies)',
+    'Reveal structure of computations (modularity, efficiency, dependencies) &mdash; TensorFlow/PyTorch are built on this',
   _),
 _));
 
@@ -770,7 +815,7 @@ prose(
   'and will not only make gradients easy to compute,',
   'but also shed more light onto the predictor and loss function.',
   _,
-  'In fact, these days if you use a package such as TensorFlow or Pytorch,',
+  'In fact, these days if you use a package such as TensorFlow or PyTorch,',
   'you can write down the expressions symbolically and the gradient is computed for you.',
   'This is done essentially using the computational procedure that we will see.',
 _);
@@ -801,8 +846,9 @@ add(slide('Functions as boxes',
     _).ymargin(100),
     moveLeftOf('$\\text{out}$', operation.headBox),
   _)),
+  pause(),
   stmt('Partial derivatives (gradients): how much does the output change if an input changes?'),
-  pause(2),
+  pause(),
   stmt('Example'),
   parentCenter(stagger(
     '$2 \\text{in}_1 + \\text{in}_2 \\text{in}_3 = \\text{out}$',
@@ -834,7 +880,7 @@ _).leftHeader(image('images/bricks.jpg')));
 prose(
   'Here are 5 examples of simple functions and their partial derivatives.',
   'These should be familiar from basic calculus.',
-  'All we\'ve done is to present them in a visually more intuitive way.',
+  'All we\'ve done is present them in a visually more intuitive way.',
   _,
   'But it turns out that these simple functions are all we need to build up many of the more complex',
   'and potentially scarier looking functions that we\'ll encounter in machine learning.',
@@ -861,7 +907,7 @@ prose(
   'The key idea is that the partial derivative <b>decomposes</b> into a product of the two partial derivatives on the two edges.',
   'You should recognize this is no more than the chain rule in graphical form.',
   _,
-  'More generally, if the partial derivative of $y$ with respect to $x$ is simply the product of all the green expressions on the edges of the path connecting $x$ and $y$.',
+  'More generally, the partial derivative of $y$ with respect to $x$ is simply the product of all the green expressions on the edges of the path connecting $x$ and $y$.',
   'This visual intuition will help us better understand more complex functions, which we will turn to next.',
 _);
 
@@ -1006,6 +1052,34 @@ prose(
   'In this example, the backward pass gives us the gradient of the output node (the gradient of the loss) with respect to the weights (the red nodes).',
 _);
 
+add(slide('Note on optimization',
+  parentCenter('$\\TrainLoss(\\w)$'),
+  parentCenter(table(
+    ['Linear functions', 'Neural networks'].map(darkblue),
+    [image('images/convex-function.jpeg'), image('images/nonconvex-function.jpeg')],
+    ['(convex loss)', '(non-convex)'],
+  _).center().margin(50, 5)),
+  parentCenter('Optimization of neural networks is generally '+redbold('hard')),
+_));
+
+prose(
+  'While we can go through the motions of running the backpropagation algorithm to compute gradients,',
+  'what is the result of running SGD?',
+  _,
+  'For linear predictors (using the squared loss or hinge loss),',
+  '$\\TrainLoss(\\w)$ is a convex function,',
+  'which means that SGD (with an appropriately set step size)',
+  'is theoretically guaranteed to converge to the global optimum.',
+  _,
+  'However, for neural networks,',
+  '$\\TrainLoss(\\w)$ is typically non-convex',
+  'which means that there are multiple local optima,',
+  'and SGD is not guaranteed to converge to the global optimum.',
+  'There are many settings that SGD fails both theoretically and empirically,',
+  'but in practice, SGD on neural networks can work with proper attention to tuning hyperparameters.',
+  'The gap between theory and practice is not well understood and an active area of research.',
+_);
+
 ////////////////////////////////////////////////////////////
 roadmap(3);
 
@@ -1066,10 +1140,6 @@ prose(
   'Such methods are called <b>non-parametric</b>.',
 _);
 
-add(quizSlide('learning2-end',
-  'What was the most surprising thing you learned today?',
-_));
-
 add(summarySlide('Summary of learners',
   bulletedText(stmt('Linear predictors: combine raw features')),
   parentCenter('prediction is '+greenbold('fast')+', '+greenbold('easy')+' to learn, '+redbold('weak')+' use of features'),
@@ -1084,7 +1154,7 @@ _));
 prose(
   'Let us conclude now.',
   'First, we discussed some general principles for designing good features for linear predictors.',
-  'Just with the machinery of linear prediction, we were able to obtain rich predictors which were quite rich.',
+  'Just with the machinery of linear prediction, we were able to obtain rich predictors.',
   _,
   'Second, we focused on expanding the expressivity of our predictors fixing a particular feature extractor $\\phi$.',
   _,

@@ -62,7 +62,7 @@ function onLoad(assignmentId, ownerName, version) {
 
   header.append($('<div>')
     .append($('<div>', {class: 'assignmentTitle'}).append(document.title))
-    .append($('<div>').append('Stanford CS221 Fall 2018-2019'.bold())));
+    .append($('<div>').append('Stanford CS221 Fall 2019-2020'.bold())));
   header.append($('<p>').append('Owner CA: ' + ownerName));
   header.append($('<p>').append('Version: ' + version));
 

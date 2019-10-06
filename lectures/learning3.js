@@ -6,23 +6,10 @@ add(titleSlide('Lecture 4: Machine learning III',
   parentCenter(image('images/learning.png').width(300)),
 _));
 
-add(quizSlide('learning3-objectiveML',
-  'What\'s the true objective of machine learning?',
-  'minimize error on the training set',
-  'minimize training error with regularization',
-  'minimize error on unseen future examples',
-  'learn about machines',
+add(slide('Announcements',
+  bulletedText('Homework 1 (foundations): Thursday 11pm is 2 late day <b>hard deadline</b>'),
+  bulletedText('Section Thursday 3:30pm: backpropagation example, nearest neighbors, scikit-learn'),
 _));
-
-prose(
-  'So far in this class, we have tried to cast everything as a well-defined optimization problem.',
-  'We have even written down an objective function, which is the average loss (error) on the training data.',
-  _,
-  'But it turns out that that\'s not really the true goal.',
-  'That\'s only what we tell our optimization friends so that there\'s something concrete and actionable.',
-  'The true goal is to minimize error on unseen future examples; in other words, we need to <b>generalize</b>.',
-  'As we\'ll see, this is perhaps the most important aspect of machine learning and statistics &mdash; albeit a more elusive one.',
-_);
 
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
@@ -32,21 +19,22 @@ function roadmap(i) {
   ]));
 }
 
-add(slide('Review',
-  stmt('Feature extractor $\\phi$'),
+add(slide('Review: feature extractor',
   parentCenter(featureExtractionExample()).scale(0.8),
-  pause(),
-  headerList('Prediction score',
-    'Linear predictor: $\\text{score} = \\w \\cdot \\phi(x)$',
-    'Neural network: $\\text{score} = \\sum_{j=1}^k w_j \\sigma(\\v_j \\cdot \\phi(x))$',
-  _),
 _));
 
 prose(
-  'First a review: last lecture we spoke at length about the importance of features,',
+  'Last lecture, we spoke at length about the importance of features,',
   'how to organize them using feature templates, and how we can get interesting non-linearities by choosing the feature extractor $\\phi$ judiciously.',
   'This is you using all your domain knowledge about the problem.',
-  _,
+_);
+
+add(slide('Review: prediction score',
+  bulletedText('Linear predictor: $\\text{score} = \\w \\cdot \\phi(x)$'),
+  bulletedText('Neural network: $\\text{score} = \\sum_{j=1}^k w_j \\sigma(\\v_j \\cdot \\phi(x))$'),
+_));
+
+prose(
   'Given the feature extractor $\\phi$, we can use that to define a prediction score,',
   'either using a linear predictor or a neural network.',
   'If you use neural networks, you typically have to work less hard at designing features,',
@@ -54,16 +42,13 @@ prose(
   'There is a human-machine tradeoff here.',
 _);
 
-add(slide('Review',
-  stmt('Loss function $\\Loss(x, y, \\w)$'),
-  /*parentCenter(table(
-    [redbold('Regression'), redbold('Binary classification')],
-    [lossGraph({pause: false, regression: true, squaredLoss: true, absLoss: true}).scale(0.8),
-    lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true, logisticLoss: true}).scale(0.8)],
-  _).center().margin(80, 20)),*/
-  parentCenter(xtable(lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true}).scale(0.8), '(for binary classification)').center().margin(50)),
+add(slide('Review: loss function',
+  indent(stmt('$\\Loss(x, y, \\w)$')),
+  parentCenter(xtable(lossGraph({pause: false, zeroOneLoss: true, hingeLoss: true}).scale(0.8), '(for binary classification)').center().margin(50)).scale(0.7),
   pause(),
-  stmt('Optimization algorithm: stochastic gradient descent'),
+  indent('$\\displaystyle \\TrainLoss(\\w) = \\frac1{|\\Train|} \\sum_{(x,y) \\in \\Train} \\Loss(x, y, \\w)$'),
+  pause(),
+  stmt('Stochastic gradient descent'),
   parentCenter('$\\w \\leftarrow \\w - \\eta \\nabla_\\w \\Loss(x, y, \\w)$'),
 _));
 
@@ -77,14 +62,29 @@ prose(
   'We saw that a simple algorithm, stochastic gradient descent, works quite well.',
 _);
 
+add(quizSlide('learning3-objectiveML',
+  'What\'s the true objective of machine learning?',
+  'minimize error on the training set',
+  'minimize training error with regularization',
+  'minimize error on the test set',
+  'minimize error on unseen future examples',
+  'learn about machines',
+_));
+
+prose(
+  'We have written the average training loss as the objective function,',
+  'but it turns out that that\'s not really the true goal.',
+  'That\'s only what we tell our optimization friends so that there\'s something concrete and actionable.',
+  'The true goal is to minimize error on unseen future examples; in other words, we need to <b>generalize</b>.',
+  'As we\'ll see, this is perhaps the most important aspect of machine learning and statistics &mdash; albeit a more elusive one.',
+_);
+
 ////////////////////////////////////////////////////////////
 // Generalization
 roadmap(0);
 
 add(slide('Training error',
-  stmt('Loss minimization'),
-  parentCenter('$\\displaystyle \\min_{\\w} \\TrainLoss(\\w)$'),
-  pause(),
+  nil(),
   parentCenter('$\\displaystyle \\TrainLoss(\\w) = \\frac1{|\\Train|} \\sum_{(x,y) \\in \\Train} \\Loss(x, y, \\w)$'),
   'Is this a good objective?',
 _));
@@ -238,7 +238,7 @@ prose(
   'So there is just a lot more wiggle room for rote learning.',
 _);*/
 
-function biasVariance() {
+function biasVariance(pause) {
   return overlay(
     center(a = ellipse(350, 100).fillColor('brown').fillOpacity(0.2)),
     transform('All predictors').pivot(-1, -1).scale(0.8).shift(a.left(), a.top()),
@@ -265,11 +265,11 @@ function biasVariance() {
 }
 
 add(slide('Approximation and estimation error',
-  parentCenter(biasVariance()),
+  parentCenter(biasVariance(pause)),
   pause(-1),
   bulletedText(stmt('Approximation error: how good is the hypothesis class?')),
   pause(),
-  bulletedText(stmt('Estimation error: how good is the learned predictor <b>relative to</b> the hypothesis class?')),
+  bulletedText(stmt('Estimation error: how good is the learned predictor <b>relative to</b> the potential of the hypothesis class?')),
   pause(),
   parentCenter(stagger(
     greenbold('$\\text{Err}(\\hat f) - \\text{Err}(f^*)$'),
@@ -322,14 +322,17 @@ G.trainTestGraph = function(opts) {
 }
 
 add(slide('Effect of hypothesis class size',
+  parentCenter(biasVariance(function (x) { return _; })).scale(0.6),
   'As the hypothesis class size increases...',
   stmt('Approximation error decreases because'),
   pause(),
-  parentCenter('taking min over larger set'),
+  indent('taking min over larger set'),
   pause(),
   stmt('Estimation error increases because'),
   pause(),
-  parentCenter('harder to estimate something more complex'),
+  indent('harder to estimate something more complex'),
+  pause(),
+  parentCenter(greenbold('How do we control the hypothesis class size?')),
 _));
 
 prose(
@@ -338,106 +341,28 @@ prose(
   _,
   'The estimation error increases monotonically as the hypothesis class size increases',
   'for a deeper reason involving statistical learning theory (explained in CS229T).',
-_);
-
-add(slide('Estimation error analogy',
-  parentCenter(image('images/wallet.jpg').width(150)),
-  pause(),
-  stmt('Scenario 1: ask few people around'),
-  pause(),
-  indent(xtable('Is your name Joe?', pause(), image('images/raise-hand.jpg').width(70)).margin(50).center()),
-  pause(),
-  stmt('Scenario 2: email all of Stanford'),
-  pause(),
-  indent(xtable('Is your name Joe?', pause(), image('images/raise-hands.jpg').width(150)).margin(50).center()),
-  pause(),
-  parentCenter(redbold('people = hypotheses, questions = examples')),
-_));
-
-prose(
-  'Without formalizing it, we can understand the learning theory using the following analogy.',
-  'Suppose you find a wallet on the ground, and you\'re trying to figure out who it belongs to.',
-  '(Assume all people are honest in this example.)',
   _,
-  'If your hypothesis is that it was just the people around you, you can go to each of them and ask',
-  'a question to try to see if that is the person\'s wallet.',
-  'If there are only a few people, then you could just ask a few basic questions (e.g., first name),',
-  'and with high confidence if you find a match, then it\'s probably the right person.',
-  _,
-  'However, if you decide to email 10,000 people and ask the same basic questions,',
-  'then you\'ll probably have a lot of matches and if you just choose one arbitraily,',
-  'then chances are that you\'ve probably got the wrong person.',
-  _,
-  'In this analogy, the questions (examples) try to help you identify the correct person (hypothesis).',
-  'To stretch this analogy a bit, stochastic gradient descent is like asking a person:',
-  '"which direction do you think I should go to find the correct person?"',
-_);
-
-add(slide('Controlling size of hypothesis class',
-  'Linear predictors are specified by weight vector $\\w \\in \\R^d$',
-  pause(),
-  stmt('Keeping the dimensionality $d$ small'),
-  parentCenter(xtable(
-    image('images/sphere.jpg').width(100),
-    bigRightArrow(100),
-    circle(40).fillColor('lightgray'),
-  _).center().margin(50)),
-  parentCenter('[whiteboard: linear and quadratic functions]'),
-  pause(),
-  stmt('Keeping the norm (length) $\\|\\w\\|$ small'),
-  parentCenter(xtable(
-    circle(40).fillColor('lightgray'),
-    bigRightArrow(100),
-    circle(10).fillColor('lightgray'),
-  _).center().margin(50)),
-  parentCenter('[whiteboard: $x \\mapsto w_1 x$]'),
-_));
-
-prose(
   'For each weight vector $\\w$, we have a predictor $f_\\w$',
   '(for classification, $f_\\w(x) = \\w \\cdot \\phi(x))$.',
   'So the hypothesis class $\\sF = \\{ f_\\w \\}$ is all the predictors as $\\w$ ranges.',
   'By controlling the number of possible values of $\\w$ that the learning algorithm is allowed to choose from,',
   'we control the size of the hypothesis class and thus guard against overfitting.',
-  _,
-  'There are two ways to do this: keeping the dimensionality $d$ small, and keeping the norm $\\|\\w\\|$ (length of $\\w$) small.',
 _);
 
-/*add(slide('Controlling size of hypothesis class',
-  'Linear predictors are specified by weight vector $\\w \\in \\R^d$',
-  parentCenter('$f_{\\red{\\w}}(x) = \\red{w_0} + \\red{w_1} x + \\red{w_2} x^2$'),
-  parentCenter('[whiteboard: reduce dimensionality, norm]'),
+add(slide('Strategy 1: dimensionality',
+  parentCenter('$\\w \\in \\R^d$'),
+  stmt('Reduce the dimensionality $d$'),
+  parentCenter(xtable(
+    image('images/sphere.jpg').width(100),
+    bigRightArrow(100),
+    circle(40).fillColor('lightgray'),
+  _).center().margin(50)),
 _));
 
 prose(
-  'To balance bias and variance, we need to be able to adjust the size of our hypothesis class.',
-  'For concreteness, think about linear predictors, in which the hypothesis class is specified by weight vectors $\\w \\in \\R^d$.',
-  _,
-  'There are two primary ways to do reduce (or increase) the size of these hypothesis classes:',
-  'the first is by controlling the dimensionality $d$, and the second is by controlling the norm $\\|w\\|$.',
-_);*/
-
-/*add(slide('Constraining the norm',
-  stmt('Constrained optimization'),
-  parentCenter('$\\displaystyle \\min_{\\red{\\|\\w\\| \\le B}} \\TrainLoss(\\w)$'),
-  pause(),
-  algorithm('projected gradient descent',
-    'Initialize $\\w = [0, \\dots, 0]$',
-    'For $t = 1, \\dots, T$:',
-    indent(nowrapText('$\\w \\leftarrow \\w - \\eta \\nabla_\\w \\TrainLoss(\\w)$')), pause(),
-    indent(nowrapText('If $\\red{\\|\\w\\| > B}$: $\\red{\\w \\leftarrow \\w \\cdot \\frac{B}{\\|\\w\\|}}$')),
-  _),
-  'Same as gradient descent, except if $\\w$ leaves constraint set, put it back.',
-_));
-
-prose(
-  'The second way to keep hypothesis classes small is to not let the weight vectors get too big.',
-  'We can simply take our original loss minimization framework and add a constraint that the norm (also called length or magnitude) of $\\w$ isn\'t too big ($\\|\\w\\| \\le B$).',
-  'This defines the optimization problem over weight vectors in a ball of radius $B$.',
-  _,
-  'The gradient descent algorithm we had before for unconstrained minimization can be adapted easily to handle the constraint:',
-  'do gradient descent as usual, and if the weights ever leave the radius $B$ ball, then shrink the length so that we\'re back in the constraint set.',
-_);*/
+  'One straightforward strategy is to change the dimensionality, which is the number of features.',
+  'For example, linear functions are lower-dimensional than quadratic functions.',
+_);
 
 add(slide('Controlling the dimensionality',
   headerList('Manual feature (template) selection',
@@ -453,7 +378,6 @@ add(slide('Controlling the dimensionality',
 _));
 
 prose(
-  'The most intuitive way to reduce overfitting is to reduce the number of features (or feature templates).',
   'Mathematically, you can think about removing a feature $\\phi(x)_{37}$',
   'as simply only allowing its corresponding weight to be zero ($w_{37} = 0$).',
   _,
@@ -464,7 +388,18 @@ prose(
   'but these are beyond the scope of this class.',
 _);
 
-add(slide('Controlling the norm: regularization',
+add(slide('Strategy 2: norm',
+  parentCenter('$\\w \\in \\R^d$'),
+  stmt('Reduce the norm (length) $\\|\\w\\|$'),
+  parentCenter(xtable(
+    circle(40).fillColor('lightgray'),
+    bigRightArrow(100),
+    circle(10).fillColor('lightgray'),
+  _).center().margin(50)),
+  parentCenter('[whiteboard: $x \\mapsto w_1 x$]'),
+_));
+
+add(slide('Controlling the norm',
   stmt('Regularized objective'),
   parentCenter('$\\displaystyle \\min_{\\w} \\TrainLoss(\\w) + \\red{\\frac{\\lambda}{2} \\|\\w\\|^2}$'),
   pause(),
@@ -474,8 +409,6 @@ add(slide('Controlling the norm: regularization',
     indent(nowrapText('$\\w \\leftarrow \\w - \\eta (\\nabla_\\w \\left[\\TrainLoss(\\w)\\right] \\red{+ \\lambda \\w})$')),
   _),
   'Same as gradient descent, except shrink the weights towards zero by $\\lambda$.',
-  pause(),
-  stmt('Note: SVM = hinge loss + regularization'),
 _));
 
 prose(
@@ -484,9 +417,13 @@ prose(
   'penalizes the norm (length) of $\\w$.',
   'This is probably the most common way to control the norm.',
   _,
+  'This form of regularization is also known as $L_2$ regularization, or weight decay in deep learning literature.',
+  _,
   'We can use gradient descent on this regularized objective,',
   'and this simply leads to an algorithm which subtracts a scaled down version of $\\w$ in each iteration.',
   'This has the effect of keeping $\\w$ closer to the origin than it otherwise would be.',
+  _,
+  'Note: Support Vector Machines are exactly hinge loss + regularization.',
 _);
 
 add(slide('Controlling the norm: early stopping',
@@ -546,8 +483,6 @@ prose(
 _);
 
 add(slide('Hyperparameters',
-  //stmt('Parameters', 'weights $\\w$ set by learning algorithm'),
-  //pause(),
   definition('hyperparameters', 'Properties of the learning algorithm (features, regularization parameter $\\lambda$, number of iterations $T$, step size $\\eta$, etc.).'),
   'How do we choose hyperparameters?',
   pause(),
@@ -598,7 +533,7 @@ add(slide('Validation',
   _)),
   pause(),
   definition('validation set',
-    'A <b>validation (development) set</b> is taken out of the training data which acts as a surrogate for the <b>test set</b>.',
+    'A <b>validation set</b> is taken out of the training data which acts as a surrogate for the <b>test set</b>.',
   _),
 _));
 
@@ -616,22 +551,27 @@ prose(
   'With this validation set, now we can simply try out a bunch of different hyperparameters and choose the setting that yields the lowest error on the validation set.',
   'Which hyperparameter values should we try?  Generally, you should start by getting the right order of magnitude',
   '(e.g., $\\lambda = 0.0001, 0.001, 0.01, 0.1, 1, 10$) and then refining if necessary.',
+  _,
+  'In $K$-fold <b>cross-validation</b>, you divide the training set into $K$ parts.',
+  'Repeat $K$ times: train on $K-1$ of the parts and use the other part as a validation set.',
+  'You then get $K$ validation errors, from which you can report both the mean and the variance,',
+  'which gives you more reliable information.',
 _);
 
 add(slide('Development cycle',
   problem('simplified named-entity recognition',
-    'Input: a string $x$ (e.g., '+greenitalics('President [Barack Obama] in')+')',
+    'Input: a string $x$ (e.g., '+greenitalics('Governor [Gavin Newsom] in')+')',
     'Output: $y$, whether $x$ contains a person or not (e.g., $+1$)',
   _).scale(0.8),
   pause(),
   algorithm('recipe for success',
     bulletedText([null,
-      'Split data into train, dev, test',
+      'Split data into train, val, test',
       'Look at data to get intuition',
       ['Repeat:',
         'Implement feature / tune hyperparameters',
         'Run learning algorithm',
-        'Sanity check train and dev error rates, weights',
+        'Sanity check train and val error rates, weights',
         'Look at errors to brainstorm improvements',
       ],
       'Run on test set to get final error rates',
@@ -644,7 +584,7 @@ prose(
   'This slide represents the most important yet most overlooked part of machine learning: how to actually apply it in practice.',
   _,
   'We have so far talked about the mathematical foundation of machine learning (loss functions and optimization),',
-  'and discussed some of the conceptual issues surrounding overfitting, generalization, size of hypothesis classes.',
+  'and discussed some of the conceptual issues surrounding overfitting, generalization, and the size of hypothesis classes.',
   'But what actually takes most of your time is not writing new algorithms, but going through a <b>development cycle</b>,',
   'where you iteratively improve your system.',
   _,
@@ -672,18 +612,9 @@ prose(
   'The art of practical machine learning is turning these observations into new features.',
   _,
   'Finally, run your system once on the test set and report the number you get.',
-  'If your test error is much higher than your development error, then you probably',
-  'did too much tweaking and were <b>overfitting</b> (at a meta-level) the development set.',
+  'If your test error is much higher than your validation error, then you probably',
+  'did too much tweaking and were <b>overfitting</b> (at a meta-level) the validation set.',
 _);
-
-/*add(summarySlide('Summary',
-  bulletedText(stmt('Key to good machine learning: balance bias and variance')),
-  bulletedText('Control tradeoff using size of hypothesis class'),
-  pause(),
-  bulletedText(stmt('Test set: only for final evaluation')),
-  bulletedText('Use validation set to tune hyperparameters'),
-  bulletedText('Look at the data!'),
-_));*/
 
 ////////////////////////////////////////////////////////////
 // Unsupervised learning
@@ -692,14 +623,12 @@ roadmap(1);
 add(slide('Supervision?',
   headerList('Supervised learning',
     'Prediction: $\\Train$ contains input-output pairs $(x,y)$', pause(),
-    //'Bayesian networks: $\\Train$ contains full variable assignments', pause(),
-    'Fully-labeled data is very <b><font color="red">expensive</font></b> to obtain (we can get 10,000 labeled examples)',
+    'Fully-labeled data is very <b><font color="red">expensive</font></b> to obtain (we can maybe get thousands of labeled examples)',
   _),
   pause(),
   headerList('Unsupervised learning',
     'Clustering: $\\Train$ only contains inputs $x$', pause(),
-    //'Bayesian networks: $\\Train$ contains partial variable assignments', pause(),
-    'Unlabeled data is much <b><font color="green">cheaper</font></b> to obtain (we can get 100 million unlabeled examples)',
+    'Unlabeled data is much <b><font color="green">cheaper</font></b> to obtain (we can maybe get billions of unlabeled examples)',
   _),
 _));
 
@@ -714,27 +643,6 @@ prose(
   'This is the goal of <b>unsupervised learning</b>.',
 _);
 
-/*add(slide('Latent variables',
-  stmt('Clustering news articles', 'have raw collection of news articles, but topic/category of each is <font color="red"><b>latent</b></font>'),
-  //parentCenter(cachedImage('http://www.materials.ox.ac.uk/uploads/images/news/newspaper.gif').dim(400, 300)),
-  parentCenter(cachedImage('http://jonathanshkurko.files.wordpress.com/2011/04/googlenews.jpg').dim(400, 300)),
-_));
-
-add(slide('Latent variables',
-  stmt('Machine translation', 'know what the translation was, but not how it was obtained (detailed correspondence is <font color="red"><b>latent</b></font>)'),
-  parentCenter(yseq(
-    '$x$: the blue house'.italics().fontcolor('blue'),
-    downArrow(50).strokeWidth(3),
-    '$y$: la maison bleue'.italics().fontcolor('green'),
-  _).center()),
-_));
-
-add(slide('Latent variables',
-  stmt('Object recognition', 'know what\'s in the image but not where thing are (location is <font color="red"><b>latent</b></font>)'),
-  parentCenter(cachedImage('http://nextwelve.files.wordpress.com/2012/04/tree.jpg').dim(400, 300)),
-  parentCenter(xtable.apply(null, 'tree grass clouds sunset'.split(' ')).margin(40).strokeColor('blue')),
-_));*/
-
 function formatClusters(clusters) {
   var i = 0;
   return parentCenter(ytable.apply(null, clusters.map(function(x) {
@@ -743,15 +651,13 @@ function formatClusters(clusters) {
   })).scale(0.55).margin(2));
 }
 
-add(slide('Word clustering using HMMs',
+add(slide('Word clustering',
   stmt('Input', 'raw text (100 million words of news articles)...'),
   pause(),
   stmt('Output'),
   formatClusters([
     "Friday Monday Thursday Wednesday Tuesday Saturday Sunday weekends Sundays Saturdays",
     "June March July April January December October November September August",
-    //"people guys folks fellows CEOs chaps doubters commies unfortunates blokes",
-    //"down backwards ashore sideways southward northward overboard aloft downwards adrift",
     "water gas coal liquid acid sand carbon steam shale iron",
     "great big vast sudden mere sheer gigantic lifelong scant colossal",
     "man woman boy girl lawyer doctor guy farmer teacher citizen",
@@ -763,36 +669,45 @@ add(slide('Word clustering using HMMs',
     "anyone someone anybody somebody",
     "feet miles pounds degrees inches barrels tons acres meters bytes",
     "director chief professor commissioner commander treasurer founder superintendent dean custodian",
-    //"liberal conservative parliamentary royal progressive Tory provisional separatist federalist PQ",
     "had hadn't hath would've could've should've must've might've",
-    //"asking telling wondering instructing informing kidding reminding bothering thanking deposing",
     "head body hands eyes voice arm seat eye hair mouth",
   ]),
-  pause(),
-  stmt('Impact', 'used in many state-of-the-art NLP systems'),
 _).leftHeader('[Brown et al, 1992]'));
 
 prose(
   'Empirically, unsupervised learning has produced some pretty impressive results.',
   'HMMs (more specifically, Brown clustering) can be used to take a ton of raw text and cluster related words together.',
-  'Word vectors (e.g., word2vec) do something similar.',
+  _,
+  'It is important to note that no one told the algorithm what days of the week were or months or family relations.',
+  'The clustering algorithm discovered this structure automatically by simply examining the statistics of raw text.',
 _);
 
-add(slide('Feature learning using neural networks',
-  stmt('Input', '10 million images (sampled frames from YouTube)'), pause(),
-  stmt('Output'),
-  parentCenter(xtable(
-    image('images/faces.jpeg').dim(230), pause(),
-    //image('images/body.jpeg').dim(230), pause(),
-    image('images/cats.jpeg').dim(230),
-  _).margin(50)),
-  pause(),
-  stmt('Impact', 'state-of-the-art results on object recognition (22,000 categories)'),
-_).leftHeader('[Le et al, 2012]'));
+add(slide('Word vectors',
+  parentCenter(stagger(
+    image('images/word-embedding.png').width(700).linkToUrl('images/word-embedding.png'),
+    image('images/word-embedding-subset.png').width(700).linkToUrl('images/word-embedding-subset.png'),
+  _).center()),
+_).leftHeader('[Mikolov et al., 2013]'));
 
 prose(
-  'An unsupervised variant of neural networks called autoencoders can be used to take a ton of raw images and output clusters of images.',
-  'No one told the learning algorithms explicitly what the clusters should look like &mdash; they just figured it out.',
+  'A related idea are word vectors, which became popular after Tomas Mikolov created word2vec in 2013 (though the idea of vector space representations had been around for a while).',
+  _,
+  'Instead of representing a word by discrete clusters,',
+  'a word is represented by a vector, which gives us a notion of similarity between words.',
+  _,
+  'More recently, <b>contextualized word representations</b> such as ELMo, BERT, XLNet, ALBERT, etc. have been very impactful.',
+  'These methods also are unsupervised in that they only require raw text as input,',
+  'but they produce representations of words in context.',
+  'These representations essentially serve as good features for any NLP task,',
+  'and empirically these methods have resulted in significant gains.',
+_);
+
+add(slide('Clustering with deep embeddings',
+  parentCenter(image('images/deep-embedding-clustering.png').width(700)),
+_).leftHeader('[Xie et al., 2015]'));
+
+prose(
+  'In an example from vision, one can learn a feature representation (embedding) for images along with a clustering of them.',
 _);
 
 add(dividerSlide(
@@ -816,11 +731,7 @@ add(slide('Types of unsupervised learning',
   parentCenter(ytable(
     typeExample('Clustering (e.g., K-means)', image('images/k-means.png').width(200)),
     typeExample('Dimensionality reduction (e.g., PCA)', image('images/pca.png').width(300)),
-    /*[
-    typeExample('Latent-variable models (e.g., HMMs)', hmm({maxTime: 5}).scale(0.5)),
-    pause(),
-    typeExample('Feature learning (e.g., neural networks)', cachedImage('http://www.optimaltrader.net/images/neuralt_naetverk.png').dim(200)),
-  ]*/_).margin(30).xjustify('c')),
+  _).margin(30).xjustify('c')),
 _));
 
 prose(
@@ -839,7 +750,6 @@ add(slide('Clustering',
   pause(),
   stmt('Intuition', 'Want similar points to be in same cluster, dissimilar points to be in different clusters'),
   parentCenter('[whiteboard]'),
-  //parentCenter(text('[demo]').linkToUrl('index.html#include=learning-demo.js&example=cluster')),
 _));
 
 prose(
@@ -854,12 +764,6 @@ add(slide('K-means objective',
     stmt('Intuition', 'want each point $\\blue{\\phi(x_i)}$ close to its assigned centroid $\\red{\\mu_{z_i}}$'),
   _),
   pause(),
-  /*headerList('Variables',
-    'Cluster assignments $z = (z_1, \\dots, z_n)$',
-    'Cluster centers $\\mu = (\\mu_1, \\dots, \\mu_K)$',
-  _).ymargin(0),
-  pause(),
-  */
   stmt('Objective function'),
   parentCenter(frameBox(nowrapText('$\\displaystyle \\ReconstructionLoss(z, \\mu) = \\sum_{i=1}^n \\|\\blue{\\phi(x_i)} - \\red{\\mu_{z_i}}\\|^2$'))),
   pause(),
@@ -916,10 +820,6 @@ add(slide('K-means algorithm',
   keyIdea('alternating minimization',
     'Tackle <font color="red">hard</font> problem by solving <font color="green">two</font> easy problems.',
   _),
-  /*headerList(null,
-    'Step 1: if know centroids $\\mu$, can find best assignments $z$',
-    'Step 2: if know assignments $z$, can find best centroids $\\mu$',
-  _),*/
 _));
 
 prose(
@@ -1021,126 +921,28 @@ prose(
   _,
   'Or we could try to be smarter in how we initialize K-means.',
   'K-means++ is an initialization scheme which places centroids on training points so that these centroids tend to be distant from one another.',
-  //'which starts by placing the first centroid at a random training point.',
-  //'Then for the second center, we compute for each training point the distance to the closest centroid placed so far, and choose the point ',
 _);
-
-/*add(slide('Using the clusters',
-  stmt('Goal: create better <b>features</b> $\\red{\\Phi(x)}$ for supervised learning'),
-  pause(),
-  stmt('Intuition: $k$-th feature &mdash; similarity between $\\mu_k$ and $\\phi(x)$'),
-  let(s = 30),
-  parentCenter(overlay(
-    p = circle(5).fillColor('black').shiftBy(0, 0),
-    mu1 = center(square(10)).fillColor('red').shiftBy(0, 2*s),
-    mu2 = center(square(10)).fillColor('red').shiftBy(-2*s, 0),
-    mu3 = center(square(10)).fillColor('red').shiftBy(3*s, 0),
-    mu4 = center(square(10)).fillColor('red').shiftBy(0, -1*s),
-    line(p, mu1).dashed(),
-    line(p, mu2).dashed(),
-    line(p, mu3).dashed(),
-    line(p, mu4).dashed(),
-    moveBottomOf('$\\mu_1$', mu1).scale(0.8),
-    moveLeftOf('$\\mu_2$', mu2).scale(0.8),
-    moveRightOf('$\\mu_3$', mu3).scale(0.8),
-    moveTopOf('$\\mu_4$', mu4).scale(0.8),
-    center('$\\phi(x)$').scale(0.8).shiftBy(s, s/2),
-  _)),
-  pause(),
-  'Distance to centroid: $d_k = \\|\\phi(x) - \\mu_k\\|$', pause(),
-  'Average distance: $\\bar d = \\frac1K \\sum_{k=1}^K d_k$', pause(),
-  parentCenter(
-    '$\\red{\\Phi_k(x)} = \\max\\{ \\bar d - d_k, 0 \\}$',
-  _),
-_));
-
-function clustersHelp() {
-  var items = [];
-  var s = 200;
-  var mus = [[0.7*s, 0.2*s], [0.3*s, 0.6*s]];
-  Math.seedrandom(7);
-  var projItems = [];
-  for (var k = 0; k < mus.length; k++) {
-    var mu = mus[k];
-    items.push(center(square(10)).fillColor('red').shift(mu[0], up(mu[1])).showLevel(2));
-    for (var i = 0; i < 30; i++) {
-      var x = mu[0] + sampleGaussian() * s/8;
-      var y = mu[1] + sampleGaussian() * s/8;
-      var d0 = l2Dist(mus[0], [x, y]);
-      var d1 = l2Dist(mus[1], [x, y]);
-      var avgd = (d0 + d1) / 2;
-      var act0 = Math.max(0, avgd - d0);
-      var act1 = Math.max(0, avgd - d1);
-      projItems.push(circle(3).fillColor('blue').shift(act0, up(act1)));
-      var p = circle(3).fillColor('black').shift(x, up(y));
-      if (i > 0) p.showLevel(1);
-      items.push(p);
-    }
-  }
-
-  items.push(arrow([0, 0], [s, 0]).strokeWidth(2));
-  items.push(arrow([0, 0], [0, up(s)]).strokeWidth(2));
-
-  projItems.push(arrow([0, 0], [s, 0]).strokeWidth(2));
-  projItems.push(arrow([0, 0], [0, up(s)]).strokeWidth(2));
-
-  return table(
-    [new Overlay(items), showLevel(3), bigRightArrow(100), new Overlay(projItems)],
-    [showLevel(0), '$\\phi(x)$', nil(), showLevel(3), '$\\Phi(x)$'],
-  _).center().margin(20, 30);
-}
- 
-add(slide('Cluster-based features',
-  parentCenter(clustersHelp()),
-  pause(),
-  stmt('Assumption: points inside same cluster tend to have same output label'),
-_));
-
-prose(
-  'Having performed clustering on our large amount of unlabeled data,',
-  'let\'s see how it can help us perform better classification.',
-  'The key idea will be to use the centroids to define new features.',
-  _,
-  'We will define a new feature vector $\\Phi(x) = (\\Phi_1(x), \\dots, \\Phi_K(x))$',
-  'where the value of feature $k$ represents the proximity of $\\Phi(x)$ to the centroid $\\mu_k$.',
-  'Specifically, $\\Phi_k(x)$ will be the amount to which the distance from $\\phi(x)$ to centroid $k$ is less than the average distance between $\\phi(x)$ and a centroid.',
-  _,
-  'Why is this a reasonable thing to do?',
-  'The underlying assumption is that points inside the same cluster tend to have the same output label,',
-  'so by mapping the points to that output label, we are transforming the data points into $\\Phi(x)$, which is in a way is much cleaner than $\\phi(x)$.',
-_);*/
 
 add(summarySlide('Unsupervised learning summary',
   bulletedText('Leverage tons of unlabeled data'),
   pause(),
   bulletedText(stmt('Difficult optimization')),
   parentCenter(xtable(
-    'latent variables $z$', 
+    'latent variables $z$',
     image('images/chicken-egg.jpg').width(200),
     'parameters $\\mu$',
   _).center().margin(20)),
-  //pause(),
-  //bulletedText('Using as features in supervised learning improves accuracy!'),
 _));
 
 ////////////////////////////////////////////////////////////
 // Conclusion
 roadmap(2);
 
-/*add(slide('Fancier prediction tasks',
-  parentCenter(xtable('$x$', rightArrow(100).strokeWidth(5), frameBox('$f_\\w$'), rightArrow(100).strokeWidth(5), '$y$').margin(10).center()),
-  stmt('So far: $y \\in \\{-1, +1\\}$ (binary classification) or $y \\in \\R$ (regression) &mdash; reflex-based models'),
-  pause(),
-  stmt('Structured prediction: $y$ is a sequence, tree, etc. &mdash; more complex models'),
-  pause(),
-  stmt('Same strategy: write down a loss function, take the derivative, and run stochastic gradient descent!'),
-_));*/
-
 add(summarySlide('Summary',
 	bulletedText('Feature extraction (think hypothesis classes) [modeling]'),
 	bulletedText('Prediction (linear, neural network, k-means) [modeling]'),
 	bulletedText('Loss functions (compute gradients) [modeling]'),
-	bulletedText('Optimization (stochastic gradient, alternating minimization) [algorithms]'),
+	bulletedText('Optimization (stochastic gradient, alternating minimization) [learning]'),
 	bulletedText('Generalization (think development cycle) [modeling]'),
 _));
 
@@ -1185,9 +987,9 @@ prose(
   'When computers arrived on the scene, learning was definitely on people\'s radar,',
   'although this was detached from the theoretical, statistical and optimization foundations.',
   _,
-  'In 1969, Minsky and Papert wrote a famous paper <i>Perceptrons</i>, which showed the limitations of linear classifiers',
+  'In 1969, Minsky and Papert wrote a famous book <i>Perceptrons</i>, which showed the limitations of linear classifiers',
   'with the famous XOR example (similar to our car collision example), which killed off this type of research.',
-  'AI largely turned to rule-based and symbolic methods.',
+  'AI largely turned to symbolic methods.',
   _,
   'Since the 1980s, machine learning has increased its role in AI,',
   'been placed on a more solid mathematical foundation with its connection with optimization and statistics.',
@@ -1232,7 +1034,7 @@ prose(
   _,
   'The strength of machine learning lies in being able to aggregate information across many individuals.',
   'However, this appears to require a central organization that collects all this data,',
-  'which seems poor practice from the point of view of protecting privacy.',
+  'which seems like poor practice from the point of view of protecting privacy.',
   'Can we perform machine learning while protecting individual privacy?',
   'For example, local differential privacy mechanisms inject noise into an individual\'s measurement before sending it to the central server.',
   _,

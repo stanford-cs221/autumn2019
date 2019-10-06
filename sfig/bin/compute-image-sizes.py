@@ -35,7 +35,7 @@ def get_image_size(fname):
             fhandle.seek(1, 1)  # Skip `precision' byte.
             height, width = struct.unpack('>HH', fhandle.read(4))
         else:
-            raise Exception("Invalid handle")
+            raise Exception("Invalid handle: {}".format(imghdr.what(fname)))
         return width, height, imghdr.what(fname)
 
 if len(sys.argv) == 1:
