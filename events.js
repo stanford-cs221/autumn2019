@@ -320,7 +320,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   section('Search (Dorsa)', 'Problem solving as finding paths in graphs...');
-  disableItem('Tree search<br>Dynamic programming, uniform cost search', 'search1', [liveProgrammingLink('search1')]);
+  enableItem('Tree search<br>Dynamic programming, uniform cost search', 'search1', [liveProgrammingLink('search1')]);
   disableHomework('reconstruct', 'Text reconstruction');
 
   nextClass(2);
