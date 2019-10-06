@@ -337,8 +337,8 @@ G.quizSlide = function(id, question) {
   else
     quiz = createMultipleChoiceQuiz(id, question, answers);
   var s = slide('Question', quiz);
-  //s.leftHeader(xtable(image('images/question.jpg').width(70), text(redbold('cs221.stanford.edu/q')).scale(1.5)).margin(5).center());
-  s.leftHeader(xtable(image('images/question.jpg').width(60)).margin(5).center());
+  s.leftHeader(xtable(image('images/question.jpg').width(70), text(redbold('cs221.stanford.edu/q')).scale(1.5)).margin(5).center());
+  //s.leftHeader(xtable(image('images/question.jpg').width(60)).margin(5).center());
   s.id('q-' + id);
   return s;
 }
