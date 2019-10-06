@@ -223,7 +223,8 @@ add(slide('Learning algorithm',
     'Try to increase cost of predicted $y\'$ (from search)',
   _),
   pause(),
-  parentCenter('[live solution]'),
+  //parentCenter('[live solution]'),
+  parentCenter(linkToVideo('[semi-live solution]', 'structuredPerceptron.mp4')),
 _));
 
 prose(
@@ -338,10 +339,10 @@ roadmap(1);
 
 add(slide('A* algorithm',
   stmt('UCS in action'),
-  parentCenter(youtube('z6lUnb9ktkE')),
+  parentCenter(youtube('z6lUnb9ktkE', { cache: false })),
   pause(),
   stmt('A* in action'),
-  parentCenter(youtube('huJEgJ82360')),
+  parentCenter(youtube('huJEgJ82360', { cache: false })),
 _));
 
 add(slide('Can uniform cost search be improved?',
