@@ -324,7 +324,7 @@ function eventsOnLoad() {
   disableHomework('reconstruct', 'Text reconstruction');
 
   nextClass(2);
-  disableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
+  enableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
   nextClass(1);
   disableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
   nextClass(4);
