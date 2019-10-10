@@ -174,7 +174,7 @@ function eventsOnLoad() {
     if (enableLinks) {
       renderedName = '<a href="assignments/' + name + '/index.html">' + title + ' [' + name + ']</a> (<a href="assignments/' + name + '.zip">zip</a>)';
       if (enableSoln)
-        renderedName += ' (<a href="restricted/assignments/' + name + '/index.html">solutions</a>)';
+        renderedName += ' (<a href="assignments/' + name + '-solutions.zip">solutions</a>)';
     } else {
       renderedName = title + ' [' + name + ']';
     }
@@ -302,7 +302,7 @@ function eventsOnLoad() {
 
   nextClass(0);
   enableItem('Overview of course<br>Optimization', 'overview', [liveProgrammingLink('overview')]);
-  openHomework('foundations', 'Foundations', 8);
+  closedHomework('foundations', 'Foundations', 8);
 
   nextClass(2);
   section('Machine learning (Percy)', 'Don\'t manually code it up, learn it from examples...');
