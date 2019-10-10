@@ -329,12 +329,12 @@ function eventsOnLoad() {
   disableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
   nextClass(4);
 
-  section('Markov decision processes (Dorsa)', 'When nature intervenes randomly...');
+  section('Markov decision processes (Dorsa, Reid)', 'When nature intervenes randomly...');
   disableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
   disableHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
-  disableItem('(Reid) Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
+  disableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
   nextClass(1);
   disableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
   nextClass(4);
@@ -348,11 +348,11 @@ function eventsOnLoad() {
   disableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
   nextClass(4);
 
-  section('Constraint satisfaction problems (Dorsa, Percy)', 'Problem solving as assigning variables (with constraints)...');
+  section('Constraint satisfaction problems (Dorsa, Reid)', 'Problem solving as assigning variables (with constraints)...');
   disableHomework('scheduling', 'Course scheduling');
   disableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
-  disableItem('(Reid) Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
+  disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
   disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
