@@ -15,12 +15,12 @@ $(function () {
     //   project.session));
     // buttons.append(sessionDiv);
 
-    var authorDiv = $('<div>').addClass('authorbar').append($('<span>').addClass('author').append(
-      project.group.map(function(member) { return member.name; }).join(', ')));
-    projectDiv.append(authorDiv);
+    // var authorDiv = $('<div>').addClass('authorbar').append($('<span>').addClass('author').append(
+    //   project.group.map(function(member) { return member.name; }).join(', ')));
+    // projectDiv.append(authorDiv);
 
-    var mentorDiv = $('<div>').addClass('mentorbar').append($('<span>').addClass('mentor').append(
-      'Mentor: ' + project.mentor.name));
-    projectDiv.append(mentorDiv);
+    // var mentorDiv = $('<div>').addClass('mentorbar').append($('<span>').addClass('mentor').append(
+    //   'Mentor: ' + project.mentor.name));
+    // projectDiv.append(mentorDiv);
   }
 });
