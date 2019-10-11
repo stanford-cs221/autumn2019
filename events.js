@@ -326,7 +326,7 @@ function eventsOnLoad() {
   nextClass(2);
   enableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
   nextClass(1);
-  disableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
+  enableItem('Section: UCS,Dynamic Programming, A*', null, [sectionLink('section3.pdf', 'slides')], true);
   nextClass(4);
 
   section('Markov decision processes (Dorsa, Reid)', 'When nature intervenes randomly...');
