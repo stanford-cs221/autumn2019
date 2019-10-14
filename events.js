@@ -330,7 +330,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   section('Markov decision processes (Dorsa, Reid)', 'When nature intervenes randomly...');
-  disableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
+  enableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
   disableHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
