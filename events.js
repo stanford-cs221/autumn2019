@@ -331,7 +331,7 @@ function eventsOnLoad() {
 
   section('Markov decision processes (Dorsa)', 'When nature intervenes randomly...');
   disableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
-  disableHomework('blackjack', 'Blackjack');
+  openHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
   disableItem('(Reid) Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
