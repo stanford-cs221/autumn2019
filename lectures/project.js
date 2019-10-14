@@ -89,7 +89,7 @@ add(slide('Project proposal',
   bulletedText('Have <b>baseline</b> and <b>oracle</b> implemented'),
   bulletedText('Discuss potential solutions (modeling, inference, learning)'),
   pause(),
-  parentCenter(redbold('due Thursday Oct 25')),
+  parentCenter(redbold('due Thursday Oct 24')),
   parentCenter('Get help: come to office hours!'),
 _));
 

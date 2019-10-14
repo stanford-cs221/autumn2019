@@ -28,7 +28,7 @@ sfig_ = {urlParams: {}};
 // Key value store functions
 G.keyValueCommand = function(command, args, callback) {
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://107.170.225.60:7379/' + command + '/' + args.map(encodeURIComponent).join('/'));  // UPDATE
+  request.open('GET', 'http://nimlet.nimaanari.com:7379/' + command + '/' + args.map(encodeURIComponent).join('/'));  // UPDATE
   if (sfig_.urlParams.auth)
     request.setRequestHeader("Authorization", "Basic " + btoa('cs221:' + sfig_.urlParams.auth));
   if (callback) {

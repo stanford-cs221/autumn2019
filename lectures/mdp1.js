@@ -455,7 +455,8 @@ add(slide('Transportation example',
     redbold('Tram fails with probability 0.5.'),
   _),
   pause(),
-  parentCenter('[live solution]'),
+  // parentCenter('[live solution]'),
+  parentCenter(linkToVideo('[semi-live solution]', 'tramMDP.mp4')),
 _).leftHeader(image('images/tram.jpg').width(150)));
 
 prose(
@@ -922,7 +923,8 @@ add(slide('Value iteration',
   pause(),
   stmt('Time: $O(t_\\text{VI} SAS\')$'),
   pause(),
-  parentCenter('[live solution]'),
+  parentCenter(linkToVideo('[semi-live solution]', 'valueIteration.mp4')),
+  // parentCenter('[live solution]'),
 _));
 
 prose(

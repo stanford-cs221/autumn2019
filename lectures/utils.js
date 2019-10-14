@@ -157,7 +157,7 @@ G.renderFeedback = function(key) {
 // Key value store functions
 G.keyValueCommand = function(command, args, callback) {
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://107.170.225.60:7379/' + command + '/' + args.map(encodeURIComponent).join('/'));  // UPDATE
+  request.open('GET', 'http://nimlet.nimaanari.com:7379/' + command + '/' + args.map(encodeURIComponent).join('/'));  // UPDATE
   if (sfig_.urlParams.auth)
     request.setRequestHeader("Authorization", "Basic " + btoa('cs221:' + sfig_.urlParams.auth));
   if (callback) {
@@ -337,8 +337,8 @@ G.quizSlide = function(id, question) {
   else
     quiz = createMultipleChoiceQuiz(id, question, answers);
   var s = slide('Question', quiz);
-  //s.leftHeader(xtable(image('images/question.jpg').width(70), text(redbold('cs221.stanford.edu/q')).scale(1.5)).margin(5).center());
-  s.leftHeader(xtable(image('images/question.jpg').width(60)).margin(5).center());
+  s.leftHeader(xtable(image('images/question.jpg').width(70), text(redbold('cs221.stanford.edu/q')).scale(1.5)).margin(5).center());
+  //s.leftHeader(xtable(image('images/question.jpg').width(60)).margin(5).center());
   s.id('q-' + id);
   return s;
 }
@@ -706,7 +706,8 @@ G.basename = function(path) {
 }
 
 G.linkToVideo = function(block, path) {
-  var cacheVideos = (window.location.protocol == 'file:');
+  //var cacheVideos = (window.location.protocol == 'file:');
+  var cacheVideos = true;
   var url = cacheVideos ? 'cached-videos/'+basename(path) : path;
   return std(block).linkToUrl(url);
 }
