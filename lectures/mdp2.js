@@ -29,8 +29,8 @@ _));
 
 prose(
   'Last time, we talked about MDPs, which we can think of as graphs, where each node is either a state $s$ or a chance node $(s,a)$.',
-  'Actions take us from states to chance nodes (which we choose), and transitions take us from chance nodes to states',
-  '(which nature chooses according to the transition probabilities).',
+  'Actions take us from states to chance nodes. This movement is something we can control. Transitions take us from chance nodes to states.',
+  'This movement is random, and the various likelihoods are goverened by transltion probabilities.',
 _);
 
 var generalEpisode = '$\\brown{s_0}; a_1, r_1, \\brown{s_1}; a_2, r_2, \\brown{s_2}; a_3, r_3, \\brown{s_3}; \\dots; a_n, r_n, \\brown{s_n}$';
@@ -55,7 +55,7 @@ prose(
   'We call such a sequence an <b>episode</b> (a path in the MDP graph).',
   'This will be a central notion in this lecture.',
   _,
-  'Each episode (path) is associated with a utility, which is the discounted sum of rewards:',
+  'Each episode (path) is associated with a <b>utility</b>, which is the discounted sum of rewards:',
   '$u_1 = r_1 + \\gamma r_2 + \\gamma^2 r_3 + \\cdots$.',
   'It\'s important to remember that the utility $u_1$ is a <b>random variable</b> which depends on how the transitions were sampled.',
   _,
@@ -400,6 +400,7 @@ prose(
   'From that perspective, estimating the model (transitions and rewards) was just a means towards an end.',
   'Why not just cut to the chase and estimate $\\hat Q_\\opt$ directly?',
   'This is called <b>model-free</b> learning, where we don\'t explicitly estimate the transitions and rewards.',
+  'Model-free learning is the equivalent of learning the expected utility at chance nodes instead of costs as edge weights like we were doing in the previous slide.',
 _);
 
 add(slide('Model-free Monte Carlo',
