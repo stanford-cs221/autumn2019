@@ -334,7 +334,7 @@ function eventsOnLoad() {
   openHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
-  disableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
+  enableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
   nextClass(1);
   disableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
   nextClass(4);
