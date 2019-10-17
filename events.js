@@ -336,7 +336,7 @@ function eventsOnLoad() {
   nextClass(2);
   enableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
   nextClass(1);
-  disableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
+  enableItem('Section: deep reinforcement learning', null, [sectionLink('section4.pdf', 'slides')], true);
   nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
