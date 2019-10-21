@@ -10,21 +10,21 @@ function basket(label, a, b) {
   return frameBox(ytable(label, xtable(a, b).margin(40)).margin(40).center()).bg.round(15).end;
 }
 
-add(quizSlide('games1-start',
-  'Is it possible to define a policy that is optimal against all possible opponents, however adversarial?',
-  'yes',
-  'no',
-_));
+// add(quizSlide('games1-start',
+//   'Is it possible to define a policy that is optimal against all possible opponents, however adversarial?',
+//   'yes',
+//   'no',
+// _));
 
-prose(
-  'It depends on what optimal means.',
-  _,
-  'It will be impossible to have a single policy such that for every opponent strategy,',
-  'that policy is the best against that opponent strategy.',
-  _,
-  'However, we will be able to design policies (based on the minimax principle)',
-  'so that no matter who the opponent is, we\'ll be guaranteed some minimum outcome.',
-_);
+// prose(
+//   'It depends on what optimal means.',
+//   _,
+//   'It will be impossible to have a single policy such that for every opponent strategy,',
+//   'that policy is the best against that opponent strategy.',
+//   _,
+//   'However, we will be able to design policies (based on the minimax principle)',
+//   'so that no matter who the opponent is, we\'ll be guaranteed some minimum outcome.',
+// _);
 
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
@@ -186,7 +186,8 @@ add(slide('The halving game',
     'The player that is left with 0 wins.',
   _),
   pause(),
-  parentCenter('[live solution: <tt>HalvingGame</tt>]'),
+  // parentCenter('[live solution: <tt>HalvingGame</tt>]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>HalvingGame</tt>]', 'halvingGame.mp4')),
 _));
 
 ////////////////////////////////////////////////////////////
@@ -203,7 +204,8 @@ add(slide('Policies',
     '$\\pi_\\agent(\\StartState, \\text{B}) = 0.5$',
   _).margin(100)).scale(0.7),*/
   pause(),
-  parentCenter('[live solution: policies, main loop]'),
+  // parentCenter('[live solution: policies, main loop]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>humanPolicy</tt>]', 'humanPolicy.mp4')),
 _));
 
 prose(
@@ -390,7 +392,8 @@ add(slide('The halving game',
     'The player that is left with 0 wins.',
   _),
   pause(),
-  parentCenter('[live solution: <tt>minimaxPolicy</tt>]'),
+  // parentCenter('[live solution: <tt>minimaxPolicy</tt>]'),
+  parentCenter(linkToVideo('[semi-live solution: <tt>minimaxPolicy</tt>]', 'minimaxPolicy.mp4')),
 _));
 
 add(slide('Face off',
