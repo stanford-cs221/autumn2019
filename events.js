@@ -340,7 +340,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
-  disableHomework('pacman', 'Pac-Man');
+  openHomework('pacman', 'Pac-Man');
   enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
   nextClass(2);
   disableItem('TD learning<br>Game theory', 'games2');
