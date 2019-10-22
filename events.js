@@ -321,7 +321,7 @@ function eventsOnLoad() {
 
   section('Search (Dorsa)', 'Problem solving as finding paths in graphs...');
   enableItem('Tree search<br>Dynamic programming, uniform cost search', 'search1', [liveProgrammingLink('search1')]);
-  openHomework('reconstruct', 'Text reconstruction');
+  closedHomework('reconstruct', 'Text reconstruction');
 
   nextClass(2);
   enableItem('A*, consistent heuristics<br>Relaxation', 'search2', [liveProgrammingLink('search2')]);
@@ -340,8 +340,8 @@ function eventsOnLoad() {
   nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
-  disableHomework('pacman', 'Pac-Man');
-  disableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
+  openHomework('pacman', 'Pac-Man');
+  enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
   nextClass(2);
   disableItem('TD learning<br>Game theory', 'games2');
   nextClass(1);

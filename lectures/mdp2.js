@@ -30,7 +30,7 @@ _));
 prose(
   'Last time, we talked about MDPs, which we can think of as graphs, where each node is either a state $s$ or a chance node $(s,a)$.',
   'Actions take us from states to chance nodes. This movement is something we can control. Transitions take us from chance nodes to states.',
-  'This movement is random, and the various likelihoods are goverened by transltion probabilities.',
+  'This movement is random, and the various likelihoods are goverened by transition probabilities.',
 _);
 
 var generalEpisode = '$\\brown{s_0}; a_1, r_1, \\brown{s_1}; a_2, r_2, \\brown{s_2}; a_3, r_3, \\brown{s_3}; \\dots; a_n, r_n, \\brown{s_n}$';
@@ -222,7 +222,7 @@ prose(
   'is that the former is <b>offline</b> and the latter is <b>online</b>.',
   _,
   'In the former case, you have a mental model of how the world works. You go lock yourself in a room,',
-  'think really hard, come up with a policy.  Then you come out and use it to act in the real world.',
+  'think really hard, and come up with a policy.  Then you come out and use it to act in the real world.',
   _,
   'In the latter case, you don\'t know how the world works, but you only have one life, so you just have to go out',
   'into the real world and learn how it works from experiencing it and trying to take actions that yield high rewards.',
@@ -604,7 +604,7 @@ prose(
   'If the episode is long, $u$ will be a pretty lousy estimate.',
   'This is because $u$ only corresponds to one episode out of a mind-blowing exponential (in the episode length) number of possible episodes,',
   'so as the epsiode lengthens, it becomes an increasingly less representative sample of what could happen.',
-  'Can we produce better estimate of $Q_\\pi(s,a)$?',
+  'Can we produce a better estimate of $Q_\\pi(s,a)$?',
   _,
   'An alternative to model-free Monte Carlo is SARSA,',
   'whose target is $r + \\gamma \\hat Q_\\pi(s\',a\')$.',
