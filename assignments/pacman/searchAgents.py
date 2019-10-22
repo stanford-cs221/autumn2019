@@ -298,6 +298,7 @@ class CornersProblem(search.SearchProblem):
       #   hitsWall = self.walls[nextx][nexty]
       pass
       
+      
     self._expanded += 1
     return successors
 
