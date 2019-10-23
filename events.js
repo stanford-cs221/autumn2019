@@ -343,7 +343,7 @@ function eventsOnLoad() {
   openHomework('pacman', 'Pac-Man');
   enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
   nextClass(2);
-  disableItem('TD learning<br>Game theory', 'games2');
+  enableItem('TD learning<br>Game theory', 'games2');
   nextClass(1);
   disableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
   nextClass(4);
