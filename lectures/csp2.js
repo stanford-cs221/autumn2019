@@ -1050,7 +1050,7 @@ prose(
   '<b>Independence</b> is the key property that allows us to solve subproblems in parallel.',
   'It is worth noting that the savings is huge &mdash; exponential, not linear.',
   'Suppose the factor graph has two disconnected variables, each taking on $m$ values.',
-  'Then backtracking search woule take $m^2$ time, whereas solving each subproblem separately would take $2m$ time.',
+  'Then backtracking search would take $m^2$ time, whereas solving each subproblem separately would take $2m$ time.',
   _,
   'However, the factor graph isn\'t always disconnected (which would be uninteresting).',
   'In these cases, we can <b>condition</b> on particular values of a variable.',
