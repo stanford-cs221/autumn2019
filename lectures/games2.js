@@ -334,20 +334,20 @@ function S() {
   return items;
 }
 
-/*add(slide('Example of TD learning',
+add(slide('Example of TD learning',
   'Step size $\\eta = 0.5$, discount $\\gamma = 1$, reward is end utility',
   example('TD learning',
     //'$\\w = [0, 0]$',
     table(
       S('S1', [0, 1], 0, 'S4', [1, 0], 0, 'S8', [1, 2], 1, 'S9', [1, 0]),
-      S('S1', [0, 1], 0, 'S2', [1, 0], 0, 'S6', [0, 0], 0, 'S9', [1, 0]),
+      S('S1', [0, 1], 0, 'S2', [1, 0], 0, 'S6', [0, 0], 0, 'S10', [1, 0]),
     _).margin(5, 20).xcenter(),
   _).scale(0.75),
 _));
 
 prose(
   'Here\'s an example of TD learning in action.',
-  'We have two episodes: [S1, 0, S4, 0, S8, 1, S9] and [S1, 0, S2, 0, S6, 0, S9].',
+  'We have two episodes: [S1, 0, S4, 0, S8, 1, S9] and [S1, 0, S2, 0, S6, 0, S10].',
   _,
   'In games, all the reward comes at the end and the discount is $1$.',
   'We have omitted the action because TD learning doesn\'t depend on the action.',
@@ -358,7 +358,7 @@ prose(
   _,
   'In the second row, we have our second episode, and now notice that even though all the rewards are zero,',
   'we are still making updates to the weight vectors since the prediction and targets computed based on adjacent states are different.',
-_);*/
+_);
 
 add(slide('Comparison',
   algorithm('TD learning',
