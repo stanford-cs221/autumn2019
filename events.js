@@ -345,7 +345,7 @@ function eventsOnLoad() {
   nextClass(2);
   enableItem('TD learning<br>Game theory', 'games2');
   nextClass(1);
-  disableItem('Section: AlphaZero', null, [sectionLink('section5.pdf', 'slides')], true);
+  enableItem('Section: Games', null, [sectionLink('section5.pdf', 'slides')], true);
   nextClass(4);
 
   section('Constraint satisfaction problems (Dorsa, Reid)', 'Problem solving as assigning variables (with constraints)...');
