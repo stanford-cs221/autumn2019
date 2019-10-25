@@ -341,7 +341,7 @@ function eventsOnLoad() {
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
   openHomework('pacman', 'Pac-Man');
-  enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1');
+  enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1', [liveProgrammingLink('games1')]);
   nextClass(2);
   enableItem('TD learning<br>Game theory', 'games2');
   nextClass(1);
