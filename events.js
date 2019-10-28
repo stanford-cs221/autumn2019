@@ -350,7 +350,7 @@ function eventsOnLoad() {
 
   section('Constraint satisfaction problems (Dorsa, Reid)', 'Problem solving as assigning variables (with constraints)...');
   openHomework('scheduling', 'Course scheduling');
-  disableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
+  enableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
   disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
