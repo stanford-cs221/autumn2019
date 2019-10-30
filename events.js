@@ -352,7 +352,7 @@ function eventsOnLoad() {
   openHomework('scheduling', 'Course scheduling');
   enableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
-  disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
+  enableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
   disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
