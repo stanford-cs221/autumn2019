@@ -331,7 +331,7 @@ function eventsOnLoad() {
 
   section('Markov decision processes (Dorsa, Reid)', 'When nature intervenes randomly...');
   enableItem('Policy evaluation, policy improvement<br>Policy iteration, value iteration', 'mdp1', [liveProgrammingLink('mdp1')]);
-  openHomework('blackjack', 'Blackjack');
+  closedHomework('blackjack', 'Blackjack');
   project('p-proposal', 'Project proposal', 10);
   nextClass(2);
   enableItem('Reinforcement learning<br>Monte Carlo, SARSA, Q-learning<br>Exploration/exploitation, function approximation', 'mdp2');
@@ -350,9 +350,9 @@ function eventsOnLoad() {
 
   section('Constraint satisfaction problems (Dorsa, Reid)', 'Problem solving as assigning variables (with constraints)...');
   openHomework('scheduling', 'Course scheduling');
-  disableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
+  enableItem('Factor graphs<br>Backtracking search<br>Dynamic ordering, arc consistency', 'csp1', [demoLink('inference-demo')]);
   nextClass(2);
-  disableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
+  enableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
   disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);

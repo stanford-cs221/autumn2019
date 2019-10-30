@@ -303,6 +303,8 @@ add(slide('Factor graph (example)',
      nil(),
     ],
   _).center().margin(40, 20)).scale(0.6),
+    pause(),
+  parentCenter(text('[demo]').linkToUrl('index.html#include=inference-demo.js&example=vote')),
 _));
 
 prose(
