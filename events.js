@@ -159,6 +159,9 @@ function eventsOnLoad() {
   function _homework(name, title, numDaysTillDueDate, enableLinks, enableSoln) {
     if (!numDaysTillDueDate) numDaysTillDueDate = 8;
     var outDate = currentDate;
+    if (name == 'logic') {
+      numDaysTillDueDate += 7
+    }
     var dueDate = advanceDate(currentDate, numDaysTillDueDate);
 
     var renderedName;
