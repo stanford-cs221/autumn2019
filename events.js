@@ -159,6 +159,9 @@ function eventsOnLoad() {
   function _homework(name, title, numDaysTillDueDate, enableLinks, enableSoln) {
     if (!numDaysTillDueDate) numDaysTillDueDate = 8;
     var outDate = currentDate;
+    if (name == 'logic') {
+      numDaysTillDueDate += 7
+    }
     var dueDate = advanceDate(currentDate, numDaysTillDueDate);
 
     var renderedName;
@@ -354,7 +357,7 @@ function eventsOnLoad() {
   nextClass(2);
   enableItem('Beam search, local search<br>Conditional independence, variable elimination', 'csp2');
   nextClass(1);
-  disableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
+  enableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
 
   section('Bayesian networks (Percy, Dorsa)', 'Representing uncertainty with probabilities...');

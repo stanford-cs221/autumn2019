@@ -1113,7 +1113,7 @@ prose(
   _,
   'With this formulation, we have $T$ variables with domain size $E+1$, and $E$ $T$-ary constraints.',
   'We will show shortly that each $T$-ary constraints can be converted into $O(T)$ binary constraints with $O(T)$ variables.',
-  'Therefore, the resulting formulation has $T$ variables with domain size $E+1$, $O(T^2)$ variables with domain size $2$ and $O(T^2)$ binary constraints.',
+  'Therefore, the resulting formulation has $T$ variables with domain size $E+1$, $O(ET)$ variables with domain size $2$ and $O(ET)$ binary constraints.',
   _,
   'Which one is better?  Since $T \\gg E$ is required for the existence of a consistent solution, the first formulation is better.',
   'If the problem were modified so that not all events had to be scheduled and $T \\ll E$, then the second formulation would be better.',
