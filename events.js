@@ -362,7 +362,7 @@ function eventsOnLoad() {
 
   section('Bayesian networks (Percy, Dorsa)', 'Representing uncertainty with probabilities...');
   disableItem('Bayesian inference<br>Marginal independence<br>Hidden Markov models', 'bayes1');
-  disableHomework('car', 'Car tracking');
+  openHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
   disableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
