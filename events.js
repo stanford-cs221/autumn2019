@@ -343,7 +343,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
-  openHomework('pacman', 'Pac-Man');
+  closedHomework('pacman', 'Pac-Man');
   enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1', [liveProgrammingLink('games1')]);
   nextClass(2);
   enableItem('TD learning<br>Game theory', 'games2');
@@ -360,9 +360,9 @@ function eventsOnLoad() {
   enableItem('Section: CSPs', null, [sectionLink('section6.pdf', 'slides')], true);
   nextClass(4);
 
-  section('Bayesian networks (Percy, Dorsa)', 'Representing uncertainty with probabilities...');
-  disableItem('Bayesian inference<br>Marginal independence<br>Hidden Markov models', 'bayes1');
-  disableHomework('car', 'Car tracking');
+  section('Bayesian networks (Percy)', 'Representing uncertainty with probabilities...');
+  enableItem('Probabilistic inference<br>Hidden Markov models', 'bayes1');
+  openHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
   disableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
@@ -385,8 +385,6 @@ function eventsOnLoad() {
   disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
   nextClass(1);
   disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
-
-
 
   nextClass(4);
   disableItem('(Thanksgiving &mdash; no class)');

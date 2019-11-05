@@ -6,31 +6,22 @@ add(titleSlide('Lecture 13: Bayesian networks I',
   parentCenter(twoLayerBayesNet({n1: 10, n2: 20}).scale(0.3)),
 _));
 
+add(slide('Announcements',
+  bulletedText('<b>scheduling</b> is due tomorrow'),
+  bulletedText('<b>car</b> is due next Tuesday'),
+  bulletedText('<b>p-progress</b> is due next Tuesday'),
+  bulletedText('<b>exam</b> is in two weeks'),
+_));
+
 add(slide('Pac-Man competition',
   parentCenter(image('images/pacman.jpg').width(300)),
   pause(),
   parentCenter(ytable(
-    '1. (1766) Renat Aksitov',
-    '2. (1765) Kaushik Sadagopan',
-    '3. (1764) Manan Rai',
+    '1. (1765) Adam Keppler',
+    '2. (1764) Allan Li',
+    '3. (1763.5) Jiahao Zhang',
   _).margin(5)),
 _));
-
-add(quizSlide('bayes1-alarm',
-  'Earthquakes and burglaries are independent events that will cause an alarm to go off.  Suppose you hear an alarm.  How does hearing on the radio that there\'s an earthquake change your beliefs?',
-  'it increases the probability of burglary',
-  'it decreases the probability of burglary',
-  'it does not change the probability of burglary',
-_));
-
-prose(
-  'Situations like these arise all the time in practice:',
-  'we have a lot of unknowns which are all dependent on one another.',
-  'If we obtain evidence on some of these unknowns,',
-  'how does that affect our belief about the other unknowns?',
-  _,
-  'In this lecture, we\'ll see how we can perform this type of reasoning under uncertainty in a principled way using Bayesian networks.',
-_);
 
 add(slide('Review: definition',
   parentCenter(exampleFactorGraph()),
@@ -44,7 +35,7 @@ add(slide('Review: definition',
 _));
 
 prose(
-  'Last week, we talked about factor graphs, which uses local factors',
+  'Last week, we talked about factor graphs, which uses the product of factors',
   'to specify a weight $\\Weight(x)$ for each assignment $x$ in a compact way.',
   'The stated objective was to find the maximum weight assignment.',
   _,
@@ -53,11 +44,11 @@ prose(
   '(approximately) optimizing this objective.',
 _);
 
-add(slide('Review: person tracking',
-  problem('person tracking',
+add(slide('Review: object tracking',
+  problem('object tracking',
     'Sensors report positions: $0, 2, 2$. '+
     'Objects don\'t move very fast and sensors are a bit noisy. '+
-    'What path did the person take?',
+    'What path did the object take?',
   _),
   pause(),
   //stmt('Factor graph (chain-structured)'),
@@ -69,7 +60,7 @@ add(slide('Review: person tracking',
   _),
   parentCenter(text('[demo: <tt>maxVariableElimination()</tt>]').linkToUrl('index.html#include=inference-demo.js&example=track&postCode=maxVariableElimination()')),
   pause(),
-  parentCenter(red('What do the factors <b>mean</b>?')),
+  parentCenter(red('How do we <b>interpet</b> the factors?')),
 _));
 
 prose(
@@ -119,10 +110,9 @@ prose(
   'There is a lot to say about the Bayesian networks',
   '(CS228 is an entire course about them and their cousins, Markov networks).',
   'So we will devote most of this lecture focusing on modeling.',
-  //'Any algorithms you see are a figment of your imagination (the next lecture will be for that).',
 _);
 
-add(slide('Review: probability (example)',
+add(slide('Review: probability',
   stmt('<b>Random variables</b>: sunshine $S \\in \\{0,1\\}$, rain $R \\in \\{0,1\\}$'),
   pause(),
   parentCenter(ytable(
@@ -136,7 +126,6 @@ add(slide('Review: probability (example)',
     _).margin(10, 0).center())).center().margin(5)).scale(0.6),
   _).center()),
   pause(),
-  //stmt('<b>Probability</b>: $\\P(S = 1, R = 0) = 0.7$'),
   parentCenter(xtable(
     ytable(
       stmt('<b>Marginal distribution</b>'),
@@ -163,7 +152,7 @@ _).leftHeader(image('images/sun-rain.jpg').width(150)));
 prose(
   'Before introducing Bayesian networks, let\'s review probability (at least the relevant parts).',
   'We start with an example about the weather.',
-  'Suppose we have two boolean random variables, $S$ and $R$ representing sunshine and rain.',
+  'Suppose we have two boolean random variables, $S$ and $R$ representing whether it is sunny and rainy.',
   'Think of an assignment to $(S, R)$ as representing a possible state of the world.',
   _,
   'The <b>joint distribution</b> specifies a probability for each assignment to $(S,R)$ (state of the the world).',
@@ -171,7 +160,7 @@ prose(
   'to denote random variables.',
   'Note that $\\P(S = s, R = r)$ is a probability (a number) while $\\P(S, R)$ is a distribution (a table of probabilities).',
   'We don\'t know what state of the world we\'re in, but we know what the probabilities are (there are no unknown unknowns).',
-  'The joint distribution contains all the information and acts as the central source of truth.',
+  'The joint distribution contains all the information and acts as the central source of truth, like a database.',
   _,
   'From it, we can derive a <b>marginal distribution</b> over a subset of the variables.',
   'We get this by aggregating the rows that share the same value of $S$.',
@@ -187,56 +176,14 @@ prose(
   'This is the conditioning that we saw for factor graphs, but where we normalize the selected rows to get probabilities.',
 _);
 
-add(slide('Review: probability (general)',
-  stmt('<b>Random variables</b>'),
-  indent('$X = (X_1, \\dots, X_n)$ partitioned into $(A, B)$'),
+add(slide('Probabilistic inference',
+  stmt('Joint distribution (probabilistic database)'),
+  parentCenter('$\\P(S, R, T, A)$'),
   pause(),
-  stmt('<b>Joint distribution</b>'),
-  indent('$\\P(X) = \\P(X_1, \\dots, X_n)$'),
-  pause(),
-  stmt('<b>Marginal distribution</b>'),
-  indent(stagger(
-    '$\\P(A = a) = \\sum_{b} \\P(A = a, B = b)$',
-    '$\\P(A) = \\sum_{b} \\P(A, B = b)$',
-  _)),
-  pause(),
-  stmt('<b>Conditional distribution</b>'),
-  indent(stagger(
-    '$\\P(A = a \\mid B = b) = \\frac{\\P(A = a, B = b)}{\\P(B = b)}$',
-    '$\\P(A \\mid B = b) = \\frac{\\P(A, B = b)}{\\P(B = b)}$',
-    '$\\P(A \\mid B = b) = \\frac{\\P(A, B = b)}{\\underbrace{\\P(B = b)}_\\text{normalization}}$',
-    '$\\P(A \\mid B = b) \\propto \\P(A, B = b)$',
-  _)),
-_));
-
-prose(
-  'In general, we have $n$ random variables $X_1, \\dots, X_n$ and let $X$ denote all of them.',
-  'Suppose $X$ is partitioned into $A$ and $B$ (e.g., $A = (X_1, X_3)$ and $B = (X_2, X_4, X_5)$ if $n = 5$).',
-  _,
-  'The marginal and conditional distributions can be defined over the subsets $A$ and $B$ rather than just single variables.',
-  _,
-  'Of course, we can also have a hybrid too:',
-  'for $n = 3$, $\\P(X_1 \\mid X_3 = 1)$ marginalizes out $X_2$ and conditions on $X_3 = 1$.',
-  _,
-  'It is important to remember the types of objects here:',
-  '$\\P(A)$ is a table where rows are possible assignments to $A$,',
-  'whereas $\\P(A = a)$ is a number representing the probability of the row corresponding to assignment $a$.',
-_);
-
-add(slide('Probabilistic inference task',
-  stmt('Random variables: unknown quantities in the world'),
-  //parentCenter('$X = (X_1, X_2, X_3, X_4, X_5, X_6)$'),
-  parentCenter('$X = (S, R, T, A)$'),
-  pause(),
-  headerList('In words',
-    //'Observe evidence: $X_4 = 3, X_5 = \\text{red}$',
-    //'Interested in query: $X_1, X_2$',
-    'Observe evidence (traffic in autumn): $T = 1, A = 1$',
-    'Interested in query (rain?): $R$',
+  headerList('Probabilistic inference',
+    greenbold('Condition')+' on evidence (traffic, autumn): $T = 1, A = 1$',
+    'Interested in '+redbold('query')+' (rain?): $R$',
   _),
-  pause(),
-  stmt('In symbols'),
-  //parentCenter('$\\P(\\underbrace{X_1, X_2}_\\text{query} \\mid \\underbrace{X_4 = 3, X_5 = \\text{red}}_\\text{condition})$'),
   parentCenter(frameBox(ytable(
     nowrapText('$\\P(\\red{\\underbrace{R}_\\text{query}} \\mid \\green{\\underbrace{T = 1, A = 1}_\\text{condition}})$'),
     nowrapText(blue('($\\blue{S}$ is <b>marginalized out</b>)')),
@@ -244,9 +191,6 @@ add(slide('Probabilistic inference task',
 _));
 
 prose(
-  'At this point, you should have all the definitions to compute any marginal or conditional distribution given access to a joint probability distribution.',
-  'But what is this really doing and how is this useful?',
-  _,
   'We should think about each assignment $x$ as a possible state of the world',
   '(it\'s raining, it\'s not sunny, there is traffic, it is autumn, etc.).',
   'Think of the joint distribution as one giant database that contains full information about how the world works.',
@@ -259,7 +203,7 @@ _);
 
 add(slide('Challenges',
   stmt('Modeling: How to specify a joint distribution $\\P(X_1, \\dots, X_n)$ <b>compactly</b>?'),
-  indent('Bayesian networks (factor graphs for probability distributions)'),
+  indent('Bayesian networks (factor graphs to specify joint distributions)'),
   pause(),
   stmt('Inference: How to compute queries $\\P(R \\mid T = 1, A = 1)$ <b>efficiently</b>?'),
   indent('Variable elimination, Gibbs sampling, particle filtering (analogue of algorithms for finding maximum weight assignment)'),
@@ -276,6 +220,23 @@ prose(
   _,
   'The two desiderata are rather synergistic,',
   'and it is the same property &mdash; conditional independence &mdash; that makes both possible.',
+_);
+
+add(quizSlide('bayes1-alarm',
+  'Earthquakes and burglaries are independent events that will cause an alarm to go off.  Suppose you hear an alarm.  How does hearing on the radio that there\'s an earthquake change your beliefs about burglary?',
+  'it increases the probability of burglary',
+  'it decreases the probability of burglary',
+  'it does not change the probability of burglary',
+_));
+
+prose(
+  'Situations like these arise all the time in practice:',
+  'we have a lot of unknowns which are all dependent on one another.',
+  'If we obtain evidence on some of these unknowns,',
+  'how does that affect our belief about the other unknowns?',
+  'This is called <b>reasoning under uncertainty</b>.',
+  _,
+  'In this lecture, we\'ll see how we can perform this type of reasoning under uncertainty in a principled way using Bayesian networks.',
 _);
 
 add(slide('Bayesian network (alarm)',
@@ -321,17 +282,19 @@ _).leftHeader(image('images/alarm.jpg').width(150)));
 prose(
   'Let us try to model the situation.',
   'First, we establish that there are three variables, $B$ (burglary), $E$ (earthquake), and $A$ (alarm).',
-  'Next, we connect up the variables to model the dependencies.',
   _,
+  'Second, we connect up the variables to model the dependencies.',
   'Unlike in factor graphs, these dependencies are represented as <b>directed</b> edges.',
   'You can intuitively think about the directionality as suggesting causality,',
   'though what this actually means is a deeper question and beyond the scope of this class.',
   _,
-  'For each variable, we specify a <b>local conditional distribution</b> (a factor) of that variable given its parent variables.',
+  'Third, for each variable, we specify a <b>local conditional distribution</b> (a factor) of that variable given its parent variables.',
   'In this example, $B$ and $E$ have no parents while $A$ has two parents, $B$ and $E$.',
   'This local conditional distribution is what governs how a variable is generated.',
   _,
-  'We are writing the local conditional distributions using $p$,',
+  'Fourth, we define the joint distribution over all the random variables as the product of all the local conditional distributions.',
+  _,
+  'Note that we write the local conditional distributions using $p$,',
   'while $\\P$ is reserved for the joint distribution over all random variables,',
   'which is defined as the product.',
 _);
@@ -348,6 +311,8 @@ add(slide('Bayesian network (alarm)',
   //stmt('Relationship to factor graphs'),
   //bulletedText('Local conditional distributions are just factors that happen to sum to 1 over first argument'),
   parentCenter('Bayesian networks are a special case of factor graphs!'),
+  pause(),
+  parentCenter('Note: single factor that connects '+redbold('all')+' parents!'),
 _));
 
 prose(
@@ -427,13 +392,13 @@ prose(
   _,
   'Second, we specify a local conditional distribution for variable $X_i$,',
   'which is a function that specifies a distribution over $X_i$ given an assignment $x_{\\Parents(i)}$',
-  'to its parents in the graph (possibly none).',
+  'to its parents in the graph (possibly no parents).',
   'The joint distribution is simply <b>defined</b> to be the product of all of the local conditional distributions together.',
   _,
   'Notationally, we use lowercase $p$ (in $p(x_i \\mid x_{\\Parents(i)})$)',
   'to denote a local conditional distribution,',
   'and uppercase $\\P$ to denote the induced joint distribution over all variables.',
-  'While the two can coincide, it is important to keep these things separate in your head!',
+  'While we will see that the two coincide, it is important to keep these things separate in your head!',
   /*_,
   'While formally, a Bayesian network just defines a probability distribution,',
   'it can be intuitive (although a bit dangerous) to think of the graph as capturing notions of <b>causality</b>.',
@@ -464,9 +429,9 @@ add(slide('Consistency of sub-Bayesian networks',
   parentCenter(simpleAlarmNetwork({})),
   'A short calculation:',
   parentCenter(table(
-    ['$\\P(B = b, E = e)$', '$= \\sum_a \\P(B = b, E = e, A = a)$'],
+    ['$\\P(B = b, E = e)$', '$\\eqdef \\sum_a \\P(B = b, E = e, A = a)$'],
     pause(),
-    [nil(), '$= \\sum_a p(b) p(e) p(a \\mid b, e)$'],
+    [nil(), '$\\eqdef \\sum_a p(b) p(e) p(a \\mid b, e)$'],
     pause(),
     [nil(), '$= p(b) p(e) \\sum_a p(a \\mid b, e)$'],
     pause(),
@@ -509,6 +474,11 @@ prose(
   'where we don\'t care about some of the variables, we can just remove them (graph operations),',
   'and this encodes the same distribution as we would have gotten from marginalizing out variables (algebraic operations).',
   'The former, being visual, can be more intuitive.',
+  _,
+  'Note that if we marginalized only based on the factor graph representation,',
+  'we would have kept the factor between $B$ and $E$, which is too conservative.',
+  'This because the factor graph representation doesn\'t "know" about the probabilistic structure of its factors,',
+  'and the factor has to be kept in general.',
 _);
 
 add(slide('Consistency of local conditionals',
@@ -531,7 +501,7 @@ prose(
   'It\'s not clear a priori that the two have anything to do with each other.',
   'The second special property that we get from using Bayesian networks is that the two are actually the same.',
   _,
-  'To show this, we can remove all the descendants of $D$ by the consistency of sub-Bayesian networks,',
+  'To show this, we can remove all non-ancestors of $D$ by the consistency of sub-Bayesian networks,',
   'leaving us with the Bayesian network $\\P(A = a, B = b, D = d) = p(a) p(b) p(d \\mid a, b)$.',
   'By the chain rule, $\\P(A = a, B = b, D = d) = \\P(A = a, B = b) \\P(D = d \\mid A = a, B = b)$.',
   'If we marginalize out $D$, then we are left with the Bayesian network $\\P(A = a, B = b) = p(a) p(b)$.',
@@ -545,8 +515,7 @@ add(slide('Medical diagnosis',
   problem('cold or allergies?',
     'You are coughing and have itchy eyes.  Do you have a cold or allergies?',
   _),
-  pause(),
-  parentCenter(text('[demo]').linkToUrl('index.html#include=inference-demo.js&example=med')),
+  parentCenter(xtable('[whiteboard]', pause(), text('[demo]').linkToUrl('index.html#include=inference-demo.js&example=med')).margin(20)),
   stmt('Variables: <b>C</b>old, <b>A</b>llergies, Coug<b>h</b>, <b>I</b>tchy eyes'),
   parentCenter(table(
     [stmt('Bayesian network'),
@@ -562,6 +531,8 @@ prose(
   'Allergies and cold are the two hidden variables that we\'d like to infer (we have some prior over these two).',
   'Cough and itchy eyes are symptoms that we observe as evidence,',
   'and we have some likelihood model of these symptoms given the hidden causes.',
+  _,
+  'Formally, we are interested in $\\P(C, A \\mid H = 1, I = 1)$.',
   _,
   'We can use the demo to infer the hidden state given the evidence.',
   // Try adding I = 1, watch C become less likely
@@ -627,9 +598,10 @@ _);*/
 
 add(summarySlide('Summary so far',
   parentCenter(simpleAlarmNetwork({})),
-  bulletedText('Set of random variables capture state of world'),
+  bulletedText('Random variables capture state of world'),
+  bulletedText('Edges between variables represent dependencies'),
   bulletedText('Local conditional distributions $\\Rightarrow$ joint distribution'),
-  bulletedText('Probabilistic inference task: ask questions'),
+  bulletedText('Probabilistic inference: ask questions about world'),
   bulletedText('Captures reasoning patterns (e.g., explaining away)'),
   bulletedText('Factor graph interpretation (for inference later)'),
 _));
@@ -639,14 +611,8 @@ _));
 roadmap(1);
 
 add(slide('Probabilistic programs',
-  stmt('Goal: make it easier to write down complex Bayesian networks'),
-  keyIdea('probabilistic program',
-    'Write a program to generate an assignment (rather than specifying the probability of an assignment).',
-  _),
-_));
-
-add(slide('Probabilistic programs',
   parentCenter(simpleAlarmNetwork({}).scale(0.8)),
+  pause(),
   generativeModel('alarm',
     '$B \\sim \\text{Bernoulli}(\\epsilon)$',
     '$E \\sim \\text{Bernoulli}(\\epsilon)$',
@@ -903,7 +869,9 @@ add(slide('Application: object tracking',
   pause(-1),
   parentCenter(hmm({maxTime: 5, pause: true, values: true}).scale(0.7)),
   pause(),
-  stmt('Applications: speech recognition, information extraction, gene finding'),
+  stmt('Inference', 'given sensor readings, where is the object?'),
+  //pause(),
+  //stmt('Applications: speech recognition, information extraction, gene finding'),
   //pause(),
   /*headerList('Other applications',
     'Computational biology: gene finding', pause(),
@@ -947,8 +915,6 @@ prose(
 _);
 
 add(slide('Application: document classification',
-  stmt('Question', 'given a text document, what is it about?'),
-  pause(),
   generativeModel('naive Bayes',
     'Generate label $Y \\sim p(Y)$', pause(),
     'For each position $i = 1, \\dots, L$:',
@@ -956,6 +922,8 @@ add(slide('Application: document classification',
   _),
   pause(-1),
   parentCenter(naiveBayesModel({pause: true, example: true, condition: true})),
+  pause(),
+  stmt('Inference', 'given a text document, what is it about?'),
 _));
 
 prose(
@@ -966,11 +934,15 @@ prose(
   'Note that the words are all generated independently,',
   'which is not a very realistic model of language, but naive Bayes models are surprisingly',
   'effective for tasks such as document classification.',
+  _,
+  'These types of models are traditionally called generative models as opposed to discriminative models for classification.',
+  'Rather than thinking about how you take the input and produce the output label (e.g., using a neural network),',
+  'you go the other way around: think about how the input is generated from the output (which is usually the purer, more structured form of the input).',
+  _,
+  'One advantage of using Naive Bayes for classification is that "training" is extremely easy and fast and just requires counting (as opposed to performing gradient descent).',
 _);
 
 add(slide('Application: topic modeling',
-  stmt('Question', 'given a text document, what topics is it about?'),
-  pause(),
   generativeModel('latent Dirichlet allocation',
     'Generate a distribution over topics $\\alpha \\in \\R^K$', pause(),
     'For each position $i = 1, \\dots, L$:',
@@ -979,6 +951,8 @@ add(slide('Application: topic modeling',
   _),
   pause(-2),
   parentCenter(ldaModel({pause: true, example: true, condition: true}).scale(0.8)),
+  pause(),
+  stmt('Inference', 'given a text document, what topics is it about?'),
 _));
 
 prose(
@@ -996,8 +970,6 @@ prose(
 _);
 
 add(slide('Application: medical diagnostics',
-  stmt('Question', 'If patient has has a cough and fever, what disease(s) does he/she have?'),
-  pause(),
   parentCenter(diseaseGraph()),
   generativeModel('diseases and symptoms',
     'For each disease $i=1,\\dots,m$:',
@@ -1006,6 +978,8 @@ add(slide('Application: medical diagnostics',
     'For each symptom $j=1,\\dots,n$:',
     indent('Generate activity of symptom $S_j \\sim p(S_j \\mid D_{1:m})$'),
   _),
+  pause(),
+  stmt('Inference', 'If a patient has has a cough and fever, what disease(s) does he/she have?'),
 _));
 
 prose(
@@ -1015,10 +989,8 @@ _);
 
 // Example of a graph
 add(slide('Application: social network analysis',
-  stmt('Question', 'Given a social network (graph over $n$ people), what types of people are there?'),
-  pause(),
   parentCenter(socialNetwork()),
-  showLevel(2),
+  showLevel(1),
   generativeModel('stochastic block model',
     'For each person $i=1,\\dots,n$:',
     indent('Generate person type $H_i \\sim p(H_i)$'),
@@ -1026,6 +998,8 @@ add(slide('Application: social network analysis',
     'For each pair of people $i \\neq j$:',
     indent('Generate connectedness $E_{ij} \\sim p(E_{ij} \\mid H_i, H_j)$'),
   _).scale(0.9),
+  pause(),
+  stmt('Inference', 'Given a social network (graph over $n$ people), what types of people are there?'),
 _));
 
 prose(
@@ -1043,13 +1017,21 @@ prose(
   'After defining the model, one can do probabilistic inference to compute $\\P(H \\mid E = e)$.',
 _);
 
+add(summarySlide('Summary so far',
+  parentCenter(overlay(ytable(h = factorNode('$H$'), e = factorNode('$E$', {color: 'gray'})).margin(50), arrow(h, e))),
+  bulletedText('Many many different types of models'),
+  bulletedText('Mindset: come up with stories of how the data (input) was generated through quantities of interest (output)'),
+  bulletedText('Opposite of how we normally do classification!'),
+_));
+
 ////////////////////////////////////////////////////////////
 // Inference
 roadmap(2);
 
 add(slide('Review: probabilistic inference',
   parentCenter(importantBox(redbold('Input'),
-    'Bayesian network: $\\P(X_1 = x_1, \\dots, X_n = x_n)$',
+    //'Bayesian network: $\\P(X_1 = x_1, \\dots, X_n = x_n)$',
+    'Bayesian network: $\\P(X_1, \\dots, X_n)$',
     'Evidence: $E = e$ where $E \\subseteq X$ is subset of variables',
     'Query: $Q \\subseteq X$ is subset of variables',
   _)),

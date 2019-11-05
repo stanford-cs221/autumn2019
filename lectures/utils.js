@@ -2760,7 +2760,7 @@ G.socialNetwork = function() {
     moveLeftOf('scientist'.fontcolor('red'), h2), 
     moveRightOf('scientist'.fontcolor('red'), h3), 
     pause(),
-    moveLeftOf('0'.fontcolor('red'), x12),
+    moveLeftOf('1'.fontcolor('red'), x12),
     moveRightOf('0'.fontcolor('red'), x13),
     moveBottomOf('1'.fontcolor('red'), x23),
   _).scale(0.65);
