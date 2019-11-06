@@ -2866,6 +2866,7 @@ G.hmm = function(opts) {
 
 G.chainFactorGraph = function(opts) {
   var nodes = [];
+  var xVar = opts.xVar || 'X';
   var start = (opts.start || 1) - 1;
   var end = (opts.end || opts.n) - 1;
   for (var i = start; i <= end; i++) {
@@ -2874,7 +2875,7 @@ G.chainFactorGraph = function(opts) {
       selected = opts.xfocus != (i+1);
     else if (opts.condition != null)
       selected = opts.condition == (i+1);
-    var x = factorNode('$X_{'+(i+1)+'}$', selected ? {color: 'gray'} : null);
+    var x = factorNode('$' + xVar + '_{'+(i+1)+'}$', selected ? {color: 'gray'} : null);
     if (selected && opts.remove) x.showLevel(-1);
     nodes[i] = x;
   }

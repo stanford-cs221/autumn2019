@@ -68,8 +68,8 @@ _);
 function roadmap(i) {
   add(outlineSlide('Roadmap', i, [
     ['forwardBackward', 'Forward-backward'],
-    ['gibbsSampling', 'Gibbs sampling'],
     ['particleFiltering', 'Particle filtering'],
+    ['gibbsSampling', 'Gibbs sampling'],
   ]));
 }
 
@@ -220,8 +220,615 @@ add(summarySlide('Summary',
 _));
 
 ////////////////////////////////////////////////////////////
-// Gibbs sampling
+// Particle filtering
 roadmap(1);
+
+add(slide('Hidden Markov models',
+  parentCenter(hmm({maxTime:5, hVar:'H'}).scale(0.7)),
+  //parentCenter('$\\displaystyle \\P(H = h, E = e) = \\underbrace{p(h_1)}_\\text{start} \\prod_{i=2}^n \\underbrace{p(h_i \\mid h_{i-1})}_\\text{transition} \\prod_{i=1}^n \\underbrace{p(e_i \\mid h_i)}_\\text{emission}$').scale(0.8),
+  stmt('Query (<b>filtering</b>)'),
+  indent('$\\P(H_1 \\mid E_1 = e_1)$').scale(0.9),
+  indent('$\\P(H_2 \\mid E_1 = e_1, E_2 = e_2)$').scale(0.9),
+  indent('$\\P(H_3 \\mid E_1 = e_1, E_2 = e_2, E_3 = e_3)$').scale(0.9),
+  stmt('Motivation: if $H_i$ can take on many values, forward-backward is too slow...'),
+_));
+
+prose(
+  'The forward-backward algorithm runs in $O(K^2 n)$, where $K$ is the number of possible values (e.g., locations) that $H_i$ can take on.',
+  'This could be a very large number, which makes the forward-backward algorithm very slow (though not exponentially so).',
+  _,
+  'The motivation of particle filtering is to perform <b>approximate probabilistic inference</b>,',
+  'and leveraging the fact that most of the $K^2$ pairs are very improbable.',
+  _,
+  'Although particle filtering applies to general factor graphs,',
+  'we will present them for hidden Markov models for concreteness.',
+  _,
+  'As the name suggests, we will use particle filtering for answering filtering queries.',
+_);
+
+function distribGrid(opts) {
+  var N = 10;
+  var K = 30;
+  var probs = [];
+  var cellSize = 20;
+  Math.seedrandom(1);
+  var mi = N/2;
+  var mj = N/2;
+  for (var i = 0; i < N; i++) {
+    for (var j = 0; j < N; j++) {
+      var p = Math.exp((-(i-mi)*(i-mi) - (j-mj)*(j-mj))/100);
+      probs.push(p);
+    }
+  }
+  normalize(probs);
+  var maxProb = Math.max.apply(null, probs);
+
+  var cells = [];
+  if (opts.beam) {
+    cells = wholeNumbers(N*N);
+    cells.sort(function(a,b) { return probs[b] - probs[a]; });
+    cells = cells.slice(0, K);
+  }
+  if (opts.sample) {
+    for (var i = 0; i < K; i++)
+      cells.push(sampleMultinomial(probs));
+  }
+
+  var rows = [];
+  var k = 0;
+  for (var i = 0; i < N; i++) {
+    var row = [];
+    for (var j = 0; j < N; j++) {
+      var cell = square(cellSize).fillOpacity(probs[k++] / maxProb / 2).fillColor('red');
+      if (cells.indexOf(i*N+j) != -1)
+        cell = overlay(cell, circle(5).color('black')).center();
+      row.push(cell);
+    }
+    rows.push(row);
+  }
+
+  return table.apply(null, rows);
+}
+
+add(slide('Review: beam search',
+  stmt('Idea: keep $\\le K$ <b>candidate list</b> $C$ of partial assignments'),
+  algorithm('beam search',
+    'Initialize $C \\leftarrow [\\{ \\}]$', pause(),
+    'For each $i = 1, \\dots, n$:',
+    indent(stmt('Extend')),
+    indent(indentNowrapText('$C\' \\leftarrow \\{ h \\cup \\{ H_i : v \\} : h \\in C, v \\in \\Domain_i \\}$')), pause(),
+    indent(stmt('Prune')),
+    indent(indentNowrapText('$C \\leftarrow K$ elements of $C\'$ with highest weights')),
+  _),
+  pause(),
+  parentCenter(text('[demo: <tt>beamSearch({K:3})</tt>]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=beamSearch({K:3})')),
+_));
+
+add(slide('Review: beam search',
+  parentCenter(beamSearchTree({beamSize: 4, pause: true})),
+  showLevel(0),
+  parentCenter('Beam size $K=4$'),
+_));
+
+prose(
+  'Recall that beam search effectively does a pruned BFS of the search tree of partial assignments,',
+  'where at each level, we keep track of the $K$ partial assignments with the highest weight.',
+  _,
+  'There are two phases.  In the first phase, we <b>extend</b> all the existing candidates $C$ to all possible assignments to $H_i$;',
+  'this results in $K = |\\Domain_i|$ candidates $C\'$.',
+  'These $C\'$ are sorted by weight and <b>pruned</b> by taking the top $K$.',
+_);
+
+add(slide('Beam search',
+  stmt('End result'),
+  bulletedText('Candidate list $C$ is set of particles'),
+  bulletedText('Use $C$ to compute marginals'),
+  pause(),
+  stmt('Problems'),
+  bulletedText('Extend: slow because requires considering every possible value for $H_i$'), pause(),
+  bulletedText('Prune: greedily taking best $K$ doesn\'t provide diversity'),
+  pause(),
+  stmt('Solution (3 steps): <b>propose, weight, resample</b>'),
+_));
+
+prose(
+  'Beam search does generate a set of particles, but there are two problems.',
+  _,
+  'First, it can be slow if $\\Domain_i$ is large because we have to try every single value.',
+  'Perhaps we can be smarter about which values to try.',
+  _,
+  'Second, we are greedily taking the top $K$ candidates,',
+  'which can be too myopic.',
+  'Can we somehow encourage more diversity?',
+  _,
+  'Particle filtering addresses both of these problems.',
+  'There are three steps: propose, which extends the current parital assignment,',
+  'and weight/resample, which redistributes resources on the particles based on evidence.',
+_);
+
+add(slide('Step 1: propose',
+  stmt('Old particles: $\\approx \\P(H_1, H_2 \\mid E_1 = 0, E_2 = 1)$'),
+  indent(ytable('[0, 1]', '[1, 0]')),
+  pause(),
+  keyIdea('proposal distribution',
+    nowrapText('For each old particle $(h_1, h_2)$, sample $H_3 \\sim p(h_3 \\mid h_2)$.'),
+  _),
+  stmt('New particles: $\\approx \\P(H_1, H_2, \\red{H_3} \\mid E_1 = 0, E_2 = 1)$'),
+  indent(ytable('[0, 1, '+red('1')+']', '[1, 0, '+red('0')+']')),
+_));
+
+prose(
+  'Suppose we have a set of particles that approximates the filtering distribution over $H_1,H_2$.',
+  'The first step is to extend each current partial assignment (particle)',
+  'from $h_{1:i-1} = (h_1, \\dots, h_{i-1})$ to $h_{1:i} = (h_1, \\dots, h_{i})$.',
+  _,
+  'To do this, we simply go through each particle and extend it stocastically,',
+  'using the transition probability $p(h_i \\mid h_{i-1})$ to sample a new value of $H_i$.',
+  _,
+  '(For concreteness, think of what will happen if $p(h_i \\mid h_{i-1}) = 0.8$ if $h_i = h_{i-1}$ and $0.2$ otherwise.)',
+  _,
+  'We can think of advancing each particle according to the dynamics of the HMM.',
+  'These particles approximate the probability of $H_1,H_2,H_3$, but still conditioned on the same evidence.',
+_);
+
+add(slide('Step 2: weight',
+  stmt('Old particles: $\\approx \\P(H_1, H_2, H_3 \\mid E_1 = 0, E_2 = 1)$'),
+  indent(ytable('[0, 1, 1]', '[1, 0, 0]')),
+  pause(),
+  keyIdea('weighting',
+    'For each old particle $(h_1, h_2, h_3)$, weight it by $w(h_1, h_2, h_3) = p(e_3 \\mid h_3)$.',
+  _),
+  stmt('New particles'),
+  parentCenter('$\\approx \\P(H_1, H_2, H_3 \\mid E_1 = 0, E_2 = 1, \\red{E_3 = 1})$'),
+  indent(ytable('[0, 1, 1] '+red('(0.8)'), '[1, 0, 0] '+red('(0.4)'))),
+_));
+
+prose(
+  'Having generated a set of $K$ candidates, we need to now take into account the new evidence $E_i = e_i$.',
+  'This is a deterministic step that simply weights each particle by the probability of generating $E_i = e_i$,',
+  'which is the emission probability $p(e_i \\mid h_i)$.',
+  _,
+  'Intuitively, the proposal was just a guess about where the object will be $H_3$.',
+  'To get a more realistic picture, we condition on $E_3 = 1$.',
+  'Supposing that $p(e_i = 1 \\mid h_i = 1) = 0.8$ and $p(e_i = 1 \\mid h_i = 0) = 0.4$,',
+  'we then get the weights 0.8 and 0.4.',
+  'Note that these weights do not sum to 1.',
+_);
+
+add(slide('Step 3: resample',
+  stmt('Question: given weighted particles, which to choose?'),
+  pause(),
+  stmt('Tricky situation'),
+  headerList(null,
+    'Target distribution close to uniform',
+    'Fewer particles than locations',
+  _),
+  parentCenter(distribGrid({})),
+_));
+
+prose(
+  'Having proposed extensions to the particles and computed a weight for each particle,',
+  'we now come to the question of which particles to keep.',
+  _,
+  'Intuitively, if a particle has very small weight, then we might want to prune it away.',
+  'On the other hand, if a particle has high weight, maybe we should dedicate more resources to it.',
+  _,
+  'As a motivating example, consider an almost uniform distribution over a set of locations,',
+  'and trying to represent this distribution with fewer particles than locations.',
+  'This is a tough situation to be in.',
+_);
+
+add(slide('Step 3: resample',
+  parentCenter(table(
+    ['$K$ with highest weight', pause(), '$K$ sampled from distribution'], pause(-1),
+    [distribGrid({beam: true}), pause(), distribGrid({sample: true})],
+  _).margin(100, 10)).center(),
+  pause(),
+  stmt('Intuition: top $K$ assignments not representative.'),
+  'Maybe random samples will be more representative...',
+_));
+
+prose(
+  'Beam search, which would choose the $K$ locations with the highest weight, would clump all the particles near the mode.',
+  'This is risky, because we have no support out farther from the center, where there is actually substantial probability.',
+  _,
+  'However, if we sample from the distribution which is proportional to the weights,',
+  'then we can hedge our bets and get a more representative set of particles which cover the space more evenly.',
+_);
+
+add(slide('Step 3: resample',
+  keyIdea('resampling',
+    'Given a distribution $\\P(A = a)$ with $n$ possible values, draw a sample $K$ times.',
+  _),
+  stmt('Intuition: redistribute particles to more promising areas'),
+  pause(),
+  example('resampling',
+    xtable(
+      frameBox(table(
+        ['$a$', '$\\P(A = a)$'],
+        ['a1', '$0.70$'],
+        ['a2', '$0.20$'],
+        ['a3', '$0.05$'],
+        ['a4', '$0.05$'],
+      _).scale(0.7).center().margin(40, 0)),
+      bigRightArrow(100),
+      frameBox(table(
+        ['sample $1$', 'a1'],
+        ['sample $2$', 'a2'],
+        ['sample $3$', 'a1'],
+        ['sample $4$', 'a1'],
+      _).scale(0.7).center().margin(40, 0)),
+    _).center().margin(10),
+  _),
+_));
+
+prose(
+  'After proposing and weighting, we end up with a set of samples $h_{1:i}$, each with some weight $w(h_{1:i})$.',
+  'Intuitively, if $w(h_{1:i})$ is really small, then it might not be worth keeping that particle around.',
+  _,
+  'Resampling allows us to put (possibly multiple) particles on high weight particles.',
+  'In the example above, we don\'t sample a3 and a4 because they have low probability of being sampled.',
+_);
+
+add(slide('Step 3: resample',
+  stmt('Old particles'),
+  parentCenter('$\\approx \\P(H_1, H_2, H_3 \\mid E_1 = 0, E_2 = 1, E_3 = 1)$'),
+  indent(ytable('[0, 1, 1] (0.8) $\\Rightarrow 2/3$', '[1, 0, 0] (0.4) $\\Rightarrow 1/3$')),
+  pause(),
+  stmt('New particles'),
+  parentCenter('$\\approx \\P(H_1, H_2, H_3 \\mid E_1 = 0, E_2 = 1, E_3 = 1)$'),
+  indent(ytable('[0, 1, 1]', '[0, 1, 1]')),
+_));
+
+prose(
+  'In our example, we normalize the particle weights to form a distribution over particles.',
+  'Then we draw $K = 2$ independent samples from that distribution.',
+  'Higher weight particles will get more samples.',
+_);
+
+add(slide('Particle filtering',
+  //stmt('Idea: keep $C$, set of $K$ partial assignments (particles)'),
+  algorithm('particle filtering',
+    'Initialize $C \\leftarrow [\\{ \\}]$', pause(),
+    'For each $i = 1, \\dots, n$:',
+    indent(stmt('Propose (extend)')),
+    indent(indent('$C\' \\leftarrow \\{ h \\cup \\{ H_i : h_i \\} : h \\in C, h_i \\sim p(h_i \\mid h_{i-1}) \\}$')),
+    pause(),
+    indent(stmt('Reweight')),
+    indent(indent('Compute weights $w(h) = p(e_i \\mid h_i)$ for $h \\in C\'$')),
+    pause(),
+    indent(stmt('Resample (prune)')),
+    indent(indent('$C \\leftarrow K$ elements drawn independently from $\\propto w(h)$')),
+  _).scale(0.9),
+  pause(),
+  parentCenter(text('[demo: <tt>particleFiltering({K:100})</tt>]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=particleFiltering({K:100})')),
+_));
+
+prose(
+  'The final algorithm here is very similar to beam search.',
+  'We go through all the variables $H_1, \\dots, H_n$.',
+  _,
+  'For each candidate $h_{i-1} \\in C$, we propose $h_i$ according to the transition distribution $p(h_i \\mid h_{i-1})$.',
+  _,
+  'We then weight this particle using $w(h) = p(e_i \\mid h_i)$.',
+  _,
+  'Finally, we select $K$ particles from $\\propto w(h)$ by sampling $K$ times independently.',
+_);
+
+add(slide('Particle filtering: implementation',
+  bulletedText('If only care about last $H_i$, collapse all particles with same $H_i$ (think elimination)'),
+  parentCenter(ytable(
+    '$0 0 1 \\Rightarrow 1$',
+    '$1 0 1 \\Rightarrow 1$',
+    '$0 1 0 \\Rightarrow 0$',
+    '$0 1 0 \\Rightarrow 0$',
+    '$1 1 0 \\Rightarrow 0$',
+  _)),
+  pause(),
+  bulletedText('If many particles are the same, can just store counts'),
+  parentCenter(xtable(ytable(
+    '$1$',
+    '$1$',
+    '$0$',
+    '$0$',
+    '$0$',
+  _), '$\\Rightarrow$', ytable('$1:2$', '$0:3$')).center().margin(10)),
+_));
+
+prose(
+  'In particle filtering as it is currently defined,',
+  'each particle is an entire trajectory in the context of object tracking (assignment to all the variables).',
+  _,
+  'Often in tracking applications, we only care about the last location $H_i$,',
+  'and the HMM is such that the future ($H_{i+1}, \\dots, H_n$) is conditionally independent of $H_1, \\dots, H_{i-1}$ given $H_i$.',
+  'Therefore, we often just store the value of $H_i$ rather than its entire ancestry.',
+  _,
+  'When we only keep track of the $H_i$, we might have many particles that have the same value,',
+  'so it can be useful to store just the counts of each value rather than having duplicates.',
+_);
+
+add(slide('Application: tracking',
+  parentCenter(chainFactorGraph({n:5, xVar:'H'}).scale(0.8)),
+  example('tracking',
+    bulletedText('$H_i$: position of object at $i$'), pause(),
+    bulletedText('Transitions: $t_i(h_i, h_{i-1}) = [h_i \\text{ near } h_{i-1}]$'), pause(),
+    bulletedText('Observations: $o_i(h_i) = \\text{sensor reading...}$'), pause(),
+  _),
+  parentCenter('$\\displaystyle \\P(H = h) \\propto \\prod_{i=1}^n o_i(h_i) t_i(h_i, h_{i-1})$'),
+_));
+
+G.particleFilteringDemo = function() {
+  if (sfig.serverSide) return '[see web version]';
+
+  // Directions
+  var dx = [0, +1, 0, -1, 0];
+  var dy = [-1, 0, +1, 0, 0];
+  var dNames = 'NESW=';
+
+  // For rendering
+  var items = [];  // List of all the cell Blocks to stick in the Overlay
+  var cells = [];  // x, y => cell Block
+  var obsBlocks = [];  // x, y => observation Blocks (circles)
+  var cellSize = 10;  // Size of a cell Block
+
+  // State: (x,y) position
+  var particles;  // List of states
+  var time;
+  var prev_time;
+  var ox, oy;
+
+  // Grid
+  var width = 3 * 10, height = 4 * 5;
+  for (var x = 0; x < width; x++) {
+    cells[x] = [];
+    obsBlocks[x] = [];
+    for (var y = 0; y < height; y++) {
+      // represent uncertainty over the blocks
+      var cell = square(cellSize).color('black').shiftBy(x*cellSize, y*cellSize);
+      cells[x][y] = cell;
+      items.push(cell);
+      // For truePath or observation
+      var obs = circle(3).color('black').shiftBy((x+0.5)*cellSize, (y+0.5)*cellSize);
+      obsBlocks[x][y] = obs;
+      items.push(obs);
+    }
+  }
+
+  // Create the true path
+  var truePath = null;  // Sequence of true states
+  function setPath() {
+    truePath = [];
+    function p(xi, yi, d) {
+      return [Math.floor(xi*width/3), Math.floor(yi*height/4), dNames.indexOf(d)];
+    }
+    var wayPoints = [
+      p(2, 1, 'W'),
+      p(1, 1, 'S'),
+      p(1, 2, 'E'),
+      p(2, 2, 'S'),
+      p(2, 3, 'W'),
+      p(1, 3, 'N'),
+      p(1, 2, 'E'),
+      p(2, 2, 'N'),
+      p(2, 1, null),
+    ];
+
+    for (var pi = 0; pi < wayPoints.length-1; pi++) {
+      var x = wayPoints[pi][0], y = wayPoints[pi][1], d = wayPoints[pi][2];
+      var m;
+      for (m = 0; m < 100; m++) {
+        if (x == wayPoints[pi+1][0] && y == wayPoints[pi+1][1])  // Reached the end
+          break;
+        truePath.push([x, y]);
+        x += dx[d];
+        y += dy[d];
+      }
+      if (m == 100) throw 'Bad';
+    }
+    //truePath = [[10, 10]];  // Debugging
+  }
+  setPath();
+
+  function renderCell(x, y, v) {
+    if (!cells[x] || !cells[x][y]) return;  // Out of bounds
+    var cell = cells[x][y];
+    var color = rgb(v*255, 0, 0);
+    updateColor(cell.color(color));
+    var obs = obsBlocks[x][y];
+    // Can overwrite if neither truePath nor observations are there
+    var true_x = truePath[time][0];
+    var true_y = truePath[time][1];
+    if (!(ox == x && oy == y) && (!showTruePosition || !(true_x == x && true_y == y)))
+      updateColor(obs.color(color));
+  }
+
+  function renderParticles(show) {
+    // Set the color of squares
+    var counts = {};
+    for (var i = 0; i < numParticles; i++) {
+      var p = particles[i];
+      counts[p] = (counts[p] || 0) + 1;
+    }
+    for (var i = 0; i < numParticles; i++) {
+      var p = particles[i];
+      if (counts[p]) {
+        if (show) {
+          var base = 0.3;  // If particle exists, show something
+          renderCell(p[0], p[1], base + counts[p]/numParticles * (1 - base));
+        } else {
+          renderCell(p[0], p[1], 0);
+        }
+        counts[p] = null;
+      }
+    }
+  }
+
+  function resetParticles() {
+    particles = [];
+    for (var i = 0; i < numParticles; i++) {
+      var x = randint(width);
+      var y = randint(height);
+      particles.push([x, y]);
+    }
+  }
+
+  function step() {
+    // Remove old points
+    if (prev_time != null && showTruePosition) {
+      var prev_true_x = truePath[prev_time][0];
+      var prev_true_y = truePath[prev_time][1];
+      updateColor(obsBlocks[prev_true_x][prev_true_y].color('black'));
+    }
+    if (ox != null && oy != null)
+      updateColor(obsBlocks[ox][oy].color('black'));
+
+    // Sample observation
+    var true_x = truePath[time][0];
+    var true_y = truePath[time][1];
+    var choices = [];
+    var weights = [];
+    // Approximation: don't consider things outside the grid
+    for (var x = 0; x < width; x++) {
+      for (var y = 0; y < height; y++) {
+        var f = observeFactor(Math.abs(true_x-x), Math.abs(true_y-y));
+        if (f == 0) continue;
+        choices.push([x, y]);
+        weights.push(f);
+      }
+    }
+    if (weights.length == 0) {
+      L('Error: no possible observations');
+    }
+    normalize(weights);
+    var chosen_i = sampleMultinomial(weights);
+    ox = choices[chosen_i][0];
+    oy = choices[chosen_i][1];
+
+    // Add new points
+    if (showTruePosition)
+      updateColor(obsBlocks[true_x][true_y].color('blue'));
+    updateColor(obsBlocks[ox][oy].color('orange'));
+
+    // Move to the new time step
+    renderParticles(false); // Remove old particles
+    var newParticles = [];
+    var weights = [];
+    var indexMap = {};  // map point to index in newParticles
+    for (var i = 0; i < particles.length; i++) {
+      var x = particles[i][0];
+      var y = particles[i][1];
+
+      // Extend
+      var d = randint(5);
+      var new_x = x + dx[d];
+      var new_y = y + dy[d];
+
+      // Reweight
+      var w = observeFactor(Math.abs(new_x - ox), Math.abs(new_y - oy));
+      if (!w) continue;
+      var new_p = [new_x, new_y];
+      var index = indexMap[new_p];
+      if (index == null) {
+        index = newParticles.length;
+        indexMap[new_p] = index;
+        newParticles[index] = new_p;
+        weights[index] = w;
+      } else {
+        weights[index] += w;
+      }
+    }
+    particles = newParticles;
+    if (!normalize(weights)) {
+      resetParticles();
+    } else {
+      // Resample
+      var newParticles = [];
+      for (var i = 0; i < numParticles; i++)
+        newParticles[i] = particles[sampleMultinomial(weights)];
+      particles = newParticles;
+    }
+    renderParticles(true);  // Add new particles
+
+    // Advance time
+    prev_time = time;
+    time = (time + 1) % truePath.length;
+  }
+
+  var origInput = [
+    '// Press ctrl-enter to start simulation',
+    '',
+    '// Observation model: distance between true and observed',
+    'observeFactor = function(distx, disty) {',
+    '  return distx <= 3 && disty <= 3;  // Box noise',
+    '  //return Math.exp(-(distx*distx + disty*disty)/5);  // Gaussian noise',
+    '  //return distx % 5 == 0 && disty % 5 == 0 && distx + disty <= 15;  // Weird',
+    '}',
+    'numParticles = 0          // Number of particles (try 10000)',
+    'sampleTime = 100          // Milliseconds to wait between samples',
+    'showTruePosition = false  // Set to true to see ground truth',
+  ].join('\n');
+
+  var inputBox = textBox().multiline(true).content(origInput).size(80, 12);
+  var outputBox = new Overlay(items);
+  var timerId = null;
+  function show() {
+    eval(inputBox.content().get());
+
+    // Initialize particles
+    time = 0;
+    for (var x = 0; x < width; x++)
+      for (var y = 0; y < height; y++)
+        renderCell(x, y, 0);
+    resetParticles();
+    renderParticles(true);
+
+    if (origInput != inputBox.content().get())
+      pushKeyValue('particle-filtering-demo', {input: inputBox.content().get()});
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+  show();
+
+  inputBox.onEnter(function() {
+    show();
+    timerId = setInterval(step, sampleTime);
+    prez.refresh(function() { inputBox.focus(); });
+  });
+  outputBox.onClick(function() {
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = null;
+    } else {
+      timerId = setInterval(step, sampleTime);
+    }
+  });
+
+  return ytable(
+    outputBox,
+    inputBox,
+  _).center().margin(10);
+}
+
+add(slide('Particle filtering demo',
+  parentCenter(particleFilteringDemo()),
+_));
+
+prose(
+  'Consider a tracking application where an object is moving around in a grid and we are trying to figure out its location $H_i \\in \\{1, \\dots, \\text{grid-width}\\} \\times \\{1, \\dots, \\text{grid-height}\\}$.',
+  _,
+  'The transition factors say that from one time step to the next, the object is equally likely to have moved north, south, east, west, or stayed put.',
+  _,
+  'Each observation is a location on the grid (a yellow dot).',
+  'The observation factor is a user-defined function which depends on the vertical and horizontal distance.',
+  _,
+  'Play around with the demo to get a sense of how particle filtering works, especially the different observation factors.',
+_);
+
+////////////////////////////////////////////////////////////
+// Gibbs sampling
+roadmap(2);
 
 function generateSamples() {
   var probs = [0.8, 1, 0.9];
@@ -263,7 +870,7 @@ function generateSamples() {
   return xtable(table1, pause(), table2).margin(50).center();
 }
 
-add(slide('Particle-based approximation',
+/*add(slide('Particle-based approximation',
   parentCenter('$\\P(X_1, X_2, X_3)$'),
   pause(2),
   keyIdea('particles',
@@ -289,7 +896,7 @@ prose(
   _,
   'Once we have a set of particles, we can compute all the queries we want with it.',
   'So now how do we actually generate the particles?',
-_);
+_);*/
 
 add(slide('Gibbs sampling',
   stmt('Setup'),
@@ -654,630 +1261,6 @@ prose(
   'Nonetheless, Gibbs sampling is widely used due to its simplicity and can work reasonably well.',
 _);
 
-////////////////////////////////////////////////////////////
-// Particle filtering
-roadmap(2);
-
-add(slide('Hidden Markov models',
-  parentCenter(hmm({maxTime:5, hVar:'X'}).scale(0.7)),
-  //parentCenter(chainFactorGraph({n:5}).scale(0.7)),
-  parentCenter('$\\displaystyle \\P(X = x, E = e) = \\underbrace{p(x_1)}_\\text{start} \\prod_{i=2}^n \\underbrace{p(x_i \\mid x_{i-1})}_\\text{transition} \\prod_{i=1}^n \\underbrace{p(e_i \\mid x_i)}_\\text{emission}$').scale(0.8),
-  stmt('Query (<b>filtering</b>)'),
-  indent('$\\P(X_1 \\mid E_1 = e_1)$').scale(0.9),
-  indent('$\\P(X_2 \\mid E_1 = e_1, E_2 = e_2)$').scale(0.9),
-  indent('$\\P(X_3 \\mid E_1 = e_1, E_2 = e_2, E_3 = e_3)$').scale(0.9),
-_));
-
-prose(
-  'Now we turn our attention to particle filtering.',
-  'Gibbs sampling is the probabilistic analogue of local search methods such as ICM,',
-  'and particle filtering is the probabilistic analog of partial search such as beam search.',
-  _,
-  'Although particle filtering applies to general factor graphs,',
-  'we will present them for hidden Markov models for concreteness.',
-  _,
-  'As the name suggests, we will use particle filtering for answering filtering queries.',
-_);
-
-function distribGrid(opts) {
-  var N = 10;
-  var K = 30;
-  var probs = [];
-  var cellSize = 20;
-  Math.seedrandom(1);
-  var mi = N/2;
-  var mj = N/2;
-  for (var i = 0; i < N; i++) {
-    for (var j = 0; j < N; j++) {
-      var p = Math.exp((-(i-mi)*(i-mi) - (j-mj)*(j-mj))/100);
-      probs.push(p);
-    }
-  }
-  normalize(probs);
-  var maxProb = Math.max.apply(null, probs);
-
-  var cells = [];
-  if (opts.beam) {
-    cells = wholeNumbers(N*N);
-    cells.sort(function(a,b) { return probs[b] - probs[a]; });
-    cells = cells.slice(0, K);
-  }
-  if (opts.sample) {
-    for (var i = 0; i < K; i++)
-      cells.push(sampleMultinomial(probs));
-  }
-
-  var rows = [];
-  var k = 0;
-  for (var i = 0; i < N; i++) {
-    var row = [];
-    for (var j = 0; j < N; j++) {
-      var cell = square(cellSize).fillOpacity(probs[k++] / maxProb / 2).fillColor('red');
-      if (cells.indexOf(i*N+j) != -1)
-        cell = overlay(cell, circle(5).color('black')).center();
-      row.push(cell);
-    }
-    rows.push(row);
-  }
-
-  return table.apply(null, rows);
-}
-
-add(slide('Review: beam search',
-  stmt('Idea: keep $\\le K$ <b>candidate list</b> $C$ of partial assignments'),
-  algorithm('beam search',
-    'Initialize $C \\leftarrow [\\{ \\}]$', pause(),
-    'For each $i = 1, \\dots, n$:',
-    indent(stmt('Extend')),
-    indent(indentNowrapText('$C\' \\leftarrow \\{ x \\cup \\{ X_i : v \\} : x \\in C, v \\in \\Domain_i \\}$')), pause(),
-    indent(stmt('Prune')),
-    indent(indentNowrapText('$C \\leftarrow K$ elements of $C\'$ with highest weights')),
-  _),
-  pause(),
-  parentCenter(text('[demo: <tt>beamSearch({K:3})</tt>]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=beamSearch({K:3})')),
-_));
-
-add(slide('Review: beam search',
-  parentCenter(beamSearchTree({beamSize: 4, pause: true})),
-  showLevel(0),
-  parentCenter('Beam size $K=4$'),
-_));
-
-prose(
-  'Recall that beam search effectively does a pruned BFS of the search tree of partial assignments,',
-  'where at each level, we keep track of the $K$ partial assignments with the highest weight.',
-  _,
-  'There are two phases.  In the first phase, we <b>extend</b> all the existing candidates $C$ to all possible assignments to $X_i$;',
-  'this results in $K = |\\Domain_i|$ candidates $C\'$.',
-  'These $C\'$ are sorted by weight and <b>pruned</b> by taking the top $K$.',
-_);
-
-add(slide('Beam search',
-  stmt('End result'),
-  bulletedText('Candidate list $C$ is set of particles'),
-  bulletedText('Use $C$ to compute marginals'),
-  pause(),
-  stmt('Problems'),
-  bulletedText('Extend: slow because requires considering every possible value for $X_i$'), pause(),
-  bulletedText('Prune: greedily taking best $K$ doesn\'t provide diversity'),
-  pause(),
-  stmt('Solution (3 steps): <b>propose, weight, resample</b>'),
-_));
-
-prose(
-  'Beam search does generate a set of particles, but there are two problems.',
-  _,
-  'First, it can be slow if $\\Domain_i$ is large because we have to try every single value.',
-  'Perhaps we can be smarter about which values to try.',
-  _,
-  'Second, we are greedily taking the top $K$ candidates,',
-  'which can be too myopic.',
-  'Can we somehow encourage more diversity?',
-  _,
-  'Particle filtering addresses both of these problems.',
-  'There are three steps: propose, which extends the current parital assignment,',
-  'and weight/resample, which redistributes resources on the particles based on evidence.',
-_);
-
-add(slide('Step 1: propose',
-  //parentCenter(chainFactorGraph({n:5}).scale(0.8)),
-  //parentCenter(hmm({maxTime:5, hVar:'X'}).scale(0.7)),
-  stmt('Old particles: $\\approx \\P(X_1, X_2 \\mid E_1 = 0, E_2 = 1)$'),
-  indent(ytable('[0, 1]', '[1, 0]')),
-  pause(),
-  keyIdea('proposal distribution',
-    //nowrapText('For each old particle $x_{1:i-1}$, sample $X_i \\sim p(x_i \\mid x_{i-1})$.'),
-    nowrapText('For each old particle $(x_1, x_2)$, sample $X_3 \\sim p(x_3 \\mid x_2)$.'),
-    //'The <b>proposal distribution</b> $p(x_i \\mid x_{i-1})$ is a heuristic guess of the value of $X_i$.',
-  _),
-  stmt('New particles: $\\approx \\P(X_1, X_2, \\red{X_3} \\mid E_1 = 0, E_2 = 1)$'),
-  indent(ytable('[0, 1, '+red('1')+']', '[1, 0, '+red('0')+']')),
-  //stmt('Notation: $x_{1:i} = (x_1, \\dots, x_i)$'),
-  //pause(),
-  //'How to choose a proposal?', //  Tradeoff accuracy and efficiency.',
-  //pause(),
-  //stmt('Note: can just store $X_3$ (Markov assumption).'),
-_));
-
-prose(
-  'Suppose we have a set of particles that approximates the filtering distribution over $X_1,X_2$.',
-  'The first step is to extend each current partial assignment (particle)',
-  'from $x_{1:i-1} = (x_1, \\dots, x_{i-1})$ to $x_{1:i} = (x_1, \\dots, x_{i})$.',
-  _,
-  /*'Recall from factor graphs that upon assigning variable $X_i$, we can include all the dependent factors $D(x_{1:i-1}, X_i)$,',
-  'which for chain-structured factor graphs contains $t_i(x_{i-1}, x_i)$ and $o_i(x_i)$.',
-  _,
-  'But in general, there are many possible values for $X_i$ (for object tracking in a 100x100 grid,',
-  'we have $|\\Domain_i| = 10^4$ possible values)',
-  'and we don\'t want to enumerate over all of them.',
-  _,
-  'So we will use a <b>proposal distribution</b> $\\pi_i$,',
-  'whose purpose is to provide an educated guess about what the value of $X_i$ should be.',
-  'The idea is that we can just sample from this distribution,',
-  'which might be easier than enumerating all possible values $v \\in \\Domain_i$.',*/
-  'To do this, we simply go through each particle and extend it stocastically,',
-  'using the transition probability $p(x_i \\mid x_{i-1})$ to sample a new value of $X_i$.',
-  _,
-  '(For concreteness, think of what will happen if $p(x_i \\mid x_{i-1}) = 0.8$ if $x_i = x_{i-1}$ and $0.2$ otherwise.)',
-  _,
-  'We can think of advancing each particle according to the dynamics of the HMM.',
-  'These particles approximate the probability of $X_1,X_2,X_3$, but still conditioned on the same evidence.',
-_);
-
-add(slide('Step 2: weight',
-  stmt('Old particles: $\\approx \\P(X_1, X_2, X_3 \\mid E_1 = 0, E_2 = 1)$'),
-  indent(ytable('[0, 1, 1]', '[1, 0, 0]')),
-  pause(),
-  keyIdea('weighting',
-    'For each old particle $(x_1, x_2, x_3)$, weight it by $w(x_1, x_2, x_3) = p(e_3 \\mid x_3)$.',
-  _),
-  stmt('New particles'),
-  parentCenter('$\\approx \\P(X_1, X_2, X_3 \\mid E_1 = 0, E_2 = 1, \\red{E_3 = 1})$'),
-  indent(ytable('[0, 1, 1] '+red('(0.8)'), '[1, 0, 0] '+red('(0.4)'))),
-_));
-
-prose(
-  'Having generated a set of $K$ candidates, we need to now take into account the new evidence $E_i = e_i$.',
-  'This is a deterministic step that simply weights each particle by the probability of generating $E_i = e_i$,',
-  'which is the emission probability $p(e_i \\mid x_i)$.',
-  _,
-  'Intuitively, the proposal was just a guess about where the object will be $X_3$.',
-  'To get a more realistic picture, we condition on $E_3 = 1$.',
-  'Supposing that $p(e_i = 1 \\mid x_i = 1) = 0.8$ and $p(e_i = 1 \\mid x_i = 0) = 0.4$,',
-  'we then get the weights 0.8 and 0.4.',
-  'Note that these weights do not sum to 1.',
-_);
-
-add(slide('Step 3: resample',
-  stmt('Question: given weighted particles, which to choose?'),
-  pause(),
-  stmt('Tricky situation'),
-  headerList(null,
-    'Target distribution close to uniform',
-    'Fewer particles than locations',
-  _),
-  parentCenter(distribGrid({})),
-_));
-
-prose(
-  'Having proposed extensions to the particles and computed a weight for each particle,',
-  'we now come to the question of which particles to keep.',
-  _,
-  'Intuitively, if a particle has very small weight, then we might want to prune it away.',
-  'On the other hand, if a particle has high weight, maybe we should dedicate more resources to it.',
-  _,
-  'As a motivating example, consider an almost uniform distribution over a set of locations,',
-  'and trying to represent this distribution with fewer particles than locations.',
-  'This is a tough situation to be in.',
-_);
-
-add(slide('Step 3: resample',
-  parentCenter(table(
-    ['$K$ with highest weight', pause(), '$K$ sampled from distribution'], pause(-1),
-    [distribGrid({beam: true}), pause(), distribGrid({sample: true})],
-  _).margin(100, 10)).center(),
-  pause(),
-  stmt('Intuition: top $K$ assignments not representative.'),
-  'Maybe random samples will be more representative...',
-_));
-
-prose(
-  'Beam search, which would choose the $K$ locations with the highest weight, would clump all the particles near the mode.',
-  'This is risky, because we have no support out farther from the center, where there is actually substantial probability.',
-  _,
-  'However, if we sample from the distribution which is proportional to the weights,',
-  'then we can hedge our bets and get a more representative set of particles which cover the space more evenly.',
-_);
-
-add(slide('Step 3: resample',
-  keyIdea('resampling',
-    'Given a distribution $\\P(A = a)$ with $n$ possible values, draw a sample $K$ times.',
-  _),
-  stmt('Intuition: redistribute particles to more promising areas'),
-  pause(),
-  example('resampling',
-    xtable(
-      frameBox(table(
-        ['$a$', '$\\P(A = a)$'],
-        ['a1', '$0.70$'],
-        ['a2', '$0.20$'],
-        ['a3', '$0.05$'],
-        ['a4', '$0.05$'],
-      _).scale(0.7).center().margin(40, 0)),
-      bigRightArrow(100),
-      frameBox(table(
-        ['sample $1$', 'a1'],
-        ['sample $2$', 'a2'],
-        ['sample $3$', 'a1'],
-        ['sample $4$', 'a1'],
-      _).scale(0.7).center().margin(40, 0)),
-    _).center().margin(10),
-  _),
-_));
-
-prose(
-  'After proposing and weighting, we end up with a set of samples $x_{1:i}$, each with some weight $w(x_{1:i})$.',
-  'Intuitively, if $w(x_{1:i})$ is really small, then it might not be worth keeping that particle around.',
-  _,
-  'Resampling allows us to put (possibly multiple) particles on high weight particles.',
-  'In the example above, we don\'t sample a3 and a4 because they have low probability of being sampled.',
-_);
-
-add(slide('Step 3: resample',
-  stmt('Old particles'),
-  parentCenter('$\\approx \\P(X_1, X_2, X_3 \\mid E_1 = 0, E_2 = 1, E_3 = 1)$'),
-  indent(ytable('[0, 1, 1] (0.8) $\\Rightarrow 2/3$', '[1, 0, 0] (0.4) $\\Rightarrow 1/3$')),
-  pause(),
-  stmt('New particles'),
-  parentCenter('$\\approx \\P(X_1, X_2, X_3 \\mid E_1 = 0, E_2 = 1, E_3 = 1)$'),
-  indent(ytable('[0, 1, 1]', '[0, 1, 1]')),
-_));
-
-prose(
-  'In our example, we normalize the particle weights to form a distribution over particles.',
-  'Then we draw $K = 2$ independent samples from that distribution.',
-  'Higher weight particles will get more samples.',
-_);
-
-add(slide('Particle filtering',
-  //stmt('Idea: keep $C$, set of $K$ partial assignments (particles)'),
-  algorithm('particle filtering',
-    'Initialize $C \\leftarrow [\\{ \\}]$', pause(),
-    'For each $i = 1, \\dots, n$:',
-    indent(stmt('Propose (extend)')),
-    indent(indent('$C\' \\leftarrow \\{ x \\cup \\{ X_i : x_i \\} : x \\in C, x_i \\sim p(x_i \\mid x_{i-1}) \\}$')),
-    pause(),
-    indent(stmt('Reweight')),
-    indent(indent('Compute weights $w(x) = p(e_i \\mid x_i)$ for $x \\in C\'$')),
-    pause(),
-    indent(stmt('Resample (prune)')),
-    indent(indent('$C \\leftarrow K$ elements drawn independently from $\\propto w(x)$')),
-  _).scale(0.9),
-  pause(),
-  parentCenter(text('[demo: <tt>particleFiltering({K:100})</tt>]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=particleFiltering({K:100})')),
-_));
-
-prose(
-  'The final algorithm here is very similar to beam search.',
-  'We go through all the variables $X_1, \\dots, X_n$.',
-  _,
-  'For each candidate $x_{i-1} \\in C$, we propose $x_i$ according to the transition distribution $p(x_i \\mid x_{i-1})$.',
-  _,
-  'We then weight this particle using $w(x) = p(e_i \\mid x_i)$.',
-  _,
-  'Finally, we select $K$ particles from $\\propto w(x)$ by sampling $K$ times independently.',
-_);
-
-add(slide('Particle filtering: implementation',
-  bulletedText('If only care about last $X_i$, collapse all particles with same $X_i$ (think elimination)'),
-  parentCenter(ytable(
-    '$0 0 1 \\Rightarrow 1$',
-    '$1 0 1 \\Rightarrow 1$',
-    '$0 1 0 \\Rightarrow 0$',
-    '$0 1 0 \\Rightarrow 0$',
-    '$1 1 0 \\Rightarrow 0$',
-  _)),
-  pause(),
-  bulletedText('If many particles are the same, can just store counts'),
-  parentCenter(xtable(ytable(
-    '$1$',
-    '$1$',
-    '$0$',
-    '$0$',
-    '$0$',
-  _), '$\\Rightarrow$', ytable('$1:2$', '$0:3$')).center().margin(10)),
-_));
-
-prose(
-  'In particle filtering as it is currently defined,',
-  'each particle is an entire trajectory in the context of object tracking (assignment to all the variables).',
-  _,
-  'Often in tracking applications, we only care about the last location $X_i$,',
-  'and the HMM is such that the future ($X_{i+1}, \\dots, X_n$) is conditionally independent of $X_1, \\dots, X_{i-1}$ given $X_i$.',
-  'Therefore, we often just store the value of $X_i$ rather than its entire ancestry.',
-  _,
-  'When we only keep track of the $X_i$, we might have many particles that have the same value,',
-  'so it can be useful to store just the counts of each value rather than having duplicates.',
-_);
-
-add(slide('Application: tracking',
-  parentCenter(chainFactorGraph({n:5}).scale(0.8)),
-  example('tracking',
-    bulletedText('$X_i$: position of object at $i$'), pause(),
-    bulletedText('Transitions: $t_i(x_i, x_{i+1}) = [x_i \\text{ near } x_{i+1}]$'), pause(),
-    bulletedText('Observations: $o_i(x_i) = \\text{sensor reading...}$'), pause(),
-  _),
-_));
-
-G.particleFilteringDemo = function() {
-  if (sfig.serverSide) return '[see web version]';
-
-  // Directions
-  var dx = [0, +1, 0, -1, 0];
-  var dy = [-1, 0, +1, 0, 0];
-  var dNames = 'NESW=';
-
-  // For rendering
-  var items = [];  // List of all the cell Blocks to stick in the Overlay
-  var cells = [];  // x, y => cell Block
-  var obsBlocks = [];  // x, y => observation Blocks (circles)
-  var cellSize = 10;  // Size of a cell Block
-
-  // State: (x,y) position
-  var particles;  // List of states
-  var time;
-  var prev_time;
-  var ox, oy;
-
-  // Grid
-  var width = 3 * 10, height = 4 * 5;
-  for (var x = 0; x < width; x++) {
-    cells[x] = [];
-    obsBlocks[x] = [];
-    for (var y = 0; y < height; y++) {
-      // represent uncertainty over the blocks
-      var cell = square(cellSize).color('black').shiftBy(x*cellSize, y*cellSize);
-      cells[x][y] = cell;
-      items.push(cell);
-      // For truePath or observation
-      var obs = circle(3).color('black').shiftBy((x+0.5)*cellSize, (y+0.5)*cellSize);
-      obsBlocks[x][y] = obs;
-      items.push(obs);
-    }
-  }
-
-  // Create the true path
-  var truePath = null;  // Sequence of true states
-  function setPath() {
-    truePath = [];
-    function p(xi, yi, d) {
-      return [Math.floor(xi*width/3), Math.floor(yi*height/4), dNames.indexOf(d)];
-    }
-    var wayPoints = [
-      p(2, 1, 'W'),
-      p(1, 1, 'S'),
-      p(1, 2, 'E'),
-      p(2, 2, 'S'),
-      p(2, 3, 'W'),
-      p(1, 3, 'N'),
-      p(1, 2, 'E'),
-      p(2, 2, 'N'),
-      p(2, 1, null),
-    ];
-
-    for (var pi = 0; pi < wayPoints.length-1; pi++) {
-      var x = wayPoints[pi][0], y = wayPoints[pi][1], d = wayPoints[pi][2];
-      var m;
-      for (m = 0; m < 100; m++) {
-        if (x == wayPoints[pi+1][0] && y == wayPoints[pi+1][1])  // Reached the end
-          break;
-        truePath.push([x, y]);
-        x += dx[d];
-        y += dy[d];
-      }
-      if (m == 100) throw 'Bad';
-    }
-    //truePath = [[10, 10]];  // Debugging
-  }
-  setPath();
-
-  function renderCell(x, y, v) {
-    if (!cells[x] || !cells[x][y]) return;  // Out of bounds
-    var cell = cells[x][y];
-    var color = rgb(v*255, 0, 0);
-    updateColor(cell.color(color));
-    var obs = obsBlocks[x][y];
-    // Can overwrite if neither truePath nor observations are there
-    var true_x = truePath[time][0];
-    var true_y = truePath[time][1];
-    if (!(ox == x && oy == y) && (!showTruePosition || !(true_x == x && true_y == y)))
-      updateColor(obs.color(color));
-  }
-
-  function renderParticles(show) {
-    // Set the color of squares
-    var counts = {};
-    for (var i = 0; i < numParticles; i++) {
-      var p = particles[i];
-      counts[p] = (counts[p] || 0) + 1;
-    }
-    for (var i = 0; i < numParticles; i++) {
-      var p = particles[i];
-      if (counts[p]) {
-        if (show) {
-          var base = 0.3;  // If particle exists, show something
-          renderCell(p[0], p[1], base + counts[p]/numParticles * (1 - base));
-        } else {
-          renderCell(p[0], p[1], 0);
-        }
-        counts[p] = null;
-      }
-    }
-  }
-
-  function resetParticles() {
-    particles = [];
-    for (var i = 0; i < numParticles; i++) {
-      var x = randint(width);
-      var y = randint(height);
-      particles.push([x, y]);
-    }
-  }
-
-  function step() {
-    // Remove old points
-    if (prev_time != null && showTruePosition) {
-      var prev_true_x = truePath[prev_time][0];
-      var prev_true_y = truePath[prev_time][1];
-      updateColor(obsBlocks[prev_true_x][prev_true_y].color('black'));
-    }
-    if (ox != null && oy != null)
-      updateColor(obsBlocks[ox][oy].color('black'));
-
-    // Sample observation
-    var true_x = truePath[time][0];
-    var true_y = truePath[time][1];
-    var choices = [];
-    var weights = [];
-    // Approximation: don't consider things outside the grid
-    for (var x = 0; x < width; x++) {
-      for (var y = 0; y < height; y++) {
-        var f = observeFactor(Math.abs(true_x-x), Math.abs(true_y-y));
-        if (f == 0) continue;
-        choices.push([x, y]);
-        weights.push(f);
-      }
-    }
-    if (weights.length == 0) {
-      L('Error: no possible observations');
-    }
-    normalize(weights);
-    var chosen_i = sampleMultinomial(weights);
-    ox = choices[chosen_i][0];
-    oy = choices[chosen_i][1];
-
-    // Add new points
-    if (showTruePosition)
-      updateColor(obsBlocks[true_x][true_y].color('blue'));
-    updateColor(obsBlocks[ox][oy].color('orange'));
-
-    // Move to the new time step
-    renderParticles(false); // Remove old particles
-    var newParticles = [];
-    var weights = [];
-    var indexMap = {};  // map point to index in newParticles
-    for (var i = 0; i < particles.length; i++) {
-      var x = particles[i][0];
-      var y = particles[i][1];
-
-      // Extend
-      var d = randint(5);
-      var new_x = x + dx[d];
-      var new_y = y + dy[d];
-
-      // Reweight
-      var w = observeFactor(Math.abs(new_x - ox), Math.abs(new_y - oy));
-      if (!w) continue;
-      var new_p = [new_x, new_y];
-      var index = indexMap[new_p];
-      if (index == null) {
-        index = newParticles.length;
-        indexMap[new_p] = index;
-        newParticles[index] = new_p;
-        weights[index] = w;
-      } else {
-        weights[index] += w;
-      }
-    }
-    particles = newParticles;
-    if (!normalize(weights)) {
-      resetParticles();
-    } else {
-      // Resample
-      var newParticles = [];
-      for (var i = 0; i < numParticles; i++)
-        newParticles[i] = particles[sampleMultinomial(weights)];
-      particles = newParticles;
-    }
-    renderParticles(true);  // Add new particles
-
-    // Advance time
-    prev_time = time;
-    time = (time + 1) % truePath.length;
-  }
-
-  var origInput = [
-    '// Press ctrl-enter to start simulation',
-    '',
-    '// Observation model: distance between true and observed',
-    'observeFactor = function(distx, disty) {',
-    '  return distx <= 3 && disty <= 3;  // Box noise',
-    '  //return Math.exp(-(distx*distx + disty*disty)/5);  // Gaussian noise',
-    '  //return distx % 5 == 0 && disty % 5 == 0 && distx + disty <= 15;  // Weird',
-    '}',
-    'numParticles = 0          // Number of particles (try 10000)',
-    'sampleTime = 100          // Milliseconds to wait between samples',
-    'showTruePosition = false  // Set to true to see ground truth',
-  ].join('\n');
-
-  var inputBox = textBox().multiline(true).content(origInput).size(80, 12);
-  var outputBox = new Overlay(items);
-  var timerId = null;
-  function show() {
-    eval(inputBox.content().get());
-
-    // Initialize particles
-    time = 0;
-    for (var x = 0; x < width; x++)
-      for (var y = 0; y < height; y++)
-        renderCell(x, y, 0);
-    resetParticles();
-    renderParticles(true);
-
-    if (origInput != inputBox.content().get())
-      pushKeyValue('particle-filtering-demo', {input: inputBox.content().get()});
-    if (timerId) {
-      clearInterval(timerId);
-      timerId = null;
-    }
-  }
-  show();
-
-  inputBox.onEnter(function() {
-    show();
-    timerId = setInterval(step, sampleTime);
-    prez.refresh(function() { inputBox.focus(); });
-  });
-  outputBox.onClick(function() {
-    if (timerId) {
-      clearInterval(timerId);
-      timerId = null;
-    } else {
-      timerId = setInterval(step, sampleTime);
-    }
-  });
-
-  return ytable(
-    outputBox,
-    inputBox,
-  _).center().margin(10);
-}
-
-add(slide('Particle filtering demo',
-  parentCenter(particleFilteringDemo()),
-_));
-
-prose(
-  'Consider a tracking application where an object is moving around in a grid and we are trying to figure out its location $X_i \\in \\{1, \\dots, \\text{grid-width}\\} \\times \\{1, \\dots, \\text{grid-height}\\}$.',
-  _,
-  'The transition factors say that from one time step to the next, the object is equally likely to have moved north, south, east, west, or stayed put.',
-  _,
-  'Each observation is a location on the grid (a yellow dot).',
-  'The observation factor is a user-defined function which depends on the vertical and horizontal distance.',
-  _,
-  'Play around with the demo to get a sense of how particle filtering works, especially the different observation factors.',
-_);
-
 add(summarySlide('Probabilistic inference',
   stmt('Model (Bayesian network or factor graph)'),
   parentCenter('$\\displaystyle \\P(X = x) = \\prod_{i=1}^n p(x_i \\mid x_{\\Parents(i)})$'),
@@ -1285,8 +1268,9 @@ add(summarySlide('Probabilistic inference',
   parentCenter('$\\P(Q \\mid E = e)$'),
   pause(),
   headerList('Algorithms',
-    'Forward-backward: chain-structured (HMMs), exact',
-    'Gibbs sampling, particle filtering: general, approximate',
+    'Forward-backward: HMMs, exact',
+    'Particle filtering: general (HMMs here), approximate',
+    'Gibbs sampling: general, approximate',
   _),
   pause(),
   stmt('Next time: learning'),
