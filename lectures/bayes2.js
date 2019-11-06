@@ -77,8 +77,8 @@ function roadmap(i) {
 // Forward-backward
 roadmap(0);
 
-add(slide('Object tracking',
-  parentCenter(hmm({maxTime: 4}).scale(0.7)),
+add(slide('Hidden Markov model',
+  parentCenter(hmm({maxTime: 5}).scale(0.7)),
   problem('object tracking',
     '$H_i \\in \\{1, \\dots, K\\}$: location of object at time step $i$',
     '$E_i \\in \\{1, \\dots, K\\}$: sensor reading at time step $i$',
@@ -86,12 +86,9 @@ add(slide('Object tracking',
     stmt('Start $p(h_1)$: e.g., uniform over all locations'),
     stmt('Transition $p(h_i \\mid h_{i-1})$: e.g., uniform over adjacent loc.'),
     stmt('Emission $p(e_i \\mid h_i)$: e.g., uniform over adjacent loc.'),
-    //pause(),
-    //stmt('Observations: $E = [1, 2, 3, 6]$'),
-    //'What is $\\P(H_i \\mid E = [0, 1, 2, 5])$?',
-  _),
-  //pause(),
-  //parentCenter('[live solution]'),
+  _).scale(0.8),
+  pause(),
+  parentCenter('$\\displaystyle \\P(H = h, E = e) = \\underbrace{p(h_1)}_\\text{start} \\prod_{i=2}^n \\underbrace{p(h_i \\mid h_{i-1})}_\\text{transition} \\prod_{i=1}^n \\underbrace{p(e_i \\mid h_i)}_\\text{emission}$').scale(0.7),
 _));
 
 prose(
@@ -107,20 +104,17 @@ prose(
   'At each time step, we obtain a sensor reading $E_i$ given $H_i$ (e.g., also uniform over locations adjacent to $H_i$).',
 _);
 
-add(slide('Hidden Markov model',
+add(slide('Hidden Markov model inference',
   parentCenter(hmm({maxTime: 5}).scale(0.8)),
-  pause(),
-  parentCenter('$\\displaystyle \\P(H = h, E = e) = \\underbrace{p(h_1)}_\\text{start} \\prod_{i=2}^n \\underbrace{p(h_i \\mid h_{i-1})}_\\text{transition} \\prod_{i=1}^n \\underbrace{p(e_i \\mid h_i)}_\\text{emission}$').scale(0.8),
-  pause(),
-  stmt('Query (<b>filtering</b>)'),
+  stmt('Question (<b>filtering</b>)'),
   indent('$\\P(H_3 \\mid E_1 = e_1, E_2 = e_2, E_3 = e_3)$').scale(0.9),
   pause(),
-  stmt('Query (<b>smoothing</b>)'),
+  stmt('Question (<b>smoothing</b>)'),
   indent('$\\P(H_3 \\mid E_1 = e_1, E_2 = e_2, E_3 = e_3, E_4 = e_4, E_5 = e_5)$').scale(0.9),
 _));
 
 prose(
-  'In principle, you could ask any type of query on an HMM,',
+  'In principle, you could ask any type of questions on an HMM,',
   'but there are two common ones: filtering and smoothing.',
   _,
   'Filtering asks for the distribution of some hidden variable $H_i$ conditioned on only the evidence up until that point.',
@@ -229,7 +223,7 @@ add(slide('Hidden Markov models',
   indent('$\\P(H_1 \\mid E_1 = e_1)$').scale(0.9),
   indent('$\\P(H_2 \\mid E_1 = e_1, E_2 = e_2)$').scale(0.9),
   indent('$\\P(H_3 \\mid E_1 = e_1, E_2 = e_2, E_3 = e_3)$').scale(0.9),
-  stmt('Motivation: if $H_i$ can take on many values, forward-backward is too slow...'),
+  stmt('Motivation: if $H_i$ can take on many values, forward-backward is too slow ($O(n K^2)$)...'),
 _));
 
 prose(
@@ -515,7 +509,7 @@ prose(
 _);
 
 add(slide('Particle filtering: implementation',
-  bulletedText('If only care about last $H_i$, collapse all particles with same $H_i$ (think elimination)'),
+  bulletedText('If only care about last $H_i$, collapse all particles with same $H_i$'),
   parentCenter(ytable(
     '$0 0 1 \\Rightarrow 1$',
     '$1 0 1 \\Rightarrow 1$',
@@ -546,9 +540,9 @@ prose(
   'so it can be useful to store just the counts of each value rather than having duplicates.',
 _);
 
-add(slide('Application: tracking',
+add(slide('Application: object tracking',
   parentCenter(chainFactorGraph({n:5, xVar:'H'}).scale(0.8)),
-  example('tracking',
+  example('object tracking',
     bulletedText('$H_i$: position of object at $i$'), pause(),
     bulletedText('Transitions: $t_i(h_i, h_{i-1}) = [h_i \\text{ near } h_{i-1}]$'), pause(),
     bulletedText('Observations: $o_i(h_i) = \\text{sensor reading...}$'), pause(),
@@ -889,7 +883,7 @@ prose(
   '(which implicitly represents a higher probability). Maintaining this small set of assignments ',
   'will allows us to answer queries more quickly, but at a cost: our answers will now be approximate instead of exact.',
   _,
-  'From a set of particles, we can compute approximate marginals (or any query we want)',
+  'From a set of particles, we can compute approximate marginals (or any question we want)',
   'by simply computing the fraction of assignments that satisfy the desired condition.',
   'Here, marginalization is easy because we\'re explicitly enumerating full assignments.',
   _,
@@ -907,6 +901,8 @@ add(slide('Gibbs sampling',
     pause(),
     indent('Choose $x \\cup \\{X_i: v\\}$ with probability prop. to weight'),
   _),
+  pause(),
+  parentCenter(nowrapText('[demo]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=query(\'X1 X2\'); gibbsSampling({steps:1})')).scale(0.9),
 _));
 
 prose(
@@ -927,8 +923,6 @@ add(slide('Gibbs sampling',
     indent('Set $X_i=v$ with prob. $\\P(X_i = v \\mid X_{-i} = x_{-i})$'),
     indent(text('($X_{-i}$ denotes all variables except $X_i$)').scale(0.7)),
   _),
-  pause(),
-  parentCenter(nowrapText('[demo]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=query(\'X1 X2\'); gibbsSampling({steps:1})')).scale(0.9),
 _));
 
 prose(
@@ -1268,7 +1262,7 @@ add(summarySlide('Probabilistic inference',
   pause(),
   headerList('Algorithms',
     'Forward-backward: HMMs, exact',
-    'Particle filtering: general (HMMs here), approximate',
+    'Particle filtering: HMMs, approximate',
     'Gibbs sampling: general, approximate',
   _),
   pause(),
