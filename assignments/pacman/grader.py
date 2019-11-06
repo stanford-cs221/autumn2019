@@ -203,9 +203,9 @@ def testq4():
     grader.setSide({'score': averageWinScore})
   firstTime = False
 
-grader.addManualPart('4a', 8, extraCredit=True, description='Points for placing in the top 3 (1st place: 8, 2nd place: 5, 3rd place: 2)')
+grader.addManualPart('4a', 5, extraCredit=True, description='Points for placing in the top 3 (1st place: 8, 2nd place: 5, 3rd place: 2)')
 
-grader.addBasicPart('4a-1-basic', lambda : testq4(), 8, maxSeconds=maxSeconds, extraCredit=True, description='1 extra credit point per 100 point increase above 1200.')
+grader.addBasicPart('4a-1-basic', lambda : testq4(), 5, maxSeconds=maxSeconds, extraCredit=True, description='1 extra credit point per 100 point increase above 1200.')
 
 grader.addManualPart('4b', 2, extraCredit=True, description='Description of your evaluation function.')
 

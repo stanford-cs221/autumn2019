@@ -343,7 +343,7 @@ function eventsOnLoad() {
   nextClass(4);
 
   section('Game playing (Dorsa)', 'When an adversary intervenes...');
-  openHomework('pacman', 'Pac-Man');
+  closedHomework('pacman', 'Pac-Man');
   enableItem('Minimax, expectimax<br>Evaluation functions<br>Alpha-beta pruning', 'games1', [liveProgrammingLink('games1')]);
   nextClass(2);
   enableItem('TD learning<br>Game theory', 'games2');
@@ -381,7 +381,7 @@ function eventsOnLoad() {
   disableItem('First-order logic<br>Resolution', 'logic2');
   disableHomework('logic', 'Language and logic');
   nextClass(2);
-  section('Conclusion (Dorsa, Percy)', 'Reflections and prospects...');
+  section('Conclusion (Dorsa, Percy, Reid)', 'Reflections and prospects...');
   disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
   nextClass(1);
   disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
