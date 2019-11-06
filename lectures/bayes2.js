@@ -157,7 +157,7 @@ prose(
   'For each edge into $\\boxed{H_i = h_i}$, we multiply by the transition probability into $h_i$ and emission probability $p(e_i \\mid h_i)$.',
   'This defines a weight for each path (assignment) in the graph equal to the joint probability $P(H = h, E = e)$.',
   _,
-  'Note that the lattice contains $O(Kn)$ nodes and $O(K^2 n)$ edges,',
+  'Note that the lattice contains $O(n K)$ nodes and $O(n K^2)$ edges,',
   'where $n$ is the number of variables and $K$ is the number of values in the domain of each variable.',
 _);
 
@@ -187,16 +187,15 @@ prose(
 _);
 
 add(slide('Lattice representation',
-  //parentCenter(forwardBackwardLattice({numRows: 3, numCols: 5, focus: [1, 2]})),
   stmt('Smoothing queries (marginals)'),
   parentCenter('$\\P(H_i = h_i \\mid E = e) \\propto S_i(h_i)$'),
   pause(),
   algorithm('forward-backward algorithm',
-    'Compute $F_1, F_2, \\dots, F_L$',
-    'Compute $B_L, B_{L-1}, \\dots, B_1$',
+    'Compute $F_1, F_2, \\dots, F_n$',
+    'Compute $B_n, B_{n-1}, \\dots, B_1$',
     'Compute $S_i$ for each $i$ and normalize',
   _),
-  stmt('Running time: $O(L K^2)$'),
+  stmt('Running time: $O(n K^2)$'),
 _));
 
 prose(
@@ -234,7 +233,7 @@ add(slide('Hidden Markov models',
 _));
 
 prose(
-  'The forward-backward algorithm runs in $O(K^2 n)$, where $K$ is the number of possible values (e.g., locations) that $H_i$ can take on.',
+  'The forward-backward algorithm runs in $O(n K^2)$, where $K$ is the number of possible values (e.g., locations) that $H_i$ can take on.',
   'This could be a very large number, which makes the forward-backward algorithm very slow (though not exponentially so).',
   _,
   'The motivation of particle filtering is to perform <b>approximate probabilistic inference</b>,',
