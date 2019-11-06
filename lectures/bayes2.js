@@ -6,12 +6,6 @@ add(titleSlide('Lecture 14: Bayesian networks II',
   parentCenter(twoLayerBayesNet({n1:10, n2: 20}).scale(0.3)),
 _));
 
-/*add(quizSlide('bayes2-start',
-  'If we have a $n$-variable Bayesian network, can we compute some marginals in $O(1)$ time?',
-  'yes',
-  'no',
-_));*/
-
 add(slide('Review: Bayesian network',
   parentCenter(xtable(
     simpleMedicalNetwork({}),
@@ -32,6 +26,8 @@ prose(
   'which was a fun and convenient modeling framework.',
   'We posit a collection of variables that describe the state of the world,',
   'and then create a story on how the variables are generated (recall the probabilistic program interpretation).',
+  _,
+  'Think factor graphs + probability.',
   _,
   'A Bayesian network specifies two parts: (i) a graph structure which governs the qualitative relationship between the variables,',
   'and (ii) local conditional distributions, which specify the quantitative relationship.',
@@ -64,7 +60,9 @@ prose(
   'Think of the joint probability distribution defined by the Bayesian network as a guru.',
   'Probabilistic inference allows you to ask the guru anything:',
   'what is the probability of having a cold?  What if I\'m coughing?  What if I don\'t have itchy eyes?',
-  'In this lecture, we\'re going to build such a guru that can answer these queries efficiently.',
+  _,
+  'In the last lecture, we performed probabilistic inference manually.',
+  'In this lecture, we\'re going to build a guru that can answer these queries efficiently and automatically.',
 _);
 
 function roadmap(i) {
@@ -85,9 +83,9 @@ add(slide('Object tracking',
     '$H_i \\in \\{1, \\dots, K\\}$: location of object at time step $i$',
     '$E_i \\in \\{1, \\dots, K\\}$: sensor reading at time step $i$',
     pause(),
-    stmt('Start: $p(h_1)$: uniform over all locations'),
-    stmt('Transition $p(h_i \\mid h_{i-1})$: uniform over adjacent loc.'),
-    stmt('Emission $p(e_i \\mid h_i)$: uniform over adjacent loc.'),
+    stmt('Start $p(h_1)$: e.g., uniform over all locations'),
+    stmt('Transition $p(h_i \\mid h_{i-1})$: e.g., uniform over adjacent loc.'),
+    stmt('Emission $p(e_i \\mid h_i)$: e.g., uniform over adjacent loc.'),
     //pause(),
     //stmt('Observations: $E = [1, 2, 3, 6]$'),
     //'What is $\\P(H_i \\mid E = [0, 1, 2, 5])$?',
@@ -104,9 +102,9 @@ prose(
   'As motivation, consider the problem of tracking an object.',
   'The probabilistic story is as follows:',
   'An object starts at $H_1$ uniformly drawn over all possible locations.',
-  'Then at each time step thereafter, it <b>transitions</b> to an adjacent location with equal probability.',
+  'Then at each time step thereafter, it <b>transitions</b> to an adjacent location (e.g., with equal probability).',
   'For example, if $H_2 = 3$, then $H_3 \\in \\{ 2, 4 \\}$ with equal probability.',
-  'At each time step, we obtain a sensor reading $E_i$ which is also uniform over locations adjacent to $H_i$.',
+  'At each time step, we obtain a sensor reading $E_i$ given $H_i$ (e.g., also uniform over locations adjacent to $H_i$).',
 _);
 
 add(slide('Hidden Markov model',
@@ -294,6 +292,8 @@ prose(
 _);
 
 add(slide('Gibbs sampling',
+  stmt('Setup'),
+  parentCenter('$\\Weight(x)$'),
   algorithm('Gibbs sampling',
     'Initialize $x$ to a random complete assignment', pause(),
     'Loop through $i = 1, \\dots, n$ until convergence:', pause(),
@@ -301,14 +301,6 @@ add(slide('Gibbs sampling',
     pause(),
     indent('Choose $x \\cup \\{X_i: v\\}$ with probability prop. to weight'),
   _),
-  pause(),
-  importantBox(redbold('Gibbs sampling (probabilistic interpretation)'),
-    'Loop through $i = 1, \\dots, n$ until convergence:',
-    indent('Set $X_i=v$ with prob. $\\P(X_i = v \\mid X_{-i} = x_{-i})$'),
-    indent(text('(notation: $X_{-i} = X \\backslash \\{X_i\\}$)').scale(0.7)),
-  _),
-  pause(),
-  parentCenter(nowrapText('[demo]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=query(\'X1 X2\'); gibbsSampling({steps:1})')).scale(0.9),
 _));
 
 prose(
@@ -318,6 +310,22 @@ prose(
   'and choosing an assignment with probability proportional to the weight.',
   _,
   'We first introduced Gibbs sampling in the context of local search to get out of local optima.',
+_);
+
+add(slide('Gibbs sampling',
+  stmt('Setup'),
+  parentCenter('$\\P(X = x) \\propto \\Weight(x)$'),
+  importantBox(redbold('Gibbs sampling (probabilistic interpretation)'),
+    'Initialize $x$ to a random complete assignment',
+    'Loop through $i = 1, \\dots, n$ until convergence:',
+    indent('Set $X_i=v$ with prob. $\\P(X_i = v \\mid X_{-i} = x_{-i})$'),
+    indent(text('($X_{-i}$ denotes all variables except $X_i$)').scale(0.7)),
+  _),
+  pause(),
+  parentCenter(nowrapText('[demo]').linkToUrl('index.html#include=inference-demo.js&example=chain&postCode=query(\'X1 X2\'); gibbsSampling({steps:1})')).scale(0.9),
+_));
+
+prose(
   'Now, we will use it for its original purpose, which is to draw samples from a probability distribution.',
   '(In particular, our goal is to draw from the joint distribution over $X_1, X_2, \\ldots, X_n$.)',
   'To do this, we need to define a probability distribution given an arbitrary factor graph.',
@@ -374,6 +382,7 @@ _);
 
 add(slide('Application: image denoising',
   parentCenter(isingModel({numRows: 3, numCols: 5, selected: function(r,c) {return !(r == 1 && c == 2);}}).scale(0.6)),
+  parentCenter('[whiteboard]'),
   example('image denoising',
     'If neighbors are $1, 1, 1, 0$ and $X_i$ not observed:',
     '$\\P(X_i = 1 \\mid X_{-i} = x_{-i}) = \\frac{2 \\cdot 2 \\cdot 2 \\cdot 1}{2 \\cdot 2 \\cdot 2 \\cdot 1 + 1 \\cdot 1 \\cdot 1 \\cdot 2} = 0.8$',
@@ -382,7 +391,6 @@ add(slide('Application: image denoising',
     'If neighbors are $0, 1, 0, 1$ and $X_i$ not observed:',
     '$\\P(X_i = 1 \\mid X_{-i} = x_{-i}) = \\frac{1 \\cdot 2 \\cdot 1 \\cdot 2}{1 \\cdot 2 \\cdot 1 \\cdot 2 + 2 \\cdot 1 \\cdot 2 \\cdot 1} = 0.5$',
   _),
-  parentCenter('[whiteboard]'),
 _));
 
 prose(
@@ -662,7 +670,7 @@ _));
 
 prose(
   'Now we turn our attention to particle filtering.',
-  'Gibbs sampling is the probabilistic analog of local search methods such as ICM,',
+  'Gibbs sampling is the probabilistic analogue of local search methods such as ICM,',
   'and particle filtering is the probabilistic analog of partial search such as beam search.',
   _,
   'Although particle filtering applies to general factor graphs,',

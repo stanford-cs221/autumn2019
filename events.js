@@ -365,7 +365,7 @@ function eventsOnLoad() {
   openHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
-  disableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
+  enableItem('Forward-backward<br>Gibbs sampling<br>Particle filtering', 'bayes2');
   nextClass(1);
   disableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
   nextClass(4);
