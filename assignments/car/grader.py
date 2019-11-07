@@ -177,9 +177,9 @@ def test4a_0():
     pf = submission.ParticleFilter(30, 13)
 
     pf.observe(555, 193, 800)
-    grader.requireIsEqual(0.015, pf.belief.getProb(20, 4))
-    grader.requireIsEqual(0.085, pf.belief.getProb(21, 5))
-    grader.requireIsEqual(0.9, pf.belief.getProb(22, 6))
+    grader.requireIsEqual(0.02, pf.belief.getProb(20, 4))
+    grader.requireIsEqual(0.04, pf.belief.getProb(21, 5))
+    grader.requireIsEqual(0.94, pf.belief.getProb(22, 6))
     grader.requireIsEqual(0.0, pf.belief.getProb(8, 4))
 
     pf.observe(525, 193, 830)
@@ -200,27 +200,27 @@ def test4a_1():
     grader.requireIsEqual(200, sum(pf.particles.values())) # Do not lose particles
     grader.requireIsEqual(58, len([k for k,v in list(pf.particles.items()) if v > 0])) # Most particles lie on the same (row, col) locations
 
-    grader.requireIsEqual(7, pf.particles[(3,9)])
+    grader.requireIsEqual(6, pf.particles[(3,9)])
     grader.requireIsEqual(0, pf.particles[(2,10)])
     grader.requireIsEqual(3, pf.particles[(8,4)])
-    grader.requireIsEqual(1, pf.particles[(12,6)])
+    grader.requireIsEqual(2, pf.particles[(12,6)])
     grader.requireIsEqual(2, pf.particles[(7,8)])
-    grader.requireIsEqual(3, pf.particles[(11,6)])
+    grader.requireIsEqual(2, pf.particles[(11,6)])
     grader.requireIsEqual(0, pf.particles[(18,7)])
-    grader.requireIsEqual(0, pf.particles[(20,5)])
+    grader.requireIsEqual(1, pf.particles[(20,5)])
 
     pf.elapseTime()
     grader.requireIsEqual(200, sum(pf.particles.values())) # Do not lose particles
-    grader.requireIsEqual(59, len([k for k,v in list(pf.particles.items()) if v > 0])) # Slightly more particles lie on the same (row, col) locations
+    grader.requireIsEqual(57, len([k for k,v in list(pf.particles.items()) if v > 0])) # Slightly more particles lie on the same (row, col) locations
 
-    grader.requireIsEqual(6, pf.particles[(3,9)])
+    grader.requireIsEqual(4, pf.particles[(3,9)])
     grader.requireIsEqual(0, pf.particles[(2,10)]) # 0 --> 0
-    grader.requireIsEqual(6, pf.particles[(8,4)])
-    grader.requireIsEqual(2, pf.particles[(12,6)])
-    grader.requireIsEqual(2, pf.particles[(7,8)])
-    grader.requireIsEqual(1, pf.particles[(11,6)])
+    grader.requireIsEqual(5, pf.particles[(8,4)])
+    grader.requireIsEqual(3, pf.particles[(12,6)])
+    grader.requireIsEqual(0, pf.particles[(7,8)])
+    grader.requireIsEqual(2, pf.particles[(11,6)])
     grader.requireIsEqual(0, pf.particles[(18,7)]) # 0 --> 1
-    grader.requireIsEqual(2, pf.particles[(20,5)]) # 1 --> 0
+    grader.requireIsEqual(1, pf.particles[(20,5)]) # 1 --> 0
 
 grader.addBasicPart('4a-1-basic', test4a_1, 2, description="4a basic test for PF elapseTime")
 
@@ -234,22 +234,22 @@ def test4a_2():
     pf.observe(555, 193, 800)
 
     grader.requireIsEqual(200, sum(pf.particles.values())) # Do not lose particles
-    grader.requireIsEqual(3, len([k for k,v in list(pf.particles.items()) if v > 0])) # Most particles lie on the same (row, col) locations
-    grader.requireIsEqual(0.015, pf.belief.getProb(20, 4))
-    grader.requireIsEqual(0.06, pf.belief.getProb(21, 5))
+    grader.requireIsEqual(2, len([k for k,v in list(pf.particles.items()) if v > 0])) # Most particles lie on the same (row, col) locations
+    grader.requireIsEqual(0.025, pf.belief.getProb(20, 4))
+    grader.requireIsEqual(0.0, pf.belief.getProb(21, 5))
     grader.requireIsEqual(0.0, pf.belief.getProb(21, 6))
-    grader.requireIsEqual(0.925, pf.belief.getProb(22, 6))
+    grader.requireIsEqual(0.975, pf.belief.getProb(22, 6))
     grader.requireIsEqual(0.0, pf.belief.getProb(22, 7))
 
     pf.elapseTime()
-    grader.requireIsEqual(5, len([k for k,v in list(pf.particles.items()) if v > 0])) # Most particles lie on the same (row, col) locations
+    grader.requireIsEqual(4, len([k for k,v in list(pf.particles.items()) if v > 0])) # Most particles lie on the same (row, col) locations
 
     pf.observe(660, 193, 50)
     grader.requireIsEqual(0.0, pf.belief.getProb(20, 4))
     grader.requireIsEqual(0.0, pf.belief.getProb(21, 5))
-    grader.requireIsEqual(0.065, pf.belief.getProb(21, 6))
+    grader.requireIsEqual(0.0, pf.belief.getProb(21, 6))
     grader.requireIsEqual(0.0, pf.belief.getProb(22, 6))
-    grader.requireIsEqual(0.935, pf.belief.getProb(22, 7))
+    grader.requireIsEqual(1.0, pf.belief.getProb(22, 7))
 
 grader.addBasicPart('4a-2-basic', test4a_2, 3, description="4a basic test for PF observe AND elapseTime")
 
