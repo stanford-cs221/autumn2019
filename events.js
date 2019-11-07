@@ -367,7 +367,7 @@ function eventsOnLoad() {
   nextClass(2);
   enableItem('Forward-backward<br>Particle filtering<br>Gibbs sampling', 'bayes2');
   nextClass(1);
-  disableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
+  enableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
   nextClass(4);
   disableItem('Learning Bayesian networks<br>Laplace smoothing<br>Expectation Maximization', 'bayes3', [suppmaterialLink('bayes3_supplem.pdf')]);
   nextClass(2);
