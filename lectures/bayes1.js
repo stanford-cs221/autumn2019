@@ -9,7 +9,7 @@ _));
 add(slide('Announcements',
   bulletedText('<b>scheduling</b> is due tomorrow'),
   bulletedText('<b>car</b> is due next Tuesday'),
-  bulletedText('<b>p-progress</b> is due next Tuesday'),
+  bulletedText('<b>p-progress</b> is due next Thursday'),
   bulletedText('<b>exam</b> is in two weeks'),
 _));
 
@@ -320,7 +320,7 @@ prose(
   'be thought of simply as factors of a factor graph.',
   'The joint probability of an assignment is then the weight of that assignment.',
   _,
-  'In this light, Bayesian networks are just a type of factor graphs, but with additional structure and interpretation.',
+  'In this light, Bayesian networks are just a type of factor graph, but with additional structure and interpretation.',
 _);
 
 add(slide('Probabilistic inference (alarm)',
@@ -448,7 +448,7 @@ prose(
   'which verifies that a Bayesian network actually defines a probability distribution.',
   _,
   'The philosophical ramification of this property is that there could be many other variables',
-  'that depend on the variables you\'ve modeled (earthquakes also impacts traffic)',
+  'that depend on the variables you\'ve modeled (earthquakes also impact traffic)',
   'but as long as you don\'t observe them,',
   'they can be ignored mathematically (ignorance is bliss).',
   'Note that this doesn\'t mean that knowing about the other things isn\'t useful.',
@@ -477,7 +477,7 @@ prose(
   _,
   'Note that if we marginalized only based on the factor graph representation,',
   'we would have kept the factor between $B$ and $E$, which is too conservative.',
-  'This because the factor graph representation doesn\'t "know" about the probabilistic structure of its factors,',
+  'This is because the factor graph representation doesn\'t "know" about the probabilistic structure of its factors,',
   'and the factor has to be kept in general.',
 _);
 
@@ -1082,7 +1082,7 @@ prose(
   'which allows us to rewrite as the product of the local conditional probabilities.',
   'To do this, we invoke the definition of marginal and conditional probability.',
   _,
-  'One convenient shortcut we will take is make use of the proportional-to ($\\propto$) relation.',
+  'One convenient shortcut we will take is to make use of the proportional-to ($\\propto$) relation.',
   'Note that in the end, we need to construct a distribution over $X_3$.',
   'This means that any quantity (such as $\\P(X_2 = 5)$) which doesn\'t depend on $X_3$ can be folded',
   'into the proportionality constant.',

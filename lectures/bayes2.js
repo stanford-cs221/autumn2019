@@ -355,7 +355,7 @@ prose(
   'The first step is to extend each current partial assignment (particle)',
   'from $h_{1:i-1} = (h_1, \\dots, h_{i-1})$ to $h_{1:i} = (h_1, \\dots, h_{i})$.',
   _,
-  'To do this, we simply go through each particle and extend it stocastically,',
+  'To do this, we simply go through each particle and extend it stochastically,',
   'using the transition probability $p(h_i \\mid h_{i-1})$ to sample a new value of $H_i$.',
   _,
   '(For concreteness, think of what will happen if $p(h_i \\mid h_{i-1}) = 0.8$ if $h_i = h_{i-1}$ and $0.2$ otherwise.)',
