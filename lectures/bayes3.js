@@ -9,8 +9,14 @@ _));
 add(slide('Announcements',
   bulletedText('<b>car</b> is due tomorrow'),
   bulletedText('<b>p-progress</b> is due Thursday'),
-  bulletedText('<b>exam</b> is next Tuesday (covers material up to and including today\'s lecture)'),
-  bulletedText('Section this Thursday: exam review!'),
+  ytable(
+    bulletedText('<b>exam</b> is next Tuesday'),
+    indent(ytable(
+      '- covers material up to and including today\'s lecture',
+      '- all alternative exams have been scheduled',
+      '- review in Section this Thursday',
+    _)),
+  _),
 _));
 
 add(slide('Review: Bayesian network',
