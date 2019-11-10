@@ -369,7 +369,7 @@ function eventsOnLoad() {
   nextClass(1);
   enableItem('Section: Bayesian networks', null, [sectionLink('section7.pdf', 'slides')], true);
   nextClass(4);
-  disableItem('Learning Bayesian networks<br>Laplace smoothing<br>Expectation Maximization', 'bayes3', [suppmaterialLink('bayes3_supplem.pdf')]);
+  enableItem('Learning Bayesian networks<br>Laplace smoothing<br>Expectation Maximization', 'bayes3');
   nextClass(2);
 
   section('Logic (Percy)', 'More expressive models...');

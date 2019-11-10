@@ -6,10 +6,11 @@ add(titleSlide('Lecture 15: Bayesian networks III',
   parentCenter(twoLayerBayesNet({n1:10, n2: 20}).scale(0.3)),
 _));
 
-add(quizSlide('bayes3-start',
-  'Which is computationally more expensive for Bayesian networks?',
-  'probabilistic inference given the parameters',
-  'learning the parameters given fully labeled data',
+add(slide('Announcements',
+  bulletedText('<b>car</b> is due tomorrow'),
+  bulletedText('<b>p-progress</b> is due Thursday'),
+  bulletedText('<b>exam</b> is next Tuesday (covers material up to and including today\'s lecture)'),
+  bulletedText('Section this Thursday: exam review!'),
 _));
 
 add(slide('Review: Bayesian network',
@@ -40,9 +41,9 @@ add(slide('Review: probabilistic inference',
   parentCenter('$\\P(Q \\mid E = e)$'),
   pause(),
   headerList('Algorithms',
-    'Variable elimination: general, exact',
     'Forward-backward: HMMs, exact',
-    'Gibbs sampling, particle filtering: general, approximate',
+    'Particle filtering: HMMs, approximate',
+    'Gibbs sampling: general, approximate',
   _),
 _));
 
@@ -50,9 +51,11 @@ prose(
   'Last lecture, we focused on algorithms for probabilistic inference: how do we efficiently compute queries of interest?',
   'We can do many things in closed form by leveraging the conditional independence structure of Bayesian networks.',
   _,
-  'For HMMs, we could use the forward-backward algorithm to compute the queries efficiently.',
+  'For HMMs, we could use the forward-backward algorithm to perform smoothing and filtering efficiently and exactly.',
   _,
-  'For general Bayesian networks / factor graphs, we must resort to an approximate algorithm such as Gibbs sampling or particle filtering.',
+  'For extremely large domains, particle filtering allows you to perform filtering efficiently but only approximately.',
+  _,
+  'For general Bayesian networks and factor graphs, we can apply Gibbs sampling, which is also approximate.',
 _);
 
 add(slide('Paradigm',
@@ -136,6 +139,20 @@ prose(
   _,
   'We will first develop the learning algorithm intuitively on some simple examples.',
   'Later, we will provide the algorithm for the general case and a formal justification based on maximum likelihood.',
+_);
+
+add(quizSlide('bayes3-start',
+  'Which is computationally more expensive for Bayesian networks?',
+  'probabilistic inference given the parameters',
+  'learning the parameters given fully labeled data',
+_));
+
+prose(
+  'Probabilistic inference assumes you know the parameters,',
+  'whereas learning does not, so one might think that inference should be easier.',
+  _,
+  'However, for Bayesian networks, somewhat surprisingly,',
+  'it turns out that learning (at least in the fully-supervised setting) is easier.',
 _);
 
 add(slide('Example: one variable',
@@ -277,12 +294,6 @@ add(slide('Example: v-structure',
   _).margin(50).center()).scale(0.8),
   text('$\\P(G = g, A = a, R = r) = p_G(g) p_{A}(a) p_{R}(r \\mid g, a)$').scale(0.9),
   pause(),
-  //parentCenter('[whiteboard]'),
-  //Node: genre {c,d}
-  //Node: award {0,1}
-  //Rating: rating {1,2,3,4,5}
-  //Data: d04 d04 d15 c11 c05
-  // Note: winning award helps for drama, averages comedy
 _));
 
 add(slide('Example: v-structure',
@@ -309,14 +320,14 @@ add(slide('Example: v-structure',
     _),
     pause(),
     stagger(
-      frameBox(table(['$g$', '$a$', '$r$', '$\\text{count}_R(g, a, r)$'], ['d', 0, 3, 1], ['d', 1, 5, 1], ['c', 0, 1, 1], ['c', 0, 5, 1], ['c', 1, 4, 1]).center().margin(20, 0)),
-      frameBox(table(['$g$', '$a$', '$r$', '$p_R(r \\mid g, a)$'], ['d', 0, 3, 1], ['d', 1, 5, 1], ['c', 0, 1, '1/2'], ['c', 0, 5, '1/2'], ['c', 1, 4, 1]).center().margin(20, 0)),
+      frameBox(table(['$g$', '$a$', '$r$', '$\\text{count}_R(g, a, r)$'], ['d', 0, 1, 1], ['d', 0, 3, 1], ['d', 1, 5, 1], ['c', 0, 5, 1], ['c', 1, 4, 1]).center().margin(20, 0)),
+      frameBox(table(['$g$', '$a$', '$r$', '$p_R(r \\mid g, a)$'], ['d', 0, 1, '1/2'], ['d', 0, 3, '1/2'], ['d', 1, 5, 1], ['c', 0, 5, 1], ['c', 1, 4, 1]).center().margin(20, 0)),
     _),
   _).scale(0.7).center().margin(30)),
 _));
 
 prose(
-  'While probabilistic inference with V-structures was quite subtle,',
+  'While probabilistic inference with v-structures was quite subtle,',
   'learning parameters for V-structures is really the same as any other Bayesian network structure.',
   'We just need to remember that the parameters include the conditional probabilities for each joint assignment to both parents.',
   _,
@@ -435,14 +446,11 @@ add(slide('Parameter sharing',
     _).ycenter().margin(20, 5)), y, 100).scale(0.8),
     moveRightOf(pw = frameBox(table(
       ['$g$', '$r$', '$p_R(r \\mid g)$'],
-      //['d', '1', '0/6'],
-      //['d', '2', '0/6'],
       ['d', '3', '1/6'],
       ['d', '4', '3/6'],
       ['d', '5', '2/6'],
       ['c', '1', '1/4'],
       ['c', '2', '1/4'],
-      //['c', '3', '0/4'],
       ['c', '4', '1/4'],
       ['c', '5', '1/4'],
     _).ycenter().margin(20, 5)), y, 100).scale(0.7),
@@ -450,7 +458,7 @@ add(slide('Parameter sharing',
     arrow(pw, w1).dashed().color('red'),
     arrow(pw, w2).dashed().color('red'),
   _)).scale(0.9),
-  stmt('Result: more reliable estimates, less expressive'),
+  stmt('Impact: more reliable estimates, less expressive model'),
 _));
 
 prose(
@@ -732,8 +740,8 @@ add(slide('Regularization: Laplace smoothing',
     'For each distribution $d$ and partial assignment $(x_{\\Parents(i)}, x_i)$, add $\\lambda$ to $\\text{count}_d(x_{\\Parents(i)}, x_i)$.',
     'Then normalize to get probability estimates.',
   _),
-  stmt('Interpretation: hallucinate $\\lambda$ occurrences of each local assignment'),
-  'Larger $\\lambda$ $\\Rightarrow$ more smoothing $\\Rightarrow$ probabilities closer to uniform.',
+  stmt('Interpretation: hallucinate $\\red{\\lambda}$ occurrences of each local assignment'),
+  'Larger $\\red{\\lambda}$ $\\Rightarrow$ more smoothing $\\Rightarrow$ probabilities closer to uniform.',
   //'Analogous to regularization for learning predictors.',
   pause(),
   stmt('Data wins out in the end'),
@@ -959,6 +967,8 @@ add(slide('Application: decipherment',
     image('images/copiale-cipher.png'),
     image('images/copiale-cipher-closeup.jpg').width(300),
   _).margin(10)),
+  pause(),
+  parentCenter('Cracked in 2011 with the help of EM!'),
 _));
 
 prose(
