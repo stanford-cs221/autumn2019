@@ -381,7 +381,7 @@ function eventsOnLoad() {
   disableItem('First-order logic<br>Resolution', 'logic2');
   disableHomework('logic', 'Language and logic');
   nextClass(2);
-  section('Conclusion (Dorsa, Percy, Reid)', 'Reflections and prospects...');
+  section('Conclusion (Reid, Dorsa)', 'Reflections and prospects...');
   disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
   nextClass(1);
   disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
