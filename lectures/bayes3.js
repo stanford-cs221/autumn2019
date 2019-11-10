@@ -118,7 +118,7 @@ function roadmap(i) {
 roadmap(0);
 
 prose(
-  'The plan for today is start with the supervised setting,',
+  'The plan for today is to start with the supervised setting,',
   'where our training data consists of a set of <b>complete assignments</b>.',
   'The algorithms here are just counting and normalizing.',
   _,
@@ -760,7 +760,7 @@ prose(
   _,
   'By varying $\\lambda$, we can control how much we are smoothing.',
   _,
-  'No matter what the value of $\\lambda$, as we get more and more data, the effect of $\\lambda$ will diminish.',
+  'No matter what the value of $\\lambda$ is, as we get more and more data, the effect of $\\lambda$ will diminish.',
   'This is desirable, since if we have a lot of data, we should be able to trust our data more.',
 _);
 
@@ -827,7 +827,7 @@ _));
 prose(
   'Let\'s try to solve this problem top-down &mdash; what do we want, mathematically?',
   _,
-  'Formally, we have a set of hidden variables $H$ and observed variables $E$ and parameters $\\theta$ which define all the local conditional distributions.',
+  'Formally we have a set of hidden variables $H$, observed variables $E$, and parameters $\\theta$ which define all the local conditional distributions.',
   'We observe $E = e$, but we don\'t know $H$ or $\\theta$.',
   _,
   'If there were no hidden variables, then we would just use maximum likelihood:',
