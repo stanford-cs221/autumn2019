@@ -375,8 +375,10 @@ function eventsOnLoad() {
   section('Logic (Percy)', 'More expressive models...');
   disableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
   nextClass(1);
-  disableItem('Section: exam review (practice problems)', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
-  nextClass(4);
+  disableItem('Section: Exam review 1', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
+  nextClass(2);
+  disableItem('Section: Exam review 2', null, [sectionLink('section9.pdf', 'slides')], true);
+  nextClass(2);
 
   disableItem('First-order logic<br>Resolution', 'logic2');
   disableHomework('logic', 'Language and logic');
@@ -384,7 +386,8 @@ function eventsOnLoad() {
   section('Conclusion (Reid, Dorsa)', 'Reflections and prospects...');
   disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
   nextClass(1);
-  disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
+  // Aut2019 - Section 9 cancelled for extra midterm review session
+  // disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);
 
   nextClass(4);
   disableItem('(Thanksgiving &mdash; no class)');
