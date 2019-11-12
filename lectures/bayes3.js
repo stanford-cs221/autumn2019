@@ -13,7 +13,7 @@ add(slide('Announcements',
     bulletedText('<b>exam</b> is next Tuesday'),
     indent(ytable(
       '- covers material up to and including today\'s lecture',
-      '- reviews in Section this Thursday AND Saturday',
+      '- reviews in Section this Thursday AND Friday',
       '- all alternative exams have been scheduled',
       '- problem solving, practice with old exam problems',
     _)),
