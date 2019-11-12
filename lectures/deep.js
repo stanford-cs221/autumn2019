@@ -265,6 +265,11 @@ add(slide('Motivation',
   bulletedText(stmt('Goal: leverage spatial structure of images (translation invariance)')),
 _));
 
+add(slide('Idea: Convolutions',
+  parentCenter(image('images/convolutions.png').width(450)),
+_));
+
+
 add(slide('Prior knowledge',
   parentCenter(image('images/cnn-stride.jpeg').width(700)),
   bulletedText(stmt('Local connectivity: each hidden unit operates on a local image patch ($3$ instead of $7$ connections per hidden unit)')),
@@ -274,16 +279,8 @@ add(slide('Prior knowledge',
   bulletedText(stmt('Intuition: try to match a pattern in image')),
 _).leftHeader('[figure from Andrej Karpathy]'));
 
-add(slide(null,
-  stmt('Fully-connected'),
-  parentCenter(xtable(
-    vectorBox(null, 10), thickRightArrow(50),
-    vectorBox(null, 5), thickRightArrow(50),
-    vectorBox(null, 7),
-  _).center().margin(10)),
-  pause(),
-  stmt('Convolutional: each depth column produced from localized region (in height/width)'),
-  parentCenter(image('images/cnn.jpeg').width(600)),
+add(slide('Convolutional layers',
+  parentCenter(image('images/convolutional-layers.png').width(700)),
   parentCenter('[Andrej Karpathy\'s demo]').linkToUrl('http://cs231n.github.io/assets/conv-demo/index.html'),
 _));
 
@@ -412,6 +409,10 @@ add(slide('Motivation: modeling sequences',
 _));
 
 add(slide('Recurrent neural networks',
+  parentCenter(image('images/rnn-intro.png').width(700)),
+_));
+
+add(slide('Recurrent neural networks',
   parentCenter(stagger(
     encoderDecoder('Paris Talks Set Stage', null, {genSource: true}).scale(0.75),
     encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$', null, {genSource: true, hidden: true}).scale(0.75),
@@ -496,6 +497,11 @@ add(slide('Long Short Term Memory (LSTM)',
   _).scale(0.85),
   //parentCenter(xtable('$\\Encode(h_{t-1}, x_t) = \\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_{t-1}$', d), '$+$', vectorBox('$W$', d, nx = 8, 'blue'), vectorBox('$x_t$', nx), '$) =$', vectorBox('$h_t$', d)).center()),
 _).leftHeader('[Schmidhuber &amp; Hochreiter, 1997]'));
+
+add(slide('LSTM Intuition',
+  parentCenter(image('images/lstm-intuition.png').width(700)),
+_));
+
 
 add(slide('Character-level language modeling',
   stmt('Sampled output'),
@@ -605,7 +611,7 @@ add(slide('Principal component analysis',
   //'Assume data is centered at 0: $\sum_{i=1}^n \x_i = 0$',
   parentCenter(xtable(
     stmt('Input: points $x_1, \\dots, x_n$'),
-    image('images/3d-proj.jpg').width(200),
+    image('images/pca-ex.png').width(200),
   _).center().margin(50)),
   nil(), nil(),
   pause(),
