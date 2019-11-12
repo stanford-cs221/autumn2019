@@ -376,9 +376,9 @@ function eventsOnLoad() {
   disableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
   nextClass(1);
   disableItem('Section: Exam review 1<br>Reflex and State Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
-  nextClass(2);
-  disableItem('Section: Exam review 2<br>Variable Based Models<br>Location & Time TBD', null, [sectionLink('section9.pdf', 'slides')], true);
-  nextClass(2);
+  nextClass(1);
+  disableItem('Section: Exam review 2<br>Variable Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('section9.pdf', 'slides')], true);
+  nextClass(3);
 
   disableItem('First-order logic<br>Resolution', 'logic2');
   disableHomework('logic', 'Language and logic');
