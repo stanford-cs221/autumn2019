@@ -373,7 +373,7 @@ function eventsOnLoad() {
   nextClass(2);
 
   section('Logic (Percy)', 'More expressive models...');
-  disableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
+  enableItem('Syntax versus semantics<br>Propositional logic<br>Horn clauses', 'logic1');
   nextClass(1);
   disableItem('Section: Exam review 1<br>Reflex and State Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
   nextClass(1);
