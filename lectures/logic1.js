@@ -19,7 +19,7 @@ prose(
   'to easily find out that $X_1 = 7$.',
   'This is the power of <b>logical inference</b>, where we apply a set of truth-preserving rules',
   'to arrive at the answer.',
-  'This is in contrast to what is called <b>model checking</b> (for reasons that will be come clear),',
+  'This is in contrast to what is called <b>model checking</b> (for reasons that will become clear),',
   'which tries to directly find assignments.',
   _,
   'We\'ll see that logical inference allows you to perform very powerful manipulations in a very compact way.',
@@ -98,7 +98,7 @@ _));
 
 prose(
   'Each topic corresponded to a modeling paradigm.',
-  'The way the modeling paradigm is setup influences the way we approach a problem.',
+  'The way the modeling paradigm is set up influences the way we approach a problem.',
   _,
   'In state-based models, we thought about inference as finding minimum cost paths in a graph.',
   'This leads us to think in terms of states, actions, and costs.',
@@ -134,7 +134,7 @@ prose(
   'automated much of the fine-tuning of a system by using data.',
   _,
   'However, there is one strength of logic which has not quite yet been recouped by existing',
-  'probability and machine learning methods, and that is expressivity of the model.',
+  'probability and machine learning methods, and that is the expressivity of the model.',
 _);
 
 add(slide('Motivation: smart personal assistant',
@@ -157,14 +157,14 @@ _);
 add(slide('Motivation: smart personal assistant',
   parentCenter(xtable(
     pause(),
-    ytable( 
+    ytable(
       '<b>Tell</b> information',
       bigRightArrow(200),
     _),
     pause(-1),
     image('images/data-star-trek.jpg').height(180),
     pause(2),
-    ytable( 
+    ytable(
       '<b>Ask</b> questions',
       bigLeftArrow(200),
     _),
@@ -1334,7 +1334,7 @@ prose(
   _,
   'Second, we can use more powerful inference rules, pouring more vigorously into the same glass',
   'in hopes that this will be able to fill the glass; we\'ll look at one such ',
-  'rule, resolution, in the next lecutre.',
+  'rule, resolution, in the next lecture.',
 _);
 
 //outline.indent();
