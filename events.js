@@ -377,7 +377,7 @@ function eventsOnLoad() {
   nextClass(1);
   disableItem('Section: Exam review 1<br>Reflex and State Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('exam_review_slides_fall_2016.pdf', 'slides')], true);
   nextClass(1);
-  enableItem('Section: Exam review 2<br>Variable Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('section8_2.pdf', 'slides')], true);
+  enableItem('Section: Exam review 2<br>Variable Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('section8-2.pdf', 'slides')], true);
   nextClass(3);
 
   disableItem('First-order logic<br>Resolution', 'logic2');
