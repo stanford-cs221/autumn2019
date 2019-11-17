@@ -45,10 +45,7 @@ add(slide('Taking a step back',
     _).center(),
   _).margin(20).center()),
   pause(),
-  stmt('Examples: search problems, MDPs, games, factor graphs, Bayesian networks'),
-  pause(),
-  //'A <font color="red">model</font> describes how the world works (relevant to some task)',
-  parentCenter('What type of models to use?'),
+  stmt('Examples: search problems, MDPs, games, CSPs, Bayesian networks'),
 _));
 
 prose(
@@ -76,7 +73,7 @@ prose(
   'and inference as deduction, where it\'s about computing the best predicted answer under the model.',
 _);
 
-add(slide('Some modeling paradigms',
+add(slide('Modeling paradigms',
   stmt('State-based models', 'search problems, MDPs, games'),
   ytable(
     indent('Applications: route finding, game playing, etc.'),
