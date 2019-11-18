@@ -560,6 +560,7 @@ add(slide('Attention-based models',
   pause(),
   stmt('Generate with '+red('attended input')),
   indent('$h_t = \\text{Encode}(h_{t-1}, y_{t-1}, \\red{\\sum_{j=1}^L \\alpha_t h_j})$'),
+  stmt('Transformer models') + ' attention only -- no RNN!',
 _).leftHeader('[Bahdanau et al., 2015]'));
 
 add(slide('Machine translation',
