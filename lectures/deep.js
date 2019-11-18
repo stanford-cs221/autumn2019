@@ -265,6 +265,11 @@ add(slide('Motivation',
   bulletedText(stmt('Goal: leverage spatial structure of images (translation invariance)')),
 _));
 
+add(slide('Idea: Convolutions',
+  parentCenter(image('images/convolutions.png').width(450)),
+_));
+
+
 add(slide('Prior knowledge',
   parentCenter(image('images/cnn-stride.jpeg').width(700)),
   bulletedText(stmt('Local connectivity: each hidden unit operates on a local image patch ($3$ instead of $7$ connections per hidden unit)')),
@@ -274,16 +279,8 @@ add(slide('Prior knowledge',
   bulletedText(stmt('Intuition: try to match a pattern in image')),
 _).leftHeader('[figure from Andrej Karpathy]'));
 
-add(slide(null,
-  stmt('Fully-connected'),
-  parentCenter(xtable(
-    vectorBox(null, 10), thickRightArrow(50),
-    vectorBox(null, 5), thickRightArrow(50),
-    vectorBox(null, 7),
-  _).center().margin(10)),
-  pause(),
-  stmt('Convolutional: each depth column produced from localized region (in height/width)'),
-  parentCenter(image('images/cnn.jpeg').width(600)),
+add(slide('Convolutional layers',
+  parentCenter(image('images/convolutional-layers.png').width(700)),
   parentCenter('[Andrej Karpathy\'s demo]').linkToUrl('http://cs231n.github.io/assets/conv-demo/index.html'),
 _));
 
@@ -412,6 +409,10 @@ add(slide('Motivation: modeling sequences',
 _));
 
 add(slide('Recurrent neural networks',
+  parentCenter(image('images/rnn-intro.png').width(700)),
+_));
+
+add(slide('Recurrent neural networks',
   parentCenter(stagger(
     encoderDecoder('Paris Talks Set Stage', null, {genSource: true}).scale(0.75),
     encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$', null, {genSource: true, hidden: true}).scale(0.75),
@@ -452,50 +453,66 @@ add(slide('Simple recurrent network',
 _).leftHeader('[Elman, 1990]'));
 
 add(slide('Vanishing gradient problem',
-  //parentCenter(encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$ $x_5$ $x_6$ $x_7$ $x_8$ $x_9$ $x_{10}$ $x_{11}$ $x_{12}$ $x_{13}$ $x_{14}$', null, {genSource: true, hidden: true, d: d = 4}).scale(0.75)),
-  parentCenter(encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$ $x_5$', null, {genSource: true, hidden: true, d: d = 4}).scale(0.75)),
-  parentCenter('(set $x_1 = 1, x_2 = x_3 = \\cdots = 0, \\sigma = $ identity function)').scale(0.7),
-  pause(),
-  //parentCenter(xtable('$h_5 =$', '$\\sigma($', vectorBox('$V$', d, d, 'blue'), '$\\sigma($', vectorBox('$V$', d, d, 'blue'), '$\\sigma($', vectorBox('$V$', d, d, 'blue'), '$\\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_1$', d), '$))))$').center()),
-  nil(),
-  parentCenter(xtable('$h_5 =$', vectorBox('$V$', d, d, 'blue'), vectorBox('$V$', d, d, 'blue'), vectorBox('$V$', d, d, 'blue'), vectorBox('$V$', d, d, 'blue'), vectorBox('$W$', d, nx, 'blue'), vectorBox('$x_1$', nx)).center().margin(10)),
-  pause(),
-  'If $V = 0.1$, then',
-  bulletedText(stmt('Value: $h_t = \\brown{0.1^{t-1}} W$')),
-  bulletedText(stmt('Gradient: $\\frac{\\partial h_t}{\\partial W} = \\brown{0.1^{t-1}}$ (vanishes as length increases)')),
+  parentCenter(image('images/rnn-gradients-1.png').width(700)),
+  bulletedText('RNNs can have long or short dependancies'),
+  bulletedText('When there are long dependancies, gradients have trouble backpropagating through'),
 _));
 
-add(slide('Additive combinations',
-  parentCenter(encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$ $x_5$', null, {genSource: true, hidden: true, d: d = 4}).scale(0.75)),
-  stmt('What if'),
-  parentCenter('$h_t = h_{t-1} + W x_t$'),
-  pause(),
-  stmt('Then'),
-  parentCenter('(set $x_1 = 1, x_2 = x_3 = \\cdots = 0, \\sigma = $ identity function)').scale(0.7),
-  bulletedText(stmt('Value: $h_t = W$')),
-  bulletedText(stmt('Gradient: $\\frac{\\partial h_t}{\\partial W} = 1$ for any $t$')),
+add(slide('Vanishing gradient problem',
+  parentCenter(image('images/rnn-gradients-2.png').width(700)),
 _));
+
+
+// add(slide('Vanishing gradient problem',
+//   //parentCenter(encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$ $x_5$ $x_6$ $x_7$ $x_8$ $x_9$ $x_{10}$ $x_{11}$ $x_{12}$ $x_{13}$ $x_{14}$', null, {genSource: true, hidden: true, d: d = 4}).scale(0.75)),
+//   parentCenter(encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$ $x_5$', null, {genSource: true, hidden: true, d: d = 4}).scale(0.75)),
+//   parentCenter('(set $x_1 = 1, x_2 = x_3 = \\cdots = 0, \\sigma = $ identity function)').scale(0.7),
+//   pause(),
+//   //parentCenter(xtable('$h_5 =$', '$\\sigma($', vectorBox('$V$', d, d, 'blue'), '$\\sigma($', vectorBox('$V$', d, d, 'blue'), '$\\sigma($', vectorBox('$V$', d, d, 'blue'), '$\\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_1$', d), '$))))$').center()),
+//   nil(),
+//   parentCenter(xtable('$h_5 =$', vectorBox('$V$', d, d, 'blue'), vectorBox('$V$', d, d, 'blue'), vectorBox('$V$', d, d, 'blue'), vectorBox('$V$', d, d, 'blue'), vectorBox('$W$', d, nx, 'blue'), vectorBox('$x_1$', nx)).center().margin(10)),
+//   pause(),
+//   'If $V = 0.1$, then',
+//   bulletedText(stmt('Value: $h_t = \\brown{0.1^{t-1}} W$')),
+//   bulletedText(stmt('Gradient: $\\frac{\\partial h_t}{\\partial W} = \\brown{0.1^{t-1}}$ (vanishes as length increases)')),
+// _));
+
+// add(slide('Additive combinations',
+//   parentCenter(encoderDecoder('$x_1$ $x_2$ $x_3$ $x_4$ $x_5$', null, {genSource: true, hidden: true, d: d = 4}).scale(0.75)),
+//   stmt('What if'),
+//   parentCenter('$h_t = h_{t-1} + W x_t$'),
+//   pause(),
+//   stmt('Then'),
+//   parentCenter('(set $x_1 = 1, x_2 = x_3 = \\cdots = 0, \\sigma = $ identity function)').scale(0.7),
+//   bulletedText(stmt('Value: $h_t = W$')),
+//   bulletedText(stmt('Gradient: $\\frac{\\partial h_t}{\\partial W} = 1$ for any $t$')),
+// _));
+
+// add(slide('Long Short Term Memory (LSTM)',
+//   stmt('API'),
+//   parentCenter('$(h_t, c_t) = \\text{LSTM}(h_{t-1}, c_{t-1}, x_t)$'),
+//   pause(),
+//   ytable(
+//     stmt('Input gate'),
+//     indent('$i_t = \\sigma(W_i x_t + U_i h_{t-1} + V_i c_{t-1} + b_i)$'),
+//     stmt('Forget gate (initialize with $b_f$ large, so close to $1$)'),
+//     indent('$f_t = \\sigma(W_f x_t + U_f h_{t-1} + V_f c_{t-1} + b_f)$'),
+//     pause(),
+//     stmt('Cell: additive combination of '+red('RNN update')+' with '+blue('previous cell')),
+//     indent('$c_t = i_t \\odot \\red{\\tanh(W_c x_t + U_c h_{t-1} + b_c)} + f_t \\odot \\blue{c_{t-1}}$'),
+//     pause(),
+//     stmt('Output gate'),
+//     indent('$o_t = \\sigma(W_o x_t + U_o h_{t-1} + V_o c_t + b_o)$'),
+//     stmt('Hidden state'),
+//     indent('$h_t = o_t \\odot \\tanh(c_t)$'),
+//   _).scale(0.85),
+//   //parentCenter(xtable('$\\Encode(h_{t-1}, x_t) = \\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_{t-1}$', d), '$+$', vectorBox('$W$', d, nx = 8, 'blue'), vectorBox('$x_t$', nx), '$) =$', vectorBox('$h_t$', d)).center()),
+// _).leftHeader('[Schmidhuber &amp; Hochreiter, 1997]'));
 
 add(slide('Long Short Term Memory (LSTM)',
-  stmt('API'),
-  parentCenter('$(h_t, c_t) = \\text{LSTM}(h_{t-1}, c_{t-1}, x_t)$'),
-  pause(),
-  ytable(
-    stmt('Input gate'),
-    indent('$i_t = \\sigma(W_i x_t + U_i h_{t-1} + V_i c_{t-1} + b_i)$'),
-    stmt('Forget gate (initialize with $b_f$ large, so close to $1$)'),
-    indent('$f_t = \\sigma(W_f x_t + U_f h_{t-1} + V_f c_{t-1} + b_f)$'),
-    pause(),
-    stmt('Cell: additive combination of '+red('RNN update')+' with '+blue('previous cell')),
-    indent('$c_t = i_t \\odot \\red{\\tanh(W_c x_t + U_c h_{t-1} + b_c)} + f_t \\odot \\blue{c_{t-1}}$'),
-    pause(),
-    stmt('Output gate'),
-    indent('$o_t = \\sigma(W_o x_t + U_o h_{t-1} + V_o c_t + b_o)$'),
-    stmt('Hidden state'),
-    indent('$h_t = o_t \\odot \\tanh(c_t)$'),
-  _).scale(0.85),
-  //parentCenter(xtable('$\\Encode(h_{t-1}, x_t) = \\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_{t-1}$', d), '$+$', vectorBox('$W$', d, nx = 8, 'blue'), vectorBox('$x_t$', nx), '$) =$', vectorBox('$h_t$', d)).center()),
+  parentCenter(image('images/lstm-intuition.png').width(730)),
 _).leftHeader('[Schmidhuber &amp; Hochreiter, 1997]'));
+
 
 add(slide('Character-level language modeling',
   stmt('Sampled output'),
@@ -543,6 +560,7 @@ add(slide('Attention-based models',
   pause(),
   stmt('Generate with '+red('attended input')),
   indent('$h_t = \\text{Encode}(h_{t-1}, y_{t-1}, \\red{\\sum_{j=1}^L \\alpha_t h_j})$'),
+  stmt('Transformer models') + ' attention only -- no RNN!',
 _).leftHeader('[Bahdanau et al., 2015]'));
 
 add(slide('Machine translation',
@@ -605,7 +623,7 @@ add(slide('Principal component analysis',
   //'Assume data is centered at 0: $\sum_{i=1}^n \x_i = 0$',
   parentCenter(xtable(
     stmt('Input: points $x_1, \\dots, x_n$'),
-    image('images/3d-proj.jpg').width(200),
+    image('images/pca-ex.png').width(200),
   _).center().margin(50)),
   nil(), nil(),
   pause(),
