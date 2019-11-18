@@ -160,7 +160,7 @@ function eventsOnLoad() {
     if (!numDaysTillDueDate) numDaysTillDueDate = 8;
     var outDate = currentDate;
     if (name == 'logic') {
-      numDaysTillDueDate += 7
+      numDaysTillDueDate += 9
     }
     var dueDate = advanceDate(currentDate, numDaysTillDueDate);
 
