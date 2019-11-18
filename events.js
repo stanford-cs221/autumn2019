@@ -362,7 +362,7 @@ function eventsOnLoad() {
 
   section('Bayesian networks (Percy)', 'Representing uncertainty with probabilities...');
   enableItem('Probabilistic inference<br>Hidden Markov models', 'bayes1');
-  openHomework('car', 'Car tracking');
+  closedHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
   enableItem('Forward-backward<br>Particle filtering<br>Gibbs sampling', 'bayes2');
