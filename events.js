@@ -362,7 +362,7 @@ function eventsOnLoad() {
 
   section('Bayesian networks (Percy)', 'Representing uncertainty with probabilities...');
   enableItem('Probabilistic inference<br>Hidden Markov models', 'bayes1');
-  openHomework('car', 'Car tracking');
+  closedHomework('car', 'Car tracking');
   project('p-progress', 'Project progress report', 10);
   nextClass(2);
   enableItem('Forward-backward<br>Particle filtering<br>Gibbs sampling', 'bayes2');
@@ -380,7 +380,7 @@ function eventsOnLoad() {
   enableItem('Section: Exam review 2<br>Variable Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('section8-2.pdf', 'slides')], true);
   nextClass(3);
 
-  disableItem('First-order logic<br>Resolution', 'logic2');
+  enableItem('First-order logic<br>Resolution', 'logic2');
   openHomework('logic', 'Language and logic');
   nextClass(2);
   section('Conclusion (Reid, Dorsa)', 'Reflections and prospects...');
