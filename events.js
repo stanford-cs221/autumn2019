@@ -380,7 +380,7 @@ function eventsOnLoad() {
   enableItem('Section: Exam review 2<br>Variable Based Models<br>Skilling Aud 3:30-4:20pm', null, [sectionLink('section8-2.pdf', 'slides')], true);
   nextClass(3);
 
-  disableItem('First-order logic<br>Resolution', 'logic2');
+  enableItem('First-order logic<br>Resolution', 'logic2');
   disableHomework('logic', 'Language and logic');
   nextClass(2);
   section('Conclusion (Reid, Dorsa)', 'Reflections and prospects...');

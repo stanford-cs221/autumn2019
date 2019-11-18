@@ -6,14 +6,30 @@ add(titleSlide('Lecture 17: Logic II',
   parentCenter(image('images/escher-hands.jpg')),
 _));
 
+add(slide('Announcements',
+  bulletedText('<b>exam</b> is tomorrow!'),
+  bulletedText('Next week is Thanksgiving break'),
+  bulletedText('No more sections'),
+  bulletedText('<b>Poster session</b> is following Monday (Dec. 2)'),
+  bulletedText('<b>logic</b> due Tuesday (Dec. 3)'),
+_));
+
+add(slide('CodaLab Worksheets',
+  parentCenter(bluebold('worksheets.codalab.org')),
+  parentCenter(image('images/codalab-homepage4.png').width(700).linkToUrl('https://worksheets.codalab.org')),
+  bulletedText('Extra credit opportunity for final project'),
+  bulletedText('Additional compute available'),
+  parentCenter('[demo]'),
+_));
+
 add(slide('Review: ingredients of a logic',
   redbold('Syntax') + ': defines a set of valid <b>formulas</b> ($\\Formulas$)',
   indent('Example: $\\Rain \\wedge \\Wet$'),
   pause(),
-  bluebold('Semantics') + ': for each formula, specify a set of <b>models</b> (assignments / configurations of the world)',
+  bluebold('Semantics') + ': for each formula $f$, specify a set of <b>models</b> $\\sM(f)$ (assignments / configurations of the world)',
   indent(xtable('Example:', rainWet('red', 0, 0, 0, 2)).margin(5).center()),
   pause(),
-  greenbold('Inference rules') + ': given $f$, what new formulas $g$ can be added that are guaranteed to follow ($\\frac{f}{g}$)?',
+  greenbold('Inference rules') + ': given $\\KB$, what new formulas $f$ can be derived?',
   indent('Example: from $\\Rain \\wedge \\Wet$, derive $\\Rain$'),
 _));
 
@@ -27,28 +43,6 @@ prose(
   'An interpretation function connects syntax and semantics.',
   'Specifically, it defines, for each formula $f$, a set of models $\\sM(f)$.',
   _,
-_);
-
-add(slide('Review: inference task',
-  importantBox(redbold('Inference task'),
-    headerList('Input',
-      nowrapText('Knowledge base $\\KB$ (e.g., $\\{ \\Rain, \\Rain \\to \\Wet \\}$)'),
-      nowrapText('Query formula $f$ (e.g., $\\Wet$)'), pause(),
-    _),
-    headerList('Output',
-      nowrapText('Whether $\\KB$ entails $f$ ($\\blue{\\KB \\models f}$)? (e.g., yes)'),
-      indent('$\\KB \\models f$ defined as $\\blue{\\sM(\\KB) \\subseteq \\sM(f)}$'),
-    _),
-  _),
-_));
-
-prose(
-  'A knowledge base is a set of formulas we know to be true.',
-  'Semantically the KB represents the conjunction of the formulas.',
-  _,
-  'The central goal of logic is inference:',
-  'to figure out whether a query formula is entailed by, contradictory with, or contingent on the KB',
-  '(these are semantic notions defined by the interpretation function).',
 _);
 
 add(slide('Review: inference algorithm',
@@ -77,9 +71,17 @@ add(slide('Review: inference algorithm',
     image('images/half-water-glass.jpg'),
     image('images/full-water-glass.jpg'),
   _).margin(100)).scale(0.4),
+  parentCenter(xtable('entailment ($\\blue{\\KB \\models f}$)', 'derivation ($\\green{\\KB \\vdash f}$)').margin(100)),
 _));
 
 prose(
+  'A knowledge base is a set of formulas we know to be true.',
+  'Semantically the KB represents the conjunction of the formulas.',
+  _,
+  'The central goal of logic is inference:',
+  'to figure out whether a query formula is entailed by, contradictory with, or contingent on the KB',
+  '(these are semantic notions defined by the interpretation function).',
+  _,
   'The unique thing about having a logical language is that we can also perform inference directly on syntax by applying <b>inference rules</b>,',
   'rather than always appealing to semantics (and performing model checking there).',
   _,
@@ -313,16 +315,17 @@ prose(
 _);
 
 add(slide('Resolution algorithm',
-  stmt('Recall: entailment and contradiction $\\Leftrightarrow$ satisfiability'),
+  stmt('Recall: relationship between entailment and contradiction (basically "proof by contradiction")'),
   parentCenter(table(
     ['$\\KB \\models f$', bigLeftRightArrow(), '$\\KB \\cup \\{ \\neg f \\}$ is unsatisfiable'],
     //['$\\KB \\models \\neg f$', bigLeftRightArrow(), '$\\KB \\cup \\{ f \\}$ is unsatisfiable'],
   _).margin(50, 80).ycenter()),
   pause(),
   algorithm('resolution-based inference',
+    bulletedText('Add $\\neg f$ into $\\KB$.'),
     bulletedText('Convert all formulas into <font color="red"><b>CNF</b></font>.'),
     bulletedText('Repeatedly apply <font color="red"><b>resolution</b></font> rule.'),
-    bulletedText('Return unsatisfiable iff derive false.'),
+    bulletedText('Return entailment iff derive false.'),
   _),
 _));
 
@@ -342,14 +345,17 @@ _);
 
 var T = rootedTree;
 add(slide('Resolution: example',
-  stmt('Knowledge base (is it satisfiable?)'),
-  indent('$\\KB = \\{ A \\to (B \\vee C), A, \\neg B, \\neg C \\}$'), pause(),
+  indent(stagger(
+    '$\\KB = \\{ A \\to (B \\vee C), A, \\neg B \\}$, $f = C$',
+    '$\\KB\' = \\{ A \\to (B \\vee C), A, \\neg B, \\neg C \\}$',
+  _)),
+  pause(),
   stmt('Convert to CNF'),
-  indent('$\\KB = \\{ \\neg A \\vee B \\vee C, A, \\neg B, \\neg C \\}$'), pause(),
+  indent('$\\KB\' = \\{ \\neg A \\vee B \\vee C, A, \\neg B, \\neg C \\}$'), pause(),
   stmt('Repeatedly apply <font color="red"><b>resolution</b></font> rule'),
   parentCenter(T('$\\text{false}$', T('$C$', T('$B \\vee C$', '$\\neg A \\vee B \\vee C$', '$A$'), '$\\neg B$'), '$\\neg C$').recymargin(10)),
   pause(),
-  parentCenter(redbold('Unsatisfiable!')),
+  parentCenter('Conclusion: ' + redbold('$KB$ entails $f$')),
 _));
 
 prose(
@@ -437,7 +443,7 @@ add(slide('Limitations of propositional logic',
   _)).scale(0.9),
   'Propositional logic is very clunky.  What\'s missing?', pause(),
   headerList(null,
-    stmt('Objects and relations', 'propositions (e.g., $\\text{AliceKnowsArithmetic}$) have more internal structure ($\\alice$, $\\Knows$, $\\arithmetic$)'), pause(),
+    stmt('Objects and predicates', 'propositions (e.g., $\\text{AliceKnowsArithmetic}$) have more internal structure ($\\alice$, $\\Knows$, $\\arithmetic$)'), pause(),
     stmt('Quantifiers and variables', '<i>all</i> is a quantifier which applies to each person, don\'t want to enumerate them all...'),
   _),
 _));
@@ -445,7 +451,7 @@ _));
 prose(
   'What\'s missing?  The key conceptual observation is that',
   'the world is not just a bunch of atomic facts,',
-  'but that each fact is actually made out of <b>objects</b> and <b>relations</b> between those objects.',
+  'but that each fact is actually made out of <b>objects</b> and <b>predicates</b> on those objects.',
   _,
   'Once facts are decomposed in this way, we can use <b>quantifiers</b> and <b>variables</b>',
   'to implicitly define a huge (and possibly infinite) number of facts with one compact formula.',
@@ -541,7 +547,10 @@ add(slide('Natural language quantifiers',
   stmt('Universal quantification ($\\forall$)'),
   indent('Every student knows arithmetic.'.italics().fontcolor('green')),
   pause(),
-  indent('$\\forall x \\, \\Student(x) \\red{\\to} \\Knows(x, \\arithmetic)$'),
+  indent(stagger(
+    '$\\forall x \\, \\Student(x) \\wedge \\Knows(x, \\arithmetic)$',
+    '$\\forall x \\, \\Student(x) \\red{\\to} \\Knows(x, \\arithmetic)$',
+  _)),
   pause(),
   stmt('Existential quantification ($\\exists$)'),
   indent('Some student knows arithmetic.'.italics().fontcolor('green')),
@@ -618,7 +627,7 @@ prose(
 _);
 
 add(slide('Graph representation of a model',
-  'If only have unary and binary relations, a model $w$ can be represented as a directed graph:',
+  'If only have unary and binary predicates, a model $w$ can be represented as a directed graph:',
   pause(),
   parentCenter(frameBox(overlay(
     ytable(
@@ -640,12 +649,12 @@ add(slide('Graph representation of a model',
   pause(-1),
   bulletedText('Nodes are objects, labeled with <font color="green">constant symbols</font>'),
   pause(),
-  bulletedText('Directed edges are binary relations, labeled with '+red('predicate symbols')+'; unary relations are additional node labels'),
+  bulletedText('Directed edges are binary predicates, labeled with '+red('predicate symbols')+'; unary predicates are additional node labels'),
 _));
 
 prose(
   'A better way to think about a first-order model is that there are a number of objects in the world ($o_1, o_2, \\dots$);',
-  'think of these as nodes in a graph.  Then we have relations between these objects.',
+  'think of these as nodes in a graph.  Then we have predicates between these objects.',
   'Predicates that take two arguments can be visualized as labeled edges between objects.',
   'Predicates that take one argument can be visualized as node labels (but these are not so important).',
   _,
