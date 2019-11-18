@@ -12,17 +12,9 @@ add(slide('Review: ingredients of a logic',
   pause(),
   bluebold('Semantics') + ': for each formula, specify a set of <b>models</b> (assignments / configurations of the world)',
   indent(xtable('Example:', rainWet('red', 0, 0, 0, 2)).margin(5).center()),
-  //'<b>Model</b> $w$ describing a possible configuration of the world', pause(),
-  //'<b>Interpretation function</b> $\\sI$ mapping each $f \\in \\Formulas$ and model $w$ to a truth value $\\sI(f, w)$',
   pause(),
   greenbold('Inference rules') + ': given $f$, what new formulas $g$ can be added that are guaranteed to follow ($\\frac{f}{g}$)?',
   indent('Example: from $\\Rain \\wedge \\Wet$, derive $\\Rain$'),
-  //pause(),
-  //stmt(bold('Inference algorithm'), 'apply inference rules to answer queries'),
-_));
-
-add(slide('Review: schema',
-  logicSchema(),
 _));
 
 prose(
@@ -44,12 +36,10 @@ add(slide('Review: inference task',
       nowrapText('Query formula $f$ (e.g., $\\Wet$)'), pause(),
     _),
     headerList('Output',
-      nowrapText('Whether $\\KB$ entails $f$ ($\\KB \\models f$)? (e.g., yes)'),
-      nowrapText('$\\left(\\KB \\models f \\iff \\sM(f) \\supseteq \\sM(\\KB)\\right)$'),
+      nowrapText('Whether $\\KB$ entails $f$ ($\\blue{\\KB \\models f}$)? (e.g., yes)'),
+      indent('$\\KB \\models f$ defined as $\\blue{\\sM(\\KB) \\subseteq \\sM(f)}$'),
     _),
   _),
-  //headerList('Equivalence',
-  //'$\\KB \\models $f$ is equivalent to $\\KB$ contradicts $\\neg f$',
 _));
 
 prose(
@@ -114,11 +104,11 @@ prose(
   'which intuitively can only derive positive information.',
 _);
 
-add(slide('Approaches',
+add(slide('Review: tradeoffs',
   parentCenter(table(
     ['Formulas allowed', 'Inference rule', 'Complete?'].map(bold),
-    ['Propositional logic (only Horn clauses)', 'modus ponens', green('yes')], pause(),
     ['Propositional logic', 'modus ponens',red( 'no')], pause(),
+    ['Propositional logic (only Horn clauses)', 'modus ponens', green('yes')], pause(),
     ['Propositional logic', bluebold('resolution'), green('yes')],
   _).margin(15, 80)).scale(0.9),
 _));
@@ -142,6 +132,21 @@ function roadmap(i) {
 ////////////////////////////////////////////////////////////
 // Resolution
 roadmap(0);
+
+/*add(slide('Review: logical identities',
+  stmt('Implication'),
+  indent('$f \\to g$ equivalent to $\\neg f \\vee g$'),
+  stmt('de Morgan\'s laws'),
+  indent('$\\neg (f \\vee g)$ equivalent to $\\neg f \\wedge \\neg g$'),
+  indent('$\\neg (f \\wedge g)$ equivalent to $\\neg f \\vee \\neg g$'),
+_));
+
+prose(
+  'There are a few logical identities that will be come useful later (assume $f$ and $g$ are arbitrary formulas).',
+  'You can think of these as inference rules or simply rewrites that are performed before inference.',
+  _,
+  'The intuition for de Morgan\'s law is that we\'re "pushing" the negation inside so that it hugs $f$ and $g$.',
+_);*/
 
 add(slide('Horn clauses and disjunction',
   parentCenter(table(
@@ -311,7 +316,7 @@ add(slide('Resolution algorithm',
   stmt('Recall: entailment and contradiction $\\Leftrightarrow$ satisfiability'),
   parentCenter(table(
     ['$\\KB \\models f$', bigLeftRightArrow(), '$\\KB \\cup \\{ \\neg f \\}$ is unsatisfiable'],
-    ['$\\KB \\models \\neg f$', bigLeftRightArrow(), '$\\KB \\cup \\{ f \\}$ is unsatisfiable'],
+    //['$\\KB \\models \\neg f$', bigLeftRightArrow(), '$\\KB \\cup \\{ f \\}$ is unsatisfiable'],
   _).margin(50, 80).ycenter()),
   pause(),
   algorithm('resolution-based inference',
@@ -328,7 +333,7 @@ prose(
   'Recall that both testing for entailment and contradiction boil down to checking satisfiability.',
   'Resolution can be used to do this very thing.',
   'If we ever apply a resolution rule (e.g., to premises $A$ and $\\neg A$) ',
-  'and we derive false, which is clearly a contradiction, then ',
+  'and we derive false (which represents a contradiction), then',
   'the set of formulas in the knowledge base is unsatisfiable.',
   _,
   'If we are unable to derive false, that means the knowledge base is satisfiable because resolution is complete.',
@@ -380,7 +385,7 @@ _);
 add(summarySlide('Summary',
   nil(),
   parentCenter(table(
-    [darkblue('Horn clauses'), darkblue('any clauses')],
+    [darkbluebold('Horn clauses'), darkbluebold('any clauses')],
     ['modus ponens', 'resolution'],
     ['linear time', 'exponential time'],
     ['less expressive', 'more expressive'],
@@ -543,7 +548,7 @@ add(slide('Natural language quantifiers',
   pause(),
   indent('$\\exists x \\, \\Student(x) \\red{\\wedge} \\Knows(x, \\arithmetic)$'),
   pause(),
-  parentCenter(frameBox(redbold('Note the different connectives!'))),
+  lesson('Note the different connectives!'),
 _));
 
 prose(
@@ -730,9 +735,9 @@ add(slide('Propositionalization',
   _).scale(0.9)),
   pause(),
   parentCenter(importantBox(bluebold('Knowledge base in propositional logic'),
-    '$\\Student(\\alice) \\wedge \\Student(\\bob)$',
-    nowrapText('$(\\Student(\\alice) \\to \\Person(\\alice)) \\wedge (\\Student(\\bob) \\to \\Person(\\bob))$'),
-    nowrapText('$(\\Student(\\alice) \\wedge \\Creative(\\alice)) \\vee (\\Student(\\bob) \\wedge \\Creative(\\bob))$'),
+    '$\\Student\\alice \\wedge \\Student\\bob$',
+    nowrapText('$(\\Student\\alice \\to \\Person\\alice) \\wedge (\\Student\\bob \\to \\Person\\bob)$'),
+    nowrapText('$(\\Student\\alice \\wedge \\Creative\\alice) \\vee (\\Student\\bob \\wedge \\Creative\\bob)$'),
   _).scale(0.7)),
   pause(),
   stmt('Point: use any inference algorithm for propositional logic!'),
