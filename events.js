@@ -160,7 +160,7 @@ function eventsOnLoad() {
     if (!numDaysTillDueDate) numDaysTillDueDate = 8;
     var outDate = currentDate;
     if (name == 'logic') {
-      numDaysTillDueDate += 7
+      numDaysTillDueDate += 9
     }
     var dueDate = advanceDate(currentDate, numDaysTillDueDate);
 
@@ -400,7 +400,7 @@ function eventsOnLoad() {
 
   project('p-peer', 'Project poster session (peer review)', 3);
   project('p-final', 'Project final report', 11);
-  disableItem('Poster session', 'no-lecture');
+  disableItem('Poster session<br>ACSR Basketball Courts', 'no-lecture');
   nextClass(2);
   disableItem('Summary, future of AI', 'conclusion');
 
