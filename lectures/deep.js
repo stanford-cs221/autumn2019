@@ -197,6 +197,18 @@ add(slide('Depth',
   bulletedText('Formal theory/understanding is still incomplete'),
 _));
 
+
+add(slide('What\'s learned?',
+  //stmt('learn high-level abstractions automatically'),
+  parentCenter(image('images/feature-hierarchy.png').width(300)),
+_).leftHeader('[figure from Honglak Lee]'));
+
+add(summarySlide('Summary',
+  bulletedText('Deep networks learn hierarchical representations of data'),
+  bulletedText('Train via SGD, use backpropagation to compute gradients'),
+  bulletedText('Non-convex optimization, but works empirically given enough compute and data'),
+_));
+
 add(slide('Review: optimization',
   stmt('Regression'),
   parentCenter('$\\Loss(x, y, \\theta) = (f_\\theta(x) - y)^2$'),
@@ -239,16 +251,6 @@ add(slide('How to make it work',
   lesson('Model and optimization are tightly coupled'),
 _));
 
-add(slide('What\'s learned?',
-  //stmt('learn high-level abstractions automatically'),
-  parentCenter(image('images/feature-hierarchy.png').width(300)),
-_).leftHeader('[figure from Honglak Lee]'));
-
-add(summarySlide('Summary',
-  bulletedText('Deep networks learn hierarchical representations of data'),
-  bulletedText('Train via SGD, use backpropagation to compute gradients'),
-  bulletedText('Non-convex optimization, but works empirically given enough compute and data'),
-_));
 
 ////////////////////////////////////////////////////////////
 roadmap(CONVOLUTIONAL);
