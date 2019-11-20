@@ -384,7 +384,7 @@ function eventsOnLoad() {
   openHomework('logic', 'Language and logic');
   nextClass(2);
   section('Conclusion (Reid, Dorsa)', 'Reflections and prospects...');
-  disableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
+  enableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
   nextClass(1);
   // Aut2019 - Section 9 cancelled for extra midterm review session
   // disableItem('Section: semantic parsing (advanced)', null, [sectionLink('section9.pdf', 'slides')], true);

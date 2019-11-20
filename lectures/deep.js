@@ -281,6 +281,7 @@ _).leftHeader('[figure from Andrej Karpathy]'));
 
 add(slide('Convolutional layers',
   parentCenter(image('images/convolutional-layers.png').width(700)),
+  bulletedText('Instead of vector to vector, we do volume to volume'),
   parentCenter('[Andrej Karpathy\'s demo]').linkToUrl('http://cs231n.github.io/assets/conv-demo/index.html'),
 _));
 
@@ -488,26 +489,26 @@ _));
 //   bulletedText(stmt('Gradient: $\\frac{\\partial h_t}{\\partial W} = 1$ for any $t$')),
 // _));
 
-// add(slide('Long Short Term Memory (LSTM)',
-//   stmt('API'),
-//   parentCenter('$(h_t, c_t) = \\text{LSTM}(h_{t-1}, c_{t-1}, x_t)$'),
-//   pause(),
-//   ytable(
-//     stmt('Input gate'),
-//     indent('$i_t = \\sigma(W_i x_t + U_i h_{t-1} + V_i c_{t-1} + b_i)$'),
-//     stmt('Forget gate (initialize with $b_f$ large, so close to $1$)'),
-//     indent('$f_t = \\sigma(W_f x_t + U_f h_{t-1} + V_f c_{t-1} + b_f)$'),
-//     pause(),
-//     stmt('Cell: additive combination of '+red('RNN update')+' with '+blue('previous cell')),
-//     indent('$c_t = i_t \\odot \\red{\\tanh(W_c x_t + U_c h_{t-1} + b_c)} + f_t \\odot \\blue{c_{t-1}}$'),
-//     pause(),
-//     stmt('Output gate'),
-//     indent('$o_t = \\sigma(W_o x_t + U_o h_{t-1} + V_o c_t + b_o)$'),
-//     stmt('Hidden state'),
-//     indent('$h_t = o_t \\odot \\tanh(c_t)$'),
-//   _).scale(0.85),
-//   //parentCenter(xtable('$\\Encode(h_{t-1}, x_t) = \\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_{t-1}$', d), '$+$', vectorBox('$W$', d, nx = 8, 'blue'), vectorBox('$x_t$', nx), '$) =$', vectorBox('$h_t$', d)).center()),
-// _).leftHeader('[Schmidhuber &amp; Hochreiter, 1997]'));
+add(slide('Long Short Term Memory (LSTM)',
+  stmt('API'),
+  parentCenter('$(h_t, c_t) = \\text{LSTM}(h_{t-1}, c_{t-1}, x_t)$'),
+  pause(),
+  ytable(
+    stmt('Input gate'),
+    indent('$i_t = \\sigma(W_i x_t + U_i h_{t-1} + V_i c_{t-1} + b_i)$'),
+    stmt('Forget gate (initialize with $b_f$ large, so close to $1$)'),
+    indent('$f_t = \\sigma(W_f x_t + U_f h_{t-1} + V_f c_{t-1} + b_f)$'),
+    pause(),
+    stmt('Cell: additive combination of '+red('RNN update')+' with '+blue('previous cell')),
+    indent('$c_t = i_t \\odot \\red{\\tanh(W_c x_t + U_c h_{t-1} + b_c)} + f_t \\odot \\blue{c_{t-1}}$'),
+    pause(),
+    stmt('Output gate'),
+    indent('$o_t = \\sigma(W_o x_t + U_o h_{t-1} + V_o c_t + b_o)$'),
+    stmt('Hidden state'),
+    indent('$h_t = o_t \\odot \\tanh(c_t)$'),
+  _).scale(0.85),
+  //parentCenter(xtable('$\\Encode(h_{t-1}, x_t) = \\sigma($', vectorBox('$V$', d, d, 'blue'), vectorBox('$h_{t-1}$', d), '$+$', vectorBox('$W$', d, nx = 8, 'blue'), vectorBox('$x_t$', nx), '$) =$', vectorBox('$h_t$', d)).center()),
+_).leftHeader('[Schmidhuber &amp; Hochreiter, 1997]'));
 
 add(slide('Long Short Term Memory (LSTM)',
   parentCenter(image('images/lstm-intuition.png').width(730)),
