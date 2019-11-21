@@ -8,19 +8,19 @@ $(function () {
     var buttons = $('<div>', {class: 'buttonbox'});
     projectDiv.append(buttons);
 
-    var titleDiv = $('<div>').addClass('titlebar').append($('<a>').addClass('title').append(project.title).attr('href', 'restricted/posters/' + project.user + '/poster.pdf'));
+    var titleDiv = $('<div>').addClass('titlebar').append($('<a>').addClass('title').append(project.Title)); //.attr('href', 'restricted/posters/' + project.user + '/poster.pdf'));
     projectDiv.append(titleDiv);
 
     var sessionDiv = $('<div>').addClass('session').append($('<span>').addClass('author').append(
-      project.session));
+      project.Session));
     buttons.append(sessionDiv);
 
     var authorDiv = $('<div>').addClass('authorbar').append($('<span>').addClass('author').append(
-      project.group.map(function(member) { return member.name; }).join(', ')));
+      project.Group.map(function(member) { return member.Member; }).join(', ')));
     projectDiv.append(authorDiv);
 
     var mentorDiv = $('<div>').addClass('mentorbar').append($('<span>').addClass('mentor').append(
-      'Mentor: ' + project.mentor.name));
+      'Mentor: ' + project.Mentor));
     projectDiv.append(mentorDiv);
   }
 });
