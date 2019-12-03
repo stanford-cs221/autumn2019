@@ -1,6 +1,6 @@
 var projects = [
   {
-    Title: "Village Game",
+    Title: "Village Game using Reinforcement Learning",
     Session: "B",
     Mentor: "Zach",
     Group: [
@@ -11,7 +11,7 @@ var projects = [
     Poster: "1.pdf"
   },
   {
-    Title: '"Easy" Klondike Solitaire Playing',
+    Title: '"Easy" Klondike Solitaire Playing: A Reinforcement Learning Approach',
     Session: "A",
     Mentor: "Di Bai",
     Group: [{ Member: "Alexander Stroud" }],
@@ -41,7 +41,7 @@ var projects = [
     Poster: "4.pdf"
   },
   {
-    Title: "A (Hopefully) More Robust Translator",
+    Title: "Building a Machine Translator for Inflected Languages",
     Session: "B",
     Mentor: "Marcus",
     Group: [{ Member: "John Coyle" }],
@@ -63,7 +63,7 @@ var projects = [
   },
   {
     Title:
-      "A Neural Architecture to learn the category level hierarchy  in the image retrieval task",
+      "Deep Metric Learning Using Hierarchical Loss Function",
     Session: "B",
     Mentor: "Jon Kotker",
     Group: [{ Member: "SETHU HAREESH KOLLURU" }],
@@ -77,14 +77,14 @@ var projects = [
     Poster: "9.pdf"
   },
   {
-    Title: "Active Learning Experiments for High-Skill Labeling Tasks",
+    Title: "Active Learning Experiments for Labeling Visual Inspection Data",
     Session: "B",
     Mentor: "Zach",
     Group: [{ Member: "Masoud Charkhabi" }],
     Poster: "10.pdf"
   },
   {
-    Title: "Adversarial Learning: Assigning Fair Recidivism Risk Scores",
+    Title: "Debiasing Recidivism Risk Scores using GANs",
     Session: "A",
     Mentor: "Dhruv Kedia",
     Group: [
@@ -96,21 +96,21 @@ var projects = [
   },
   {
     Title:
-      "AF Classification from modified ECG recordingsusing Unsupervised Domain Adaptation",
+      "AF Classification from modified Lead II ECG recordings using Domain Adaptation",
     Session: "B",
     Mentor: "Jon Kotker",
     Group: [{ Member: "Weiying Goh" }],
     Poster: "12.pdf"
   },
   {
-    Title: "AI 2048",
+    Title: "AI Agent for Winning 2048",
     Session: "A",
     Mentor: "Di Bai",
     Group: [{ Member: "Ricky Grannis-Vu" }],
     Poster: "13.pdf"
   },
   {
-    Title: "AI agent for playing Gomoku",
+    Title: "AI Agent for Playing Gomoku",
     Session: "A",
     Mentor: "Chuanbo Pan",
     Group: [{ Member: "Bo Yu" }],
@@ -128,7 +128,7 @@ var projects = [
     Poster: "15.pdf"
   },
   {
-    Title: "AI Agent for Stock Movement Prediction During Earnings Season",
+    Title: "Exploration of Different AI Methods for Stock Movement and Value Prediction During Earnings Season",
     Session: "B",
     Mentor: "Susanna",
     Group: [
@@ -153,7 +153,7 @@ var projects = [
     Poster: "18.pdf"
   },
   {
-    Title: "AI for Paper.io",
+    Title: "AI for Paper.io - Solving Adversarial Games with Imperfect Information",
     Session: "A",
     Mentor: "Di Bai",
     Group: [{ Member: "Junshen Kevin Chen" }],
@@ -171,7 +171,7 @@ var projects = [
     Poster: "20.pdf"
   },
   {
-    Title: "AI Music Generation",
+    Title: "AI Music Generation: How to Make Music when Tone Deaf",
     Session: "B",
     Mentor: "Jon Kotker",
     Group: [
@@ -182,14 +182,14 @@ var projects = [
     Poster: "21.pdf"
   },
   {
-    Title: "An advanced AI opponent for Hex",
+    Title: "Advanced AI Agent for the Game Hex",
     Session: "A",
     Mentor: "Di Bai",
     Group: [{ Member: "Axel Gross-Klussmann" }],
     Poster: "22.pdf"
   },
   {
-    Title: "An incident notification system based on AI and social media data",
+    Title: "AI & Social Media Based Incident Notification System",
     Session: "A",
     Mentor: "Hancheng Cao",
     Group: [{ Member: "Jiahua Gong" }],
@@ -353,7 +353,7 @@ var projects = [
   },
   {
     Title:
-      "Benchmarks for Text Classification: Multi-class Classification of Reddit Self-Posts",
+      "Read it on Reddit: LSTM Networks for Text Classification",
     Session: "A",
     Mentor: "Haoshen Hong",
     Group: [
@@ -1152,7 +1152,7 @@ var projects = [
     Poster: "131.pdf"
   },
   {
-    Title: "Optimizing flight choices for routes with connecting flights",
+    Title: "Predicting Bike Share Demand in Washington DC",
     Session: "A",
     Mentor: "Cindy Jiang",
     Group: [{ Member: "Beri Kohen Behar" }, { Member: "Ayush Singla" }],
@@ -1645,7 +1645,7 @@ var projects = [
     Poster: "188.pdf"
   },
   {
-    Title: "Structure for Image Classifier with Reinforcement Learning",
+    Title: "Automated CNN Architecture with Evolutionary Algorithm",
     Session: "B",
     Mentor: "Zach",
     Group: [{ Member: "Ruben Rodriguez Buchillon" }, { Member: "Volha Leusha" }],
