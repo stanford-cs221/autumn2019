@@ -8,7 +8,7 @@ $(function () {
     var buttons = $('<div>', {class: 'buttonbox'});
     projectDiv.append(buttons);
 
-    var titleDiv = $('<div>').addClass('titlebar').append($('<a>').addClass('title').append(project.Title)); //.attr('href', 'restricted/posters/' + project.user + '/poster.pdf'));
+    var titleDiv = $('<div>').addClass('titlebar').append($('<a>').addClass('title').append(project.Title).attr('href', '/autumn2019-extra/posters/' + project.Poster));
     projectDiv.append(titleDiv);
 
     var sessionDiv = $('<div>').addClass('session').append($('<span>').addClass('author').append(
