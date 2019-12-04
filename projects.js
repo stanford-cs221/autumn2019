@@ -1776,17 +1776,6 @@ var projects = [
     Poster: "203.pdf"
   },
   {
-    Title: "unsupervised MRI brain image segmentation",
-    Session: "B",
-    Mentor: "Jon Kotker",
-    Group: [
-      { Member: "Jason Fang" },
-      { Member: "yuxin hu" },
-      { Member: "sarah xu" }
-    ],
-    Poster: "204.pdf"
-  },
-  {
     Title:
       "Use of Neural Networks to Rapidly Quantify Impacts of Earthquake Disruption in Transportation Networks",
     Session: "A",
