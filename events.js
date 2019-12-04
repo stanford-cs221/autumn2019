@@ -402,7 +402,7 @@ function eventsOnLoad() {
   project('p-final', 'Project final report', 11);
   disableItem('Poster session<br>ACSR Basketball Courts', 'no-lecture');
   nextClass(2);
-  disableItem('Summary, future of AI', 'conclusion');
+  enableItem('Summary, future of AI', 'conclusion');
 
   // Write specification to submit.json
   if (serverSide) {

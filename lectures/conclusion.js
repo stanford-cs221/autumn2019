@@ -122,6 +122,7 @@ add(slide('Other AI-related courses',
     'CS231A: From 3D Reconstruction to Recognition',
     'CS231N: Convolutional Neural Networks for Visual Recognition',
     'CS223A: Introduction to Robotics',
+    'CS237A-B: Robot Autonomy',
     'CS227B: General Game Playing',
   _),
 _));
@@ -150,17 +151,28 @@ _));
 add(slide('Vision (CS231A, CS231N)',
   parentCenter(image('images/what-is-cv.png').width(600)),
   bulletedText(stmt('Challenges: variation in viewpoint, illumination, intra-class variation')),
-  bulletedText(stmt('Tasks: object recognition/detection/segmentation, pose estimation, 3D reconstruction, image captioning, visual question answering')),
+  bulletedText(stmt('Tasks: object recognition/detection/segmentation, pose estimation, 3D reconstruction, image captioning, visual question answering, activity recognition')),
 _).leftHeader('[figure credit: Fei-Fei Li]'));
 
-add(slide('Robotics (CS223A, CS327A)',
+add(slide('Robotics (CS223A, CS225A)',
   bulletedText(stmt('Tasks: manipulation, grasping, navigation')),
   parentCenter(xtable(
-    image('images/robot-grasping.jpg').width(150),
+    image('images/robot-fetch.png').width(200),
     image('images/google-car.jpeg').width(250),
   _).center().margin(100)),
   bulletedText(stmt('Applications: self-driving cars, medical robotics')),
   bulletedText(stmt('Physical models: kinematics, control')),
+  // Hardware, vision
+_));
+
+add(slide('Robotics (CS237A, CS237B)',
+  bulletedText(stmt('Tasks: interaction, robot learning, autonomy')),
+  parentCenter(xtable(
+    image('images/class-robot.png').width(150),
+    image('images/autonomy.png').width(250),
+  _).center().margin(100)),
+  bulletedText(stmt('Applications: mobile manipulation')),
+  bulletedText(stmt('Term: Winter 2020, (Marco Pavone, Jeannette Bohg, Dorsa Sadigh)')),
   // Hardware, vision
 _));
 
@@ -179,7 +191,7 @@ add(slide('Cognitive science',
   stmt('Question: How does the human mind work?'),
   bulletedText('Cognitive science and AI grew up together'),
   bulletedText('Humans can learn from few examples on many tasks'),
-  stmt('Computation and cognitive science (PSYCH204)'),
+  stmt('Computation and cognitive science (PSYCH204, CS428)'),
   bulletedText('Cognition as Bayesian modeling &mdash; probabilistic program [Tenenbaum, Goodman, Griffiths]'),
 _));
 
@@ -251,6 +263,10 @@ add(slide('...underwhelming results',
   pause(),
   '1966: ALPAC report cut off government funding for MT',
 _));
+
+add(slide('AI is overhyped...',
+  quote('We tend to overestimate the effect of a technology in a short run and underestimate the effect in a long run.', 'Roy Amara (1925-2007)'),
+  _));
 
 add(slide('Implications of early era',
   headerList('Problems',
@@ -331,28 +347,27 @@ add(slide('Modern AI (90s-present)',
   indent(xtable('data', bigRightArrow(), bluebold('model')).center().margin(10).center(), 100),
 _));
 
-add(slide('Modern AI (90s-present)',
-  nil(),
-  parentCenter(table(
-    [image('images/sussmananomaly.png').width(250), pause(),
-    bigRightArrow(),
-     image('images/Road_Scene_understanding.jpg').width(250)],
-    pause(-1),
-    [redbold('reasoning'), pause(), nil(), bluebold('perception')],
-  _).margin(50, 10)).center(),
-_));
+// add(slide('Modern AI (90s-present)',
+//   nil(),
+//   parentCenter(table(
+//     [image('images/sussmananomaly.png').width(250), pause(),
+//     bigRightArrow(),
+//      image('images/Road_Scene_understanding.jpg').width(250)],
+//     pause(-1),
+//     [redbold('reasoning'), pause(), nil(), bluebold('perception')],
+//   _).margin(50, 10)).center(),
+// _));
 
-add(slide('Ideas from other fields',
-  bulletedText('Bayes rule (Bayes, 1763) from probability'),
-  bulletedText('Least squares regression (Gauss, 1795) from astronomy'),
-  bulletedText('First-order logic (Frege, 1893) from logic'),
-  bulletedText('Maximum likelihood (Fisher, 1922) from statistics'),
-  bulletedText('Stochastic gradient descent (Robbins/Monro, 1951) from optimization'),
-  bulletedText('Uniform cost search (Dijkstra, 1956) from algorithms'),
-  bulletedText('Value iteration (Bellman, 1957) from control theory'),
-  //bulletedText('Probability (Pearl, 1985) from AI'),
-  //bulletedText('A* (Hart/Nilsson/Raphael, 1968) from AI'),
-  //bulletedText('Bayesian networks (Pearl, 1985) from AI'),
+add(slide('A melting pot',
+  bulletedText('Bayes rule (Bayes, 1763) from ' + greenbold('probability')),
+  bulletedText('Least squares regression (Gauss, 1795) from ' + greenbold('astronomy')),
+  bulletedText('First-order logic (Frege, 1893) from ' + greenbold('logic')),
+  bulletedText('Maximum likelihood (Fisher, 1922) from ' + greenbold('statistics')),
+  bulletedText('Artificial neural networks (McCulloch/Pitts, 1943) from ' + greenbold('neuroscience')),
+  bulletedText('Minimax games (von Neumann, 1944) from ' + greenbold('economics')),
+  bulletedText('Stochastic gradient descent (Robbins/Monro, 1951) from ' + greenbold('optimization')),
+  bulletedText('Uniform cost search (Dijkstra, 1956) from ' + greenbold('algorithms')),
+  bulletedText('Value iteration (Bellman, 1957) from ' + greenbold('control theory')),
 _));
 
 ////////////////////////////////////////////////////////////
@@ -391,6 +406,12 @@ add(slide('Adversaries',
   parentCenter('AlexNet predicts '+redbold('ostrich')+' on the right'),
 _).leftHeader('[Szegedy et al., 2013; Goodfellow et al., 2014]'));
 
+add(slide('Adversaries',
+  parentCenter('A Simple Explanation for Existence of Adversarial Examples with Small Hamming Distance'),
+  parentCenter(image('images/hamming-adv.png').width(550)),
+_).leftHeader('[Shamir et al., 2019]'));
+
+
 add(slide(null,
   parentCenter(overlay(
     image('images/self-driving-car-vision.jpg').width(500),
@@ -404,6 +425,7 @@ add(slide('Security',
     withCite(image('images/adversarial-glasses.png').width(450), '[Sharif+ 2016]').shiftBy(200, 200),
   _)),
 _));
+
 
 var original = 'Individual Huguenots settled at the Cape of Good Hope from as early as 1671 with the arrival of Francois Villion (Viljoen). The first Huguenot to arrive at the Cape of Good Hope was however Maria de la Queillerie, wife of commander Jan van Riebeeck (and daughter of a Walloon church minister), who arrived on 6 April 1652 to establish a settlement at what is today Cape Town. The couple left for the Far East ten years later. On 31 December 1687 the first organised group of Huguenots set sail from the Netherlands to the Dutch East India Company post at the Cape of Good Hope. The largest portion of the Huguenots to settle in the Cape arrived between 1688 and 1689 in seven ships as part of the organised migration, but quite a few arrived as late as 1700; thereafter, the numbers declined and only small groups arrived at a time.';
 var adv = 'The number of old Acadian colonists declined after the year 1675.';
@@ -438,29 +460,34 @@ add(slide('Reading comprehension',
 _).leftHeader(image('images/devil.jpg').width(150).showLevel(2)).rightHeader('[with Robin Jia; EMNLP 2017]'));
 
 
-add(slide('Results on SQuAD models',
-  parentCenter(table(
-    ['Model', 'Original F1', 'Adversarial F1'].map(bold),
-    pause(),
-    ['Humans',          '92.6',        '89.2'],
-    pause(-1),
-    ['BERT',            '93.2',         '70.7'],
-    ['SLQA+',           '88.6',         '64.2'],
-    ['r-net+',          '88.5',         '63.4'],
-    ['ReasoNet-E',      '81.1',         '49.8'],
-    ['SEDT-E',          '80.1',         '46.5'],
-    ['BiDAF-E',         '80.0',         '46.9'],
-    ['Mnemonic-E',      '79.1',         '55.3'],
-    ['Ruminating',      '78.8',         '47.7'],
-    ['jNet',            '78.6',         '47.0'],
-    ['Mnemonic-S',      '78.5',         '56.0'],
-  _).margin(80, 0)),
-_));
+// add(slide('Results on SQuAD models',
+//   parentCenter(table(
+//     ['Model', 'Original F1', 'Adversarial F1'].map(bold),
+//     pause(),
+//     ['Humans',          '92.6',        '89.2'],
+//     pause(-1),
+//     ['BERT',            '93.2',         '70.7'],
+//     ['SLQA+',           '88.6',         '64.2'],
+//     ['r-net+',          '88.5',         '63.4'],
+//     ['ReasoNet-E',      '81.1',         '49.8'],
+//     ['SEDT-E',          '80.1',         '46.5'],
+//     ['BiDAF-E',         '80.0',         '46.9'],
+//     ['Mnemonic-E',      '79.1',         '55.3'],
+//     ['Ruminating',      '78.8',         '47.7'],
+//     ['jNet',            '78.6',         '47.0'],
+//     ['Mnemonic-S',      '78.5',         '56.0'],
+//   _).margin(80, 0)),
+// _));
 
 // Can build it, should?
 add(slide('Optimizing for clicks',
   parentCenter(image('images/facebook-news-feed.png').width(600)),
   parentCenter('Is this a good objective function for society?'),
+_));
+
+add(slide('How to model human objectives? ',
+  parentCenter(image('images/reward.png').width(600)),
+  parentCenter('Is this a good objective function for the human?'),
 _));
 
 add(slide('Generating fake content',
