@@ -1356,7 +1356,7 @@ var projects = [
     Poster: "155.pdf"
   },
   {
-    Title: "Predicting Surf Conditions",
+    Title: "Detecting and Classifying Species of Fish",
     Session: "A",
     Mentor: "Chuma",
     Group: [{ Member: "Kei Tomozawa" }],
@@ -1478,14 +1478,6 @@ var projects = [
     Mentor: "Di Bai",
     Group: [{ Member: "Yuan Wang" }, { Member: "Kaiyu Zhao" }],
     Poster: "169.pdf"
-  },
-  {
-    Title:
-      "reinforcement learning for simplified poker with non-adaptive opponent",
-    Session: "B",
-    Mentor: "Marcus",
-    Group: [{ Member: "Kaiyu Zhao" }, { Member: "yuan wang" }],
-    Poster: "170.pdf"
   },
   {
     Title: "Reinforcment Learning for High Frequency Trading",
