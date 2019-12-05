@@ -550,7 +550,7 @@ var projects = [
     Poster: "63.pdf"
   },
   {
-    Title: "Data Center Power Usage Optimization",
+    Title: "Sustainability for the Cloud Native World",
     Session: "B",
     Mentor: "Susanna",
     Group: [
@@ -897,7 +897,7 @@ var projects = [
     Poster: "102.pdf"
   },
   {
-    Title: "Impact Potential",
+    Title: "ImpactLens",
     Session: "B",
     Mentor: "Jon Kotker",
     Group: [
@@ -1363,7 +1363,7 @@ var projects = [
     Poster: "156.pdf"
   },
   {
-    Title: "Predicting Team Success in the  Era of “Positionless” Basketball",
+    Title: "Team on My Back Index: a new metric for NBA Player Value",
     Session: "A",
     Mentor: "Dhruv Kedia",
     Group: [{ Member: "Evan Mickas" }],
