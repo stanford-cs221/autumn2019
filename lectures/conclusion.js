@@ -490,6 +490,11 @@ add(slide('How to model human objectives? ',
   parentCenter('Is this a good objective function for the human?'),
 _));
 
+add(slide('How to model human objectives? ',
+  parentCenter(image('images/human_compatible.jpg').width(150)),
+  parentCenter('Be aware of the mismatch between human preferences and what the robot thinks are the human preferences.'),
+_));
+
 add(slide('Generating fake content',
   parentCenter(image('images/deepfake.jpeg').width(500)),
   parentCenter('Can build it $\\neq$ should build it?'),
