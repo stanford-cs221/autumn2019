@@ -1517,7 +1517,7 @@ var projects = [
     Poster: "174.pdf"
   },
   {
-    Title: "RL mental coach",
+    Title: "Impeach-ary: Using Extractive Methods to Summarize Political Text",
     Session: "B",
     Mentor: "Marcus",
     Group: [
