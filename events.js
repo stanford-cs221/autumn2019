@@ -381,7 +381,7 @@ function eventsOnLoad() {
   nextClass(3);
 
   enableItem('First-order logic<br>Resolution', 'logic2');
-  openHomework('logic', 'Language and logic');
+  closedHomework('logic', 'Language and logic');
   nextClass(2);
   section('Conclusion (Reid, Dorsa)', 'Reflections and prospects...');
   enableItem('Deep learning<br>autoencoders, CNNs, RNNs', 'deep');
