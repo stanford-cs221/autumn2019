@@ -719,14 +719,6 @@ var projects = [
     Poster: "82.pdf"
   },
   {
-    Title:
-      "Enhancing acoustic model for Children with Generative Adversarial Model",
-    Session: "A",
-    Mentor: "Cindy Jiang",
-    Group: [{ Member: "zhaodong wang" }],
-    Poster: "83.pdf"
-  },
-  {
     Title: "Evaluating RL-based Approaches for Knowledge Graph Reasoning",
     Session: "B",
     Mentor: "Horace Chu",
